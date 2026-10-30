@@ -6,53 +6,41 @@ import { Award, Target, Eye, TrendingUp, Users, BookOpen, Building } from "lucid
 export const metadata: Metadata = {
   title: "About Us | Our Story, Mission & Vision",
   description:
-    "Learn about CA Excellence Institute — our founding story, mission to deliver academic excellence, vision for CA education, and the milestones that define our journey.",
+    "Learn about Delhi CA School and its focus on structured CA preparation for aspirants in Delhi.",
 };
 
 const milestones = [
   {
-    year: "2015",
-    title: "Institute Founded",
+    year: "01",
+    title: "Build core concepts",
     description:
-      "CA Excellence Institute was established with a clear mission: to provide structured, expert-guided CA coaching that genuinely transforms outcomes.",
+      "Start with the concepts and subject knowledge required for your current CA level.",
   },
   {
-    year: "2017",
-    title: "First Rank Holders",
+    year: "02",
+    title: "Follow a study plan",
     description:
-      "Within two years of founding, our students began appearing in ICAI All India Rankings — validating our rigorous methodology.",
+      "Organize preparation around the syllabus, your goals, and the time available before your exams.",
   },
   {
-    year: "2019",
-    title: "1,000+ Students Guided",
+    year: "03",
+    title: "Practice consistently",
     description:
-      "A major milestone — over a thousand students enrolled and successfully guided through various CA levels.",
+      "Use questions and mock practice to strengthen understanding and identify topics for revision.",
   },
   {
-    year: "2021",
-    title: "Expanded Faculty Team",
+    year: "04",
+    title: "Review and revise",
     description:
-      "Added four specialist faculty members with expertise in Advanced Accounts, Auditing, and Strategic Financial Management.",
-  },
-  {
-    year: "2023",
-    title: "New Learning Centre",
-    description:
-      "Inaugurated our expanded campus with modern classrooms, a dedicated library, and digital learning infrastructure.",
-  },
-  {
-    year: "2024",
-    title: "5,000+ Students",
-    description:
-      "Reached the landmark of 5,000 students guided across all CA levels with a 94% pass rate in batch students.",
+      "Revisit key concepts, work on weaker areas, and prepare for the format of your CA examinations.",
   },
 ];
 
 const achievements = [
-  { icon: Users, value: "5,000+", label: "Students Guided" },
-  { icon: TrendingUp, value: "94%", label: "Pass Rate" },
-  { icon: Award, value: "15+", label: "AIR Holders" },
-  { icon: BookOpen, value: "10+", label: "Years of Excellence" },
+  { icon: BookOpen, value: "CA", label: "Focused preparation" },
+  { icon: Target, value: "3", label: "Course levels" },
+  { icon: TrendingUp, value: "1", label: "Step at a time" },
+  { icon: Users, value: "Delhi", label: "Local focus" },
 ];
 
 const values = [
@@ -91,14 +79,13 @@ export default function AboutPage() {
           <div className="max-w-3xl">
             <span className="section-label mb-4 block">Our Story</span>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Building CA Careers
+              CA Coaching in Delhi
               <br />
-              <span className="text-gold-light italic">Since 2015.</span>
+              <span className="text-gold-light italic">From Foundation to Final.</span>
             </h1>
             <p className="text-white/60 text-lg leading-relaxed max-w-xl">
-              CA Excellence was founded with a belief that every serious CA aspirant deserves
-              structured, expert guidance — not just content delivery, but genuine education
-              that builds careers.
+              Delhi CA School helps CA aspirants approach their studies with
+              structure, clear course guidance, and exam-focused preparation.
             </p>
           </div>
         </div>
@@ -130,30 +117,26 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <SectionHeading
-                label="Our Story"
-                title="How We Started"
+                label="Our Approach"
+                title="CA Preparation, Step by Step"
                 align="left"
                 className="mb-6"
               />
               <div className="space-y-4 text-secondary text-base leading-relaxed"
                 style={{ color: "var(--text-secondary)" }}>
                 <p>
-                  CA Excellence Institute was founded in 2015 by a group of qualified
-                  Chartered Accountants who had observed a significant gap in CA coaching:
-                  institutes were either overwhelmingly large and impersonal, or too small
-                  to offer quality faculty across all subjects.
+                  Delhi CA School is focused on helping aspiring Chartered
+                  Accountants navigate the CA course with clear information and
+                  structured preparation at each stage.
                 </p>
                 <p>
-                  Our founders envisioned a structured, faculty-led institute that combined
-                  the personal attention of a small setup with the academic rigour and
-                  breadth of a large one. The result was CA Excellence — a premium coaching
-                  institute built on systems, not just instruction.
+                  From Foundation through Intermediate and Final, students can
+                  explore course details, study resources, and guidance for their
+                  preparation.
                 </p>
                 <p>
-                  Over the decade since our founding, we have refined our curriculum,
-                  expanded our faculty team, and built a track record of consistent results
-                  that speaks for itself: 5,000+ students guided, 15+ All India Rank
-                  holders, and a 94% pass rate among our batch students.
+                  Our focus is to make the CA journey easier to understand and
+                  help students plan their next step with confidence.
                 </p>
               </div>
             </div>
@@ -198,9 +181,8 @@ export default function AboutPage() {
                 Why We Exist
               </h2>
               <p className="text-white/60 leading-relaxed">
-                To provide structured, expert-guided CA education that gives every sincere
-                aspirant a genuine opportunity to clear the CA examination and build a
-                rewarding professional career — regardless of their starting point.
+                To make CA preparation more structured and accessible for aspirants
+                in Delhi, with clear guidance from registration through exam preparation.
               </p>
             </div>
             <div className="bg-white/[0.06] border border-white/10 rounded-2xl p-8 lg:p-10">
@@ -212,9 +194,8 @@ export default function AboutPage() {
                 Where We&apos;re Going
               </h2>
               <p className="text-white/60 leading-relaxed">
-                To become India&apos;s most trusted CA coaching institute — known not just for
-                results, but for the quality of education, the character of our faculty,
-                and the genuine success of our students in their professional lives.
+                To be a trusted place for CA aspirants in Delhi to find course
+                information, preparation resources, and guidance at every level.
               </p>
             </div>
           </div>
@@ -225,8 +206,8 @@ export default function AboutPage() {
       <section className="section-padding bg-white">
         <div className="container-wide">
           <SectionHeading
-            label="Our Journey"
-            title="Key Milestones"
+            label="Study Approach"
+            title="A Clearer Path Through CA Preparation"
             align="center"
             className="mb-14"
           />
@@ -299,10 +280,10 @@ export default function AboutPage() {
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: Building, title: "Modern Classrooms", desc: "Air-conditioned classrooms with smart boards and excellent acoustics for focused learning." },
-              { icon: BookOpen, title: "Study Library", desc: "Dedicated library with ICAI material, reference books and quiet study spaces." },
-              { icon: Users, title: "Doubt-Solving Desk", desc: "On-campus doubt resolution by faculty — available every day during institute hours." },
-              { icon: TrendingUp, title: "Digital Portal", desc: "Online access to recorded lectures, notes, tests and resources anytime, anywhere." },
+              { icon: Building, title: "Course Guidance", desc: "Understand the Foundation, Intermediate, and Final stages and explore the right next step." },
+              { icon: BookOpen, title: "Study Resources", desc: "Explore notes, practice materials, and exam resources for CA preparation." },
+              { icon: Users, title: "Subject Support", desc: "Get guidance on topics, study plans, and the questions that come up during preparation." },
+              { icon: TrendingUp, title: "Exam Preparation", desc: "Build a steady routine for practice, revision, and exam readiness." },
             ].map((item) => {
               const Icon = item.icon;
               return (

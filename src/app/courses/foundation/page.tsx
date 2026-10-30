@@ -3,9 +3,9 @@ import { courses } from "@/lib/data/courses";
 import CourseDetailTemplate from "@/components/courses/CourseDetailTemplate";
 
 export const metadata: Metadata = {
-  title: "CA Foundation Course | Build Your Strongest Start",
+  title: "CA Foundation Classes in Delhi | Delhi CA School",
   description:
-    "Join our CA Foundation program with expert faculty, comprehensive 4-paper coverage, weekly mocks and dedicated doubt sessions. Build a rock-solid foundation for your CA journey.",
+    "Explore CA Foundation preparation in Delhi, including course structure, subject coverage, and study guidance from Delhi CA School.",
 };
 
 export default function FoundationPage() {

@@ -3,9 +3,9 @@ import { courses } from "@/lib/data/courses";
 import CourseDetailTemplate from "@/components/courses/CourseDetailTemplate";
 
 export const metadata: Metadata = {
-  title: "CA Final Course | Advanced Preparation. Exam Readiness.",
+  title: "CA Final Classes in Delhi | Delhi CA School",
   description:
-    "Expert CA Final coaching with advanced subject faculty, intensive revision program, 10-year past paper analysis and placement support. Clear CA Final in your first attempt.",
+    "Explore CA Final preparation in Delhi, including course structure, subject coverage, and exam preparation guidance from Delhi CA School.",
 };
 
 export default function FinalPage() {

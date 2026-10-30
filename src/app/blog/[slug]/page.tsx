@@ -38,13 +38,15 @@ function formatDate(dateStr: string) {
 }
 
 const categoryColors: Record<string, string> = {
-  "Exam Updates": "text-red-700 bg-red-50 border-red-200",
-  "Study Tips": "text-blue-700 bg-blue-50 border-blue-200",
-  "Result Analysis": "text-purple-700 bg-purple-50 border-purple-200",
-  Foundation: "text-emerald-700 bg-emerald-50 border-emerald-200",
-  Intermediate: "text-orange-700 bg-orange-50 border-orange-200",
-  Final: "text-amber-700 bg-amber-50 border-amber-200",
-  General: "text-gray-700 bg-gray-50 border-gray-200",
+  "CA Foundation": "text-emerald-700 bg-emerald-50 border-emerald-200",
+  "CA Inter": "text-orange-700 bg-orange-50 border-orange-200",
+  "CA Final": "text-amber-700 bg-amber-50 border-amber-200",
+  CSEET: "text-blue-700 bg-blue-50 border-blue-200",
+  "CS Executive": "text-purple-700 bg-purple-50 border-purple-200",
+  "CS Professional": "text-pink-700 bg-pink-50 border-pink-200",
+  "Career guidance": "text-gray-700 bg-gray-50 border-gray-200",
+  "Exam update": "text-red-700 bg-red-50 border-red-200",
+  "Study strategy": "text-blue-700 bg-blue-50 border-blue-200",
 };
 
 export default async function BlogPostPage({ params }: Props) {

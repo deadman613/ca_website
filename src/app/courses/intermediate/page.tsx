@@ -3,9 +3,9 @@ import { courses } from "@/lib/data/courses";
 import CourseDetailTemplate from "@/components/courses/CourseDetailTemplate";
 
 export const metadata: Metadata = {
-  title: "CA Intermediate Course | Develop Depth. Build Expertise.",
+  title: "CA Intermediate Classes in Delhi | Delhi CA School",
   description:
-    "Comprehensive CA Intermediate coaching for both groups with subject-expert faculty, mock tests, articleship guidance and structured preparation for every paper.",
+    "Explore CA Intermediate preparation in Delhi, including course structure, subject coverage, and study guidance from Delhi CA School.",
 };
 
 export default function IntermediatePage() {

@@ -5,12 +5,10 @@ import { ArrowRight, Star } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
 const bullets = [
-  "10+ Years of Excellence",
-  "Trusted by 5,000+ Students",
-  "146+ Batches Conducted",
-  "Consistent AIR Holders",
-  "Structured Study Methodology",
-  "Offering All CA Levels — Foundation, Inter, Final",
+  "CA Foundation to Final",
+  "Structured course guidance",
+  "Exam preparation resources",
+  "For CA aspirants in Delhi",
 ];
 
 export default function Hero() {
@@ -158,7 +156,7 @@ export default function Hero() {
               className="text-xs font-bold tracking-widest uppercase"
               style={{ color: "#E8C97A" }}
             >
-              Discover CA Excellence
+              Delhi CA School
             </span>
           </div>
 
@@ -173,11 +171,11 @@ export default function Hero() {
               color: "#ffffff",
             }}
           >
-            Where CA Aspirants
+            CA Coaching in Delhi
             <br />
-            Have Become
-            <br />
-            <span style={{ color: "#E8C97A", fontWeight: 700 }}>Achievers Since 2015</span>
+            <span style={{ color: "#E8C97A", fontWeight: 700 }}>
+              Your Journey, Structured.
+            </span>
           </h1>
 
           {/* Bullet points — 2 columns */}
@@ -228,6 +226,12 @@ export default function Hero() {
           >
             Explore Our Courses
             <ArrowRight size={16} />
+          </Link>
+          <Link
+            href="/contact#demo"
+            className="ml-3 inline-flex items-center rounded-md border border-white/40 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+          >
+            Book a free demo
           </Link>
         </div>
       </div>

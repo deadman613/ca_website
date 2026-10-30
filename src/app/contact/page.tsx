@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Phone, Mail, MapPin, MessageCircle, CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowRight, Camera, CheckCircle2, Mail, Phone } from "lucide-react";
+import StreamSwitcher from "@/components/layout/StreamSwitcher";
+import { useStream } from "@/components/layout/StreamProvider";
+import { siteContact } from "@/lib/site";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,27 +23,33 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const courses = [
-  "CA Foundation",
-  "CA Intermediate",
-  "CA Final",
-  "Not sure — need guidance",
-];
-
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const { stream } = useStream();
+  const courses =
+    stream === "CA"
+      ? ["CA Foundation", "CA Intermediate", "CA Final"]
+      : ["CSEET (Foundation)", "CS Executive", "CS Professional"];
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (data: FormData) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    console.log("Form data:", data);
+  const onSubmit = (data: FormData) => {
+    const params = new URLSearchParams({
+      subject: `${data.course} enquiry from ${data.name}`,
+      body: [
+        `Name: ${data.name}`,
+        `Phone: ${data.phone}`,
+        `Email: ${data.email}`,
+        `Course: ${data.course}`,
+        `Message: ${data.message ?? ""}`,
+      ].join("\n"),
+    });
+    window.location.assign(`mailto:${siteContact.email}?${params.toString()}`);
     setSubmitted(true);
     reset();
   };
@@ -52,13 +61,16 @@ export default function ContactPage() {
         <div className="container-wide">
           <div className="max-w-2xl">
             <span className="section-label mb-4 block">Get in Touch</span>
+            <div className="mb-5">
+              <StreamSwitcher />
+            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Let&apos;s Start Your
               <br />
-              <span className="text-gold-light italic">CA Journey.</span>
+              <span className="text-gold-light italic">{stream} Journey.</span>
             </h1>
             <p className="text-white/60 text-lg leading-relaxed">
-              Reach out to our team to book a free demo, enquire about courses,
+              Reach out to our team to book a free {stream} demo, enquire about courses,
               or simply ask any question. We&apos;re happy to help.
             </p>
           </div>
@@ -71,103 +83,52 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-16">
             {/* Left — Info */}
             <div className="lg:col-span-2">
-              <h2 className="font-playfair text-navy text-2xl font-bold mb-8">
-                Contact Information
+              <h2 className="font-playfair text-navy text-2xl font-bold mb-4">
+                Delhi CA School
               </h2>
-
-              <div className="space-y-6 mb-10">
+              <div className="space-y-5">
                 <a
-                  href="tel:+919876543210"
+                  href={siteContact.phoneHref}
                   className="flex items-start gap-4 group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0 group-hover:bg-gold/25 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0">
                     <Phone size={18} className="text-gold" />
                   </div>
                   <div>
                     <p className="text-muted text-xs mb-1 font-medium uppercase tracking-wide"
                       style={{ color: "var(--text-muted)" }}>Phone</p>
-                    <p className="text-navy font-semibold">+91 98765 43210</p>
-                    <p className="text-secondary text-sm" style={{ color: "var(--text-secondary)" }}>
-                      Mon–Sat, 9 AM – 7 PM
-                    </p>
+                    <p className="text-navy font-semibold">{siteContact.phone}</p>
                   </div>
                 </a>
-
                 <a
-                  href="https://wa.me/919876543210"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`mailto:${siteContact.email}`}
                   className="flex items-start gap-4 group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0 group-hover:bg-green-100 transition-colors">
-                    <MessageCircle size={18} className="text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-muted text-xs mb-1 font-medium uppercase tracking-wide"
-                      style={{ color: "var(--text-muted)" }}>WhatsApp</p>
-                    <p className="text-navy font-semibold">+91 98765 43210</p>
-                    <p className="text-secondary text-sm" style={{ color: "var(--text-secondary)" }}>
-                      Quick replies on WhatsApp
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="mailto:info@caexcellence.in"
-                  className="flex items-start gap-4 group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0 group-hover:bg-gold/25 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0">
                     <Mail size={18} className="text-gold" />
                   </div>
                   <div>
                     <p className="text-muted text-xs mb-1 font-medium uppercase tracking-wide"
                       style={{ color: "var(--text-muted)" }}>Email</p>
-                    <p className="text-navy font-semibold">info@caexcellence.in</p>
-                    <p className="text-secondary text-sm" style={{ color: "var(--text-secondary)" }}>
-                      We reply within 24 hours
-                    </p>
+                    <p className="text-navy font-semibold">{siteContact.email}</p>
                   </div>
                 </a>
-
-                <div className="flex items-start gap-4">
+                <a
+                  href={siteContact.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 group"
+                >
                   <div className="w-11 h-11 rounded-xl bg-gold/15 border border-gold/25 flex items-center justify-center flex-shrink-0">
-                    <MapPin size={18} className="text-gold" />
+                    <Camera size={18} className="text-gold" />
                   </div>
                   <div>
                     <p className="text-muted text-xs mb-1 font-medium uppercase tracking-wide"
-                      style={{ color: "var(--text-muted)" }}>Address</p>
-                    <p className="text-navy font-semibold">123 Commerce House, 2nd Floor</p>
-                    <p className="text-secondary text-sm" style={{ color: "var(--text-secondary)" }}>
-                      Financial District, Your City — 400001
-                    </p>
+                      style={{ color: "var(--text-muted)" }}>Instagram</p>
+                    <p className="text-navy font-semibold">@{siteContact.instagram}</p>
                   </div>
-                </div>
+                </a>
               </div>
-
-              {/* Map placeholder */}
-              <div className="h-48 bg-off-white rounded-xl border border-gray-100 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={28} className="text-gray-300 mx-auto mb-2" />
-                  <p className="text-muted text-sm" style={{ color: "var(--text-muted)" }}>
-                    Google Maps — embed your location here
-                  </p>
-                </div>
-              </div>
-
-              {/* WhatsApp CTA */}
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 flex items-center gap-3 w-full p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors"
-              >
-                <MessageCircle size={20} className="text-green-600" />
-                <div>
-                  <p className="text-green-800 font-semibold text-sm">Chat on WhatsApp</p>
-                  <p className="text-green-600 text-xs">Get instant responses</p>
-                </div>
-                <ArrowRight size={16} className="text-green-600 ml-auto" />
-              </a>
             </div>
 
             {/* Right — Form */}
@@ -178,7 +139,7 @@ export default function ContactPage() {
                 </h2>
                 <p className="text-secondary text-sm mb-8"
                   style={{ color: "var(--text-secondary)" }}>
-                  Fill in your details and our academic counsellor will reach out within 24 hours.
+                  Fill in your details to prepare an email enquiry. Review and send it using your email app.
                 </p>
 
                 {submitted ? (
@@ -187,12 +148,12 @@ export default function ContactPage() {
                       <CheckCircle2 size={28} className="text-green-600" />
                     </div>
                     <h3 className="font-playfair text-navy text-2xl font-bold mb-3">
-                      Enquiry Submitted!
+                      Email Draft Prepared
                     </h3>
                     <p className="text-secondary leading-relaxed max-w-sm mx-auto text-sm"
                       style={{ color: "var(--text-secondary)" }}>
-                      Thank you. Our academic counsellor will contact you shortly to
-                      discuss your requirements and guide you to the right course.
+                      Your email app should open with your enquiry ready to send.
+                      If it does not, email us at {siteContact.email}.
                     </p>
                     <button
                       onClick={() => setSubmitted(false)}
@@ -225,7 +186,7 @@ export default function ContactPage() {
                         <input
                           {...register("phone")}
                           type="tel"
-                          placeholder="+91 98765 43210"
+                          placeholder="Your phone number"
                           className="input-field"
                         />
                         {errors.phone && (
@@ -258,6 +219,9 @@ export default function ContactPage() {
                         {courses.map((c) => (
                           <option key={c} value={c}>{c}</option>
                         ))}
+                        <option value="Not sure — need guidance">
+                          Not sure — need guidance
+                        </option>
                       </select>
                       {errors.course && (
                         <p className="text-red-500 text-xs mt-1.5">{errors.course.message}</p>
@@ -278,17 +242,9 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      disabled={isSubmitting}
                       className="btn-primary w-full text-sm py-4 mt-2 disabled:opacity-60"
                     >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2 justify-center">
-                          <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                          Submitting...
-                        </span>
-                      ) : (
-                        <>Submit Enquiry <ArrowRight size={15} /></>
-                      )}
+                      <>Prepare Email Enquiry <ArrowRight size={15} /></>
                     </button>
 
                     <p className="text-muted text-xs text-center" style={{ color: "var(--text-muted)" }}>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, BookOpen } from "lucide-react";
+import StreamSwitcher from "@/components/layout/StreamSwitcher";
 
 interface DropdownItem {
   label: string;
@@ -21,7 +22,7 @@ const resourceLinks: DropdownItem[] = [
   { label: "Foundation Resources", href: "/resources?level=Foundation" },
   { label: "Intermediate Resources", href: "/resources?level=Intermediate" },
   { label: "Final Resources", href: "/resources?level=Final" },
-  { label: "Practice Test Papers", href: "/resources?type=Test Paper" },
+  { label: "Mock Tests & Practice Papers", href: "/resources" },
 ];
 
 interface NavLink {
@@ -60,11 +61,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setMobileOpen(false);
-    setActiveDropdown(null);
-  }, [pathname]);
-
-  useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -78,7 +74,6 @@ export default function Navbar() {
     : "bg-white shadow-sm border-b border-gray-100";
 
   const textColor = isHome && !scrolled ? "text-white" : "text-navy";
-  const logoColor = isHome && !scrolled ? "text-white" : "text-navy";
   const linkHoverColor = isHome && !scrolled ? "hover:text-gold-light" : "hover:text-gold";
 
   return (
@@ -107,13 +102,13 @@ export default function Navbar() {
                   className={`font-bold text-lg leading-none block transition-colors`}
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, letterSpacing: '-0.01em', color: isHome && !scrolled ? '#fff' : '#0B1F3A' }}
                 >
-                  CA Excellence
+                  Delhi CA
                 </span>
                 <span
                   className={`text-xs tracking-[0.18em] uppercase block mt-0.5 transition-colors`}
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500, color: isHome && !scrolled ? 'rgba(232,201,122,0.75)' : '#C9A84C' }}
                 >
-                  Institute
+                  School
                 </span>
               </div>
             </Link>
@@ -173,6 +168,7 @@ export default function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
+              <StreamSwitcher />
               <Link
                 href="/contact"
                 className={`text-sm font-medium transition-colors ${textColor} ${linkHoverColor}`}
@@ -208,13 +204,24 @@ export default function Navbar() {
             className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute top-0 right-0 bottom-0 w-80 max-w-full bg-white shadow-2xl overflow-y-auto">
+          <div
+            className="absolute top-0 right-0 bottom-0 w-80 max-w-full bg-white shadow-2xl overflow-y-auto"
+            onClick={(event) => {
+              if (
+                event.target instanceof HTMLElement &&
+                event.target.closest("a")
+              ) {
+                setMobileOpen(false);
+                setActiveDropdown(null);
+              }
+            }}
+          >
             <div className="flex items-center justify-between p-5 border-b border-gray-100">
               <Link href="/" className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-navy rounded flex items-center justify-center">
                   <BookOpen size={16} className="text-white" />
                 </div>
-                <span className="font-playfair font-bold text-navy">CA Excellence</span>
+                <span className="font-playfair font-bold text-navy">Delhi CA School</span>
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}
@@ -225,6 +232,12 @@ export default function Navbar() {
             </div>
 
             <div className="py-4 px-4">
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  Coaching stream
+                </span>
+                <StreamSwitcher />
+              </div>
               {navLinks.map((link) => (
                 <div key={link.label} className="border-b border-gray-50 last:border-0">
                   {link.dropdown ? (

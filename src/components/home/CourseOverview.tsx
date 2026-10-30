@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
+import StreamSwitcher from "@/components/layout/StreamSwitcher";
+import { useStream } from "@/components/layout/StreamProvider";
 
 const courses = [
   {
@@ -45,20 +49,49 @@ const courses = [
 ];
 
 export default function CourseOverview() {
+  const { stream } = useStream();
+  const stages =
+    stream === "CA"
+      ? ["Foundation", "Intermediate", "Final"]
+      : ["CSEET (Foundation)", "Executive", "Professional"];
+
   return (
     <section className="section-padding bg-off-white">
       <div className="container-wide">
         <SectionHeading
           label="Our Programs"
-          title="Choose Your CA Journey"
-          subtitle="Structured programs designed for every stage of your CA preparation — from building fundamentals to mastering advanced concepts."
+          title={`Choose Your ${stream} Journey`}
+          subtitle={`Structured programs designed for every stage of your ${stream} preparation.`}
           align="center"
           className="mb-14"
         />
 
+        <div className="mb-8 flex flex-col items-center gap-5">
+          <StreamSwitcher />
+          <p className="text-sm font-semibold text-navy">
+            Where are you right now?
+          </p>
+          <div className="grid w-full gap-3 sm:grid-cols-3">
+            {stages.map((stage) => (
+              <Link
+                key={stage}
+                href={`/courses#${stage.toLowerCase().replace(/[()]/g, "").replace(/\s+/g, "-")}`}
+                className="rounded-xl border border-gray-100 bg-white px-5 py-4 text-center font-semibold text-navy transition-colors hover:border-gold"
+              >
+                {stage}
+                <span className="mt-1 block text-xs font-normal text-muted">
+                  Explore {stream} courses
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {stream === "CA" ? (
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {courses.map((course) => (
             <div
+              id={course.slug}
               key={course.slug}
               className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden card-hover"
             >
@@ -125,12 +158,18 @@ export default function CourseOverview() {
             </div>
           ))}
         </div>
+        ) : (
+          <p className="mx-auto max-w-2xl rounded-xl border border-gray-100 bg-white p-6 text-center text-sm text-secondary">
+            CS course details are being prepared. Select a stage above to view
+            course information or request a free demo.
+          </p>
+        )}
 
-        <div className="text-center mt-12">
+        {stream === "CA" && <div className="text-center mt-12">
           <Link href="/courses" className="btn-secondary">
             View All Courses
           </Link>
-        </div>
+        </div>}
       </div>
     </section>
   );

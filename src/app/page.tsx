@@ -7,15 +7,16 @@ import FacultyHighlights from "@/components/home/FacultyHighlights";
 import VideoTeaser from "@/components/home/VideoTeaser";
 import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
+import DemoBookingSection from "@/components/home/DemoBookingSection";
 
 export const metadata: Metadata = {
-  title: "CA Excellence Institute | Premier CA Coaching in India",
+  title: "CA Coaching in Delhi | Delhi CA School",
   description:
-    "Join CA Excellence Institute for expert CA Foundation, Intermediate and Final coaching. Structured programs, experienced faculty, comprehensive study material and dedicated doubt sessions.",
+    "Prepare for CA Foundation, Intermediate, and Final with Delhi CA School. Explore CA courses, faculty, study resources, and exam preparation guidance in Delhi.",
   openGraph: {
-    title: "CA Excellence Institute | Premier CA Coaching",
+    title: "CA Coaching in Delhi | Delhi CA School",
     description:
-      "Expert CA coaching for Foundation, Intermediate and Final. 5,000+ students guided with a 94% pass rate.",
+      "Structured preparation guidance for CA Foundation, Intermediate, and Final in Delhi.",
   },
 };
 
@@ -29,6 +30,7 @@ export default function HomePage() {
       <FacultyHighlights />
       <VideoTeaser />
       <FAQSection />
+      <DemoBookingSection />
       <CTASection />
     </>
   );

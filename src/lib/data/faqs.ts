@@ -97,7 +97,7 @@ export const testimonials: Testimonial[] = [
     rank: "AIR 12",
     batch: "2024 Batch",
     review:
-      "CA Excellence Institute completely transformed my preparation. The faculty here doesn't just teach — they build your thinking. The structured approach to each paper, combined with regular mock tests, made me genuinely confident before the exam. I could not have achieved AIR 12 without this guidance.",
+      "Delhi CA School helped me approach CA preparation with more structure. The teaching approach and practice made me more confident before the exam.",
     rating: 5,
     photo: "/testimonials/arjun.jpg",
   },

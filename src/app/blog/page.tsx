@@ -3,17 +3,20 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Clock, Calendar, User, ArrowRight } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { blogPosts, blogCategories, type BlogCategory } from "@/lib/data/blogs";
+import StreamSwitcher from "@/components/layout/StreamSwitcher";
+import { useStream } from "@/components/layout/StreamProvider";
 
 const categoryColors: Record<string, string> = {
-  "Exam Updates": "text-red-700 bg-red-50 border-red-200",
-  "Study Tips": "text-blue-700 bg-blue-50 border-blue-200",
-  "Result Analysis": "text-purple-700 bg-purple-50 border-purple-200",
-  Foundation: "text-emerald-700 bg-emerald-50 border-emerald-200",
-  Intermediate: "text-orange-700 bg-orange-50 border-orange-200",
-  Final: "text-amber-700 bg-amber-50 border-amber-200",
-  General: "text-gray-700 bg-gray-50 border-gray-200",
+  "CA Foundation": "text-emerald-700 bg-emerald-50 border-emerald-200",
+  "CA Inter": "text-orange-700 bg-orange-50 border-orange-200",
+  "CA Final": "text-amber-700 bg-amber-50 border-amber-200",
+  CSEET: "text-blue-700 bg-blue-50 border-blue-200",
+  "CS Executive": "text-purple-700 bg-purple-50 border-purple-200",
+  "CS Professional": "text-pink-700 bg-pink-50 border-pink-200",
+  "Career guidance": "text-gray-700 bg-gray-50 border-gray-200",
+  "Exam update": "text-red-700 bg-red-50 border-red-200",
+  "Study strategy": "text-blue-700 bg-blue-50 border-blue-200",
 };
 
 function formatDate(dateStr: string) {
@@ -25,17 +28,23 @@ function formatDate(dateStr: string) {
 }
 
 export default function BlogPage() {
+  const { stream } = useStream();
   const [activeCategory, setActiveCategory] = useState<"all" | BlogCategory>(
     "all"
   );
+  const streamPosts =
+    stream === "CA"
+      ? blogPosts.filter((post) =>
+          ["CA Foundation", "CA Inter", "CA Final", "Career guidance", "Exam update", "Study strategy"].includes(post.category)
+        )
+      : [];
 
   const filtered =
     activeCategory === "all"
-      ? blogPosts
-      : blogPosts.filter((p) => p.category === activeCategory);
+      ? streamPosts
+      : streamPosts.filter((p) => p.category === activeCategory);
 
-  const featured = blogPosts[0];
-  const rest = filtered.filter((p) => p.id !== featured.id || activeCategory !== "all");
+  const featured = streamPosts[0];
 
   return (
     <>
@@ -44,14 +53,16 @@ export default function BlogPage() {
         <div className="container-wide">
           <div className="max-w-2xl">
             <span className="section-label mb-4 block">Insights & Guidance</span>
+            <div className="mb-5">
+              <StreamSwitcher />
+            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              The CA Excellence
+              Delhi CA School
               <br />
               <span className="text-gold-light italic">Blog.</span>
             </h1>
             <p className="text-white/60 text-lg leading-relaxed">
-              Expert insights, exam strategies, study tips, and CA news — written by
-              our faculty for aspirants at every stage.
+              Study strategies and exam guidance for CA aspirants at every stage.
             </p>
           </div>
         </div>
@@ -60,7 +71,7 @@ export default function BlogPage() {
       <section className="section-padding bg-white">
         <div className="container-wide">
           {/* Featured Post */}
-          {activeCategory === "all" && (
+          {activeCategory === "all" && featured && (
             <div className="mb-14">
               <p className="section-label mb-6">Featured Article</p>
               <Link
@@ -142,7 +153,7 @@ export default function BlogPage() {
 
           {/* Blog Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(activeCategory === "all" ? blogPosts.slice(1) : filtered).map((post) => (
+            {(activeCategory === "all" ? streamPosts.slice(1) : filtered).map((post) => (
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
@@ -182,6 +193,13 @@ export default function BlogPage() {
               </Link>
             ))}
           </div>
+          {filtered.length === 0 && (
+            <p className="py-12 text-center text-sm text-secondary">
+              {stream === "CS"
+                ? "CS articles are being prepared. Please check back soon."
+                : "No articles are available in this category yet."}
+            </p>
+          )}
         </div>
       </section>
     </>

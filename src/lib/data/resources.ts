@@ -3,7 +3,7 @@ export interface Resource {
   slug: string;
   title: string;
   description: string;
-  type: "Notes" | "Video" | "Test Paper" | "Answer Key" | "Question Bank";
+  type: "Notes" | "Video" | "Mock test" | "Practice paper";
   level: "Foundation" | "Intermediate" | "Final" | "General";
   subject: string;
   thumbnail?: string;
@@ -48,7 +48,7 @@ export const resources: Resource[] = [
     title: "CA Foundation Mock Test — November 2024 Series 1",
     description:
       "Full-length mock test paper for CA Foundation covering all 4 papers with ICAI-format marking. Includes answer key and examiner's comments.",
-    type: "Test Paper",
+    type: "Mock test",
     level: "Foundation",
     subject: "All Papers",
     isFree: true,
@@ -87,7 +87,7 @@ export const resources: Resource[] = [
     title: "CA Intermediate Group 2 — Mock Test Paper",
     description:
       "Complete mock test for Group 2 (Cost Accounting, Auditing, FM & SM) in ICAI examination format. Detailed solutions and marking scheme included.",
-    type: "Test Paper",
+    type: "Mock test",
     level: "Intermediate",
     subject: "Group 2",
     isFree: true,
@@ -126,7 +126,7 @@ export const resources: Resource[] = [
     title: "CA Final Group 1 — Full Mock Test Series",
     description:
       "Three full-length mock test papers for CA Final Group 1 (FR, SFM, Audit, Law) with detailed solutions, marking guide and performance analysis.",
-    type: "Test Paper",
+    type: "Mock test",
     level: "Final",
     subject: "Group 1",
     isFree: true,
@@ -136,9 +136,9 @@ export const resources: Resource[] = [
 ];
 
 export const resourceCategories = [
-  { id: "all", label: "All Resources" },
-  { id: "Foundation", label: "Foundation" },
-  { id: "Intermediate", label: "Intermediate" },
-  { id: "Final", label: "Final" },
-  { id: "Test Paper", label: "Test Papers" },
+  { id: "all", label: "All resources" },
+  { id: "Notes", label: "Notes" },
+  { id: "Video", label: "Video" },
+  { id: "Mock test", label: "Mock test" },
+  { id: "Practice paper", label: "Practice paper" },
 ];

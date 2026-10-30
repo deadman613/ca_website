@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import { Download, BookOpen, FileText, Filter } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { resources, resourceCategories } from "@/lib/data/resources";
 import CTASection from "@/components/home/CTASection";
+import StreamSwitcher from "@/components/layout/StreamSwitcher";
+import { useStream } from "@/components/layout/StreamProvider";
 
 const typeIcons: Record<string, typeof BookOpen> = {
   Notes: BookOpen,
   Video: FileText,
-  "Test Paper": FileText,
+  "Mock test": FileText,
+  "Practice paper": FileText,
 };
 
 const levelColors: Record<string, string> = {
@@ -20,13 +22,16 @@ const levelColors: Record<string, string> = {
 };
 
 export default function ResourcesPage() {
+  const { stream } = useStream();
   const [activeFilter, setActiveFilter] = useState("all");
 
-  const filtered = resources.filter((r) => {
-    if (activeFilter === "all") return true;
-    if (activeFilter === "Test Paper") return r.type === "Test Paper";
-    return r.level === activeFilter;
-  });
+  const filtered =
+    stream === "CA"
+      ? resources.filter(
+          (resource) =>
+            activeFilter === "all" || resource.type === activeFilter
+        )
+      : [];
 
   return (
     <>
@@ -35,14 +40,18 @@ export default function ResourcesPage() {
         <div className="container-wide">
           <div className="max-w-2xl">
             <span className="section-label mb-4 block">Knowledge Library</span>
+            <div className="mb-5">
+              <StreamSwitcher />
+            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Free Resources
               <br />
               <span className="text-gold-light italic">For Every Stage.</span>
             </h1>
             <p className="text-white/60 text-lg leading-relaxed">
-              Access our growing library of free study notes, practice test papers,
-              and resources across all CA levels — completely free.
+              {stream === "CA"
+                ? "Browse free CA notes, videos, mock tests and practice papers by category."
+                : "Browse free CS notes, videos, mock tests and practice papers by category."}
             </p>
           </div>
         </div>
@@ -120,7 +129,10 @@ export default function ResourcesPage() {
                         href={resource.downloadUrl || "#"}
                         className="flex items-center gap-1.5 text-navy text-sm font-semibold hover:text-gold transition-colors"
                       >
-                        {resource.type === "Test Paper" ? "View Paper" : "Download"}
+                        {resource.type === "Mock test" ||
+                        resource.type === "Practice paper"
+                          ? "View Paper"
+                          : "Download"}
                         <Download size={13} />
                       </a>
                     </div>
@@ -133,7 +145,11 @@ export default function ResourcesPage() {
           {filtered.length === 0 && (
             <div className="text-center py-16">
               <BookOpen size={40} className="text-gray-200 mx-auto mb-4" />
-              <p className="text-muted">No resources found for this filter.</p>
+              <p className="text-muted">
+                {stream === "CS"
+                  ? "CS resources are being prepared. Please check back soon."
+                  : "No resources found for this category."}
+              </p>
             </div>
           )}
         </div>

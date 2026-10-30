@@ -253,7 +253,7 @@ export default function HowWeTeach() {
               {/* Try loading an image from public folder; fallback to styled placeholder */}
               <Image
                 src="/how-we-teach.jpg"
-                alt="Students studying together at CA Excellence Institute"
+                alt="CA aspirants studying together with Delhi CA School"
                 fill
                 className="object-cover"
                 onError={(e) => {
@@ -372,7 +372,7 @@ export default function HowWeTeach() {
                   lineHeight: 1,
                 }}
               >
-                94%
+                CA
               </div>
               <div
                 style={{
@@ -383,7 +383,7 @@ export default function HowWeTeach() {
                   marginTop: "3px",
                 }}
               >
-                First-attempt pass rate
+                Structured preparation
               </div>
             </div>
           </div>

@@ -13,13 +13,15 @@ export interface BlogPost {
 }
 
 export type BlogCategory =
-  | "Exam Updates"
-  | "Study Tips"
-  | "Result Analysis"
-  | "Foundation"
-  | "Intermediate"
-  | "Final"
-  | "General";
+  | "CA Foundation"
+  | "CA Inter"
+  | "CA Final"
+  | "CSEET"
+  | "CS Executive"
+  | "CS Professional"
+  | "Career guidance"
+  | "Exam update"
+  | "Study strategy";
 
 export interface BlogAuthor {
   name: string;
@@ -86,7 +88,7 @@ Full revision of all papers. Solve at least 2-3 mock tests per paper.
 
 With disciplined preparation and the right strategy, CA Foundation is absolutely achievable in the first attempt. Reach out to our faculty for a personalized study plan.
     `,
-    category: "Foundation",
+    category: "CA Foundation",
     author: {
       name: "CA Anita Sharma",
       designation: "Faculty — Foundation",
@@ -128,9 +130,9 @@ We have launched intensive revision batches for all levels to help students maxi
 
 Contact us to enroll.
     `,
-    category: "Exam Updates",
+    category: "Exam update",
     author: {
-      name: "CA Excellence Team",
+      name: "Delhi CA School Academic Team",
       designation: "Academic Team",
     },
     publishedAt: "2024-08-28",
@@ -178,7 +180,7 @@ The Taxation paper is divided into:
 
 This paper rewards students who combine strong conceptual understanding with consistent practice.
     `,
-    category: "Study Tips",
+    category: "Study strategy",
     author: {
       name: "CA Rajesh Mehta",
       designation: "Senior Faculty — Taxation",
@@ -223,7 +225,7 @@ Articleship is a mandatory 2.5-year practical training that every CA student mus
 
 ## How to Find a Good Article Firm
 
-1. **CA Excellence's Network** — We help students connect with reputed firms
+1. **Professional connections** — Explore articleship opportunities and build professional relationships
 2. **ICAI Portal** — Official portal for article placements
 3. **Direct Applications** — Apply directly to firms in your city
 
@@ -236,7 +238,7 @@ Articleship is a mandatory 2.5-year practical training that every CA student mus
 
 We guide all our students through the articleship process. Speak to our academic team for personalised guidance.
     `,
-    category: "General",
+    category: "Career guidance",
     author: {
       name: "CA Suresh Kumar",
       designation: "Faculty — Auditing & Law",
@@ -301,7 +303,7 @@ Medium Priority:
 
 Join our CA Final batch for structured, faculty-guided preparation.
     `,
-    category: "Final",
+    category: "CA Final",
     author: {
       name: "CA Priya Nair",
       designation: "Senior Faculty — Accounts & Reporting",
@@ -356,9 +358,9 @@ CA is the most comprehensive and cost-effective qualification for finance aspira
 
 Speak to our counsellors to understand how CA fits your career aspirations.
     `,
-    category: "General",
+    category: "Career guidance",
     author: {
-      name: "CA Excellence Team",
+      name: "Delhi CA School Academic Team",
       designation: "Academic Team",
     },
     publishedAt: "2024-09-08",
@@ -368,11 +370,13 @@ Speak to our counsellors to understand how CA fits your career aspirations.
 ];
 
 export const blogCategories: BlogCategory[] = [
-  "Exam Updates",
-  "Study Tips",
-  "Result Analysis",
-  "Foundation",
-  "Intermediate",
-  "Final",
-  "General",
+  "CA Foundation",
+  "CA Inter",
+  "CA Final",
+  "CSEET",
+  "CS Executive",
+  "CS Professional",
+  "Career guidance",
+  "Exam update",
+  "Study strategy",
 ];
