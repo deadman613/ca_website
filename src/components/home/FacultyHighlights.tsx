@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { faculty } from "@/lib/data/faculty";
 
 export default function FacultyHighlights() {
@@ -22,7 +21,7 @@ export default function FacultyHighlights() {
             fontFamily: "Poppins, sans-serif",
             fontWeight: 700,
             fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
-            color: "#0B1F3A",
+            color: "var(--color-navy)",
             letterSpacing: "-0.01em",
           }}
         >
@@ -95,23 +94,12 @@ export default function FacultyHighlights() {
                     marginBottom: "1rem",
                     position: "relative",
                     flexShrink: 0,
-                    background: "linear-gradient(135deg, #0B1F3A 0%, #152d50 100%)",
+                    background: "linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  {/* Try photo first */}
-                  <Image
-                    src={`/faculty/${member.id}.jpg`}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
-                  {/* Initials fallback */}
                   <span
                     style={{
                       fontFamily: "Poppins, sans-serif",
@@ -134,7 +122,7 @@ export default function FacultyHighlights() {
                     fontSize: "0.75rem",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "#0B1F3A",
+                    color: "var(--color-navy)",
                     marginBottom: "4px",
                     lineHeight: 1.3,
                   }}
@@ -193,7 +181,7 @@ export default function FacultyHighlights() {
                 fontWeight: 600,
                 fontSize: "0.9rem",
                 color: "#ffffff",
-                background: "#0B1F3A",
+                background: "var(--color-navy)",
                 borderRadius: "50px",
                 padding: "0.75rem 2.5rem",
                 textDecoration: "none",

@@ -30,7 +30,7 @@ export default function SectionHeading({
           fontSize: "clamp(1.6rem, 3vw, 2.5rem)",
           lineHeight: 1.2,
           letterSpacing: "-0.01em",
-          color: light ? "#ffffff" : "#0B1F3A",
+          color: light ? "#ffffff" : "var(--color-navy)",
           maxWidth: isCenter ? "660px" : undefined,
         }}
       >

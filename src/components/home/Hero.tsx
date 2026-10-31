@@ -54,7 +54,7 @@ export default function Hero() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(135deg, #0d1b2e 0%, #1a2d4a 40%, #0B1F3A 100%)",
+                "linear-gradient(135deg, #002D75 0%, #1D5CB8 40%, #003C9E 100%)",
             }}
           >
             {/* Decorative grid lines */}
@@ -126,7 +126,7 @@ export default function Hero() {
           /* Diagonal left edge: top-left corner pushed right ~80px,
              bottom-left corner at 0 → creates the slant */
           clipPath: "polygon(80px 0%, 100% 0%, 100% 100%, 0% 100%)",
-          background: "linear-gradient(135deg, #0B1F3A 0%, #0d2444 60%, #091830 100%)",
+          background: "linear-gradient(135deg, #003C9E 0%, #1D5CB8 60%, #002D75 100%)",
         }}
       >
         {/* Inner dot-grid texture */}
@@ -218,7 +218,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 font-bold rounded-md transition-all duration-200 hover:-translate-y-0.5"
             style={{
               background: "#C9A84C",
-              color: "#0B1F3A",
+              color: "var(--color-navy)",
               fontSize: "0.9rem",
               padding: "0.8rem 1.75rem",
               boxShadow: "0 4px 20px rgba(201,168,76,0.35)",
@@ -243,7 +243,7 @@ export default function Hero() {
         className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-10"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(11,31,58,0.55) 0%, transparent 100%)",
+            "linear-gradient(to bottom, rgba(0,60,158,0.55) 0%, transparent 100%)",
         }}
       />
     </section>

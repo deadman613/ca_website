@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, BookOpen } from "lucide-react";
 import StreamSwitcher from "@/components/layout/StreamSwitcher";
+import { useStream } from "@/components/layout/StreamProvider";
 
 interface DropdownItem {
   label: string;
@@ -16,6 +18,12 @@ const courseLinks: DropdownItem[] = [
   { label: "Foundation", href: "/courses/foundation", desc: "Build your foundation" },
   { label: "Intermediate", href: "/courses/intermediate", desc: "Deepen your knowledge" },
   { label: "Final", href: "/courses/final", desc: "Advanced preparation" },
+];
+
+const csCourseLinks: DropdownItem[] = [
+  { label: "CSEET", href: "/courses#cseet-foundation", desc: "Start your CS journey" },
+  { label: "Executive", href: "/courses#executive", desc: "Build professional knowledge" },
+  { label: "Final", href: "/courses#professional", desc: "Advanced preparation" },
 ];
 
 const resourceLinks: DropdownItem[] = [
@@ -31,28 +39,32 @@ interface NavLink {
   dropdown?: DropdownItem[];
 }
 
-const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "Courses", href: "/courses", dropdown: courseLinks },
-  { label: "Faculty", href: "/faculty" },
-  {
-    label: "Free Resources",
-    href: "/resources",
-    dropdown: resourceLinks,
-  },
-  { label: "Blog", href: "/blog" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const pathname = usePathname();
+  const { stream } = useStream();
 
   const isHome = pathname === "/";
+  const navLinks: NavLink[] = [
+    { label: "Home", href: "/" },
+    {
+      label: "Courses",
+      href: "/courses",
+      dropdown: stream === "CA" ? courseLinks : csCourseLinks,
+    },
+    // { label: "Faculty", href: "/faculty" },
+    {
+      label: "Free Resources",
+      href: "/resources",
+      dropdown: resourceLinks,
+    },
+    { label: "Blog", href: "/blogs" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -85,32 +97,14 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-18 py-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div
-                className={`w-9 h-9 rounded flex items-center justify-center transition-colors ${
-                  isHome && !scrolled
-                    ? "bg-gold/20 border border-gold/40"
-                    : "bg-navy border border-navy/20"
-                }`}
-              >
-                <BookOpen
-                  size={18}
-                  className={isHome && !scrolled ? "text-gold-light" : "text-white"}
-                />
-              </div>
-              <div>
-                <span
-                  className={`font-bold text-lg leading-none block transition-colors`}
-                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, letterSpacing: '-0.01em', color: isHome && !scrolled ? '#fff' : '#0B1F3A' }}
-                >
-                  Delhi CA
-                </span>
-                <span
-                  className={`text-xs tracking-[0.18em] uppercase block mt-0.5 transition-colors`}
-                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500, color: isHome && !scrolled ? 'rgba(232,201,122,0.75)' : '#C9A84C' }}
-                >
-                  School
-                </span>
-              </div>
+              <Image
+                src="/logo/dacalogo.png"
+                alt="Delhi CA School"
+                width={140}
+                height={40}
+                className="h-10 w-[140px] object-cover"
+                priority
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -124,7 +118,8 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-sm text-sm font-medium transition-all duration-200 ${textColor} ${linkHoverColor}`}
+                    className={`nav-link-motion flex items-center gap-1 px-3.5 py-2 rounded-sm text-sm font-medium transition-all duration-200 ${textColor} ${linkHoverColor}`}
+                    aria-current={pathname === link.href ? "page" : undefined}
                   >
                     {link.label}
                     {link.dropdown && (
@@ -139,13 +134,13 @@ export default function Navbar() {
 
                   {/* Dropdown */}
                   {link.dropdown && activeDropdown === link.label && (
-                    <div className="absolute top-full left-0 pt-2 w-64 z-50">
+                    <div className="animate-dropdown absolute top-full left-0 pt-2 w-64 z-50">
                       <div className="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden py-2">
                         {link.dropdown.map((item) => (
                           <Link
                             key={item.href}
                             href={item.href}
-                            className="flex items-start gap-3 px-4 py-3 hover:bg-off-white transition-colors group/item"
+                            className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-off-white group/item"
                           >
                             <div>
                               <span className="text-navy text-sm font-semibold block group-hover/item:text-navy">
@@ -189,6 +184,7 @@ export default function Navbar() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className={`lg:hidden p-2 rounded transition-colors ${textColor}`}
+              aria-expanded={mobileOpen}
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -201,11 +197,11 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div
-            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+            className="animate-menu-overlay absolute inset-0 bg-navy/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
           <div
-            className="absolute top-0 right-0 bottom-0 w-80 max-w-full bg-white shadow-2xl overflow-y-auto"
+            className="animate-menu-panel absolute top-0 right-0 bottom-0 w-80 max-w-full bg-white shadow-2xl overflow-y-auto"
             onClick={(event) => {
               if (
                 event.target instanceof HTMLElement &&
@@ -243,6 +239,7 @@ export default function Navbar() {
                   {link.dropdown ? (
                     <>
                       <button
+                        aria-expanded={mobileExpanded === link.label}
                         onClick={() =>
                           setMobileExpanded(
                             mobileExpanded === link.label ? null : link.label
@@ -259,7 +256,7 @@ export default function Navbar() {
                         />
                       </button>
                       {mobileExpanded === link.label && (
-                        <div className="pb-3 pl-3">
+                        <div className="animate-dropdown pb-3 pl-3">
                           {link.dropdown.map((item) => (
                             <Link
                               key={item.href}
@@ -276,6 +273,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       className="block py-3.5 text-sm font-semibold text-navy hover:text-gold transition-colors"
+                      aria-current={pathname === link.href ? "page" : undefined}
                     >
                       {link.label}
                     </Link>

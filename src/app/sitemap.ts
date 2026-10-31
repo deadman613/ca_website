@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/lib/data/blogs";
 import { courses } from "@/lib/data/courses";
 import { siteUrl } from "@/lib/site";
+import { getIndexableBlogPosts } from "@/lib/blogs";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!siteUrl) return [];
 
   const baseUrl = new URL(siteUrl).origin;
@@ -12,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/courses`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${baseUrl}/faculty`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${baseUrl}/resources`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${baseUrl}/blogs`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
   ];
@@ -24,9 +26,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  const blogPosts = await getIndexableBlogPosts();
   const blogPages = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.publishedAt),
+    url: `${baseUrl}/blogs/${post.slug}`,
+    lastModified: new Date(post.published_at),
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));

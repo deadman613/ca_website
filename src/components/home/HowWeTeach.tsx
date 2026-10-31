@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Plus, Minus, Video, Clock, Headphones, BookOpen, Play, LayoutGrid } from "lucide-react";
 
 const features = [
@@ -78,7 +77,7 @@ export default function HowWeTeach() {
                 fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
                 lineHeight: 1.2,
                 letterSpacing: "-0.01em",
-                color: "#0B1F3A",
+                color: "var(--color-navy)",
               }}
             >
               We don&apos;t hope for results.
@@ -114,11 +113,11 @@ export default function HowWeTeach() {
                     className="cursor-pointer rounded-xl transition-all duration-200"
                     style={{
                       border: isOpen
-                        ? "1.5px solid rgba(11,31,58,0.12)"
+                        ? "1.5px solid rgba(0,60,158,0.12)"
                         : "1.5px solid transparent",
                       background: isOpen ? "#ffffff" : "transparent",
                       boxShadow: isOpen
-                        ? "0 4px 20px rgba(11,31,58,0.07)"
+                        ? "0 4px 20px rgba(0,60,158,0.07)"
                         : "none",
                       padding: "0.9rem 1rem",
                     }}
@@ -132,13 +131,13 @@ export default function HowWeTeach() {
                             width: "36px",
                             height: "36px",
                             background: isOpen
-                              ? "rgba(11,31,58,0.08)"
-                              : "rgba(11,31,58,0.05)",
+                              ? "rgba(0,60,158,0.08)"
+                              : "rgba(0,60,158,0.05)",
                           }}
                         >
                           <Icon
                             size={16}
-                            style={{ color: isOpen ? "#0B1F3A" : "#8492a6" }}
+                            style={{ color: isOpen ? "var(--color-navy)" : "#8492a6" }}
                           />
                         </div>
                         <span
@@ -146,7 +145,7 @@ export default function HowWeTeach() {
                             fontFamily: "Poppins, sans-serif",
                             fontWeight: isOpen ? 600 : 500,
                             fontSize: "0.9rem",
-                            color: isOpen ? "#0B1F3A" : "#4A5568",
+                            color: isOpen ? "var(--color-navy)" : "#4A5568",
                             lineHeight: 1.4,
                           }}
                         >
@@ -161,12 +160,12 @@ export default function HowWeTeach() {
                           width: "26px",
                           height: "26px",
                           background: isOpen
-                            ? "rgba(11,31,58,0.08)"
-                            : "rgba(11,31,58,0.04)",
+                            ? "rgba(0,60,158,0.08)"
+                            : "rgba(0,60,158,0.04)",
                         }}
                       >
                         {isOpen ? (
-                          <Minus size={13} style={{ color: "#0B1F3A" }} />
+                          <Minus size={13} style={{ color: "var(--color-navy)" }} />
                         ) : (
                           <Plus size={13} style={{ color: "#8492a6" }} />
                         )}
@@ -204,7 +203,7 @@ export default function HowWeTeach() {
                   fontWeight: 600,
                   fontSize: "0.875rem",
                   padding: "0.7rem 1.5rem",
-                  background: "#0B1F3A",
+                  background: "var(--color-navy)",
                   textDecoration: "none",
                   gap: "0.5rem",
                 }}
@@ -250,19 +249,6 @@ export default function HowWeTeach() {
                 background: "linear-gradient(135deg, #e8f0fe 0%, #dbeafe 100%)",
               }}
             >
-              {/* Try loading an image from public folder; fallback to styled placeholder */}
-              <Image
-                src="/how-we-teach.jpg"
-                alt="CA aspirants studying together with Delhi CA School"
-                fill
-                className="object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = "none";
-                }}
-              />
-
-              {/* Fallback illustration (shown when image is missing) */}
               <div
                 className="absolute inset-0 flex items-center justify-center"
                 style={{ background: "linear-gradient(135deg, #f0f4ff 0%, #e8edf8 100%)" }}
@@ -295,7 +281,7 @@ export default function HowWeTeach() {
                             position: "absolute",
                             inset: "8px 8px 4px",
                             borderRadius: "4px",
-                            background: "#0B1F3A",
+                            background: "var(--color-navy)",
                           }}
                         />
                       </div>
@@ -325,28 +311,13 @@ export default function HowWeTeach() {
                             position: "absolute",
                             inset: "8px 8px 4px",
                             borderRadius: "4px",
-                            background: "#0B1F3A",
+                            background: "var(--color-navy)",
                           }}
                         />
                       </div>
                     </div>
                   </div>
 
-                  <p
-                    style={{
-                      fontFamily: "Poppins, sans-serif",
-                      fontWeight: 500,
-                      fontSize: "0.8rem",
-                      color: "#8492a6",
-                    }}
-                  >
-                    Place image at{" "}
-                    <code
-                      style={{ color: "#C9A84C", fontWeight: 600, fontSize: "0.75rem" }}
-                    >
-                      /public/how-we-teach.jpg
-                    </code>
-                  </p>
                 </div>
               </div>
             </div>
@@ -357,10 +328,10 @@ export default function HowWeTeach() {
               style={{
                 bottom: "-16px",
                 left: "-16px",
-                background: "#0B1F3A",
+                background: "var(--color-navy)",
                 borderRadius: "12px",
                 padding: "14px 18px",
-                boxShadow: "0 8px 32px rgba(11,31,58,0.25)",
+                boxShadow: "0 8px 32px rgba(0,60,158,0.25)",
               }}
             >
               <div

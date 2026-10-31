@@ -4,10 +4,12 @@ import CourseOverview from "@/components/home/CourseOverview";
 import HowWeTeach from "@/components/home/HowWeTeach";
 import ResourcesTeaser from "@/components/home/ResourcesTeaser";
 import FacultyHighlights from "@/components/home/FacultyHighlights";
-import VideoTeaser from "@/components/home/VideoTeaser";
+import StudentReviews from "@/components/home/StudentReviews";
+// import VideoTeaser from "@/components/home/VideoTeaser";
 import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
 import DemoBookingSection from "@/components/home/DemoBookingSection";
+import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
   title: "CA Coaching in Delhi | Delhi CA School",
@@ -24,14 +26,14 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <CourseOverview />
-      <HowWeTeach />
-      <ResourcesTeaser />
-      <FacultyHighlights />
-      <VideoTeaser />
-      <FAQSection />
-      <DemoBookingSection />
-      <CTASection />
+      <Reveal><CourseOverview /></Reveal>
+      <Reveal><HowWeTeach /></Reveal>
+      <Reveal><ResourcesTeaser /></Reveal>
+      <Reveal><FacultyHighlights /></Reveal>
+      <Reveal><StudentReviews /></Reveal>
+      <Reveal><FAQSection /></Reveal>
+      <Reveal><DemoBookingSection /></Reveal>
+      <Reveal><CTASection /></Reveal>
     </>
   );
 }

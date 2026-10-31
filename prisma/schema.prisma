@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model BlogPost {
+  id                String              @id @default(cuid())
+  slug              String              @unique @db.VarChar(160)
+  title             String              @db.VarChar(200)
+  excerpt           String              @db.Text
+  seoTitle          String?             @map("seo_title") @db.VarChar(200)
+  seoDescription    String?             @map("seo_description") @db.VarChar(300)
+  previewContent    String              @default("") @map("preview_content") @db.Text
+  category          String              @db.VarChar(80)
+  authorName        String              @map("author_name") @db.VarChar(120)
+  authorDesignation String              @map("author_designation") @db.VarChar(160)
+  authorPhoto       String?             @map("author_photo") @db.Text
+  publishedAt       DateTime            @default(now()) @map("published_at") @db.Timestamptz(6)
+  publishAt         DateTime?           @map("publish_at") @db.Timestamptz(6)
+  status            String              @db.VarChar(16)
+  access            String              @db.VarChar(20)
+  readingTime       String              @default("1 min read") @map("reading_time") @db.VarChar(40)
+  featuredImage     String?             @map("featured_image") @db.Text
+  featuredLabel     String?             @map("featured_label") @db.VarChar(80)
+  tags              String[]            @default([])
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  articleContent    BlogArticleContent?
+
+  @@index([status, publishAt])
+  @@index([access, status, publishAt])
+  @@map("blog_posts")
+}
+
+model BlogArticleContent {
+  postId  String   @id @map("post_id")
+  content String   @db.Text
+  post    BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("blog_article_content")
+}

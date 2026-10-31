@@ -71,6 +71,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={poppins.variable}
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-screen flex flex-col antialiased">
         <StreamProvider>

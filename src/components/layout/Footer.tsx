@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { BookOpen, Camera, Mail, Phone } from "lucide-react";
+import Image from "next/image";
+import { Camera, Mail, Phone } from "lucide-react";
 import { siteContact, siteName } from "@/lib/site";
 
 const footerLinks = {
@@ -9,7 +10,7 @@ const footerLinks = {
       { label: "About Us", href: "/about" },
       { label: "Our Faculty", href: "/faculty" },
       { label: "Contact Us", href: "/contact" },
-      { label: "Blog", href: "/blog" },
+      { label: "Blog", href: "/blogs" },
     ],
   },
   courses: {
@@ -40,18 +41,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-6">
-              <div className="w-9 h-9 rounded bg-gold/20 border border-gold/40 flex items-center justify-center">
-                <BookOpen size={18} className="text-gold-light" />
-              </div>
-              <div>
-                <span className="font-playfair font-bold text-xl text-white block leading-none">
-                  Delhi CA
-                </span>
-                <span className="text-gold text-xs tracking-widest uppercase block mt-0.5">
-                  School
-                </span>
-              </div>
+            {/* Logo */}
+            <Link href="/" className="mb-5 inline-flex rounded bg-white">
+              <Image
+                src="/logo/dacalogo.png"
+                alt="Delhi CA School"
+                width={140}
+                height={40}
+                className="h-10 w-[140px] rounded object-cover"
+              />
             </Link>
 
             <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs">
@@ -94,7 +92,7 @@ export default function Footer() {
               </h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={`${link.href}-${link.label}`}>
                     <Link
                       href={link.href}
                       className="text-white/55 hover:text-gold text-sm transition-colors leading-relaxed"
