@@ -176,7 +176,7 @@ export default function Navbar() {
                   isHome && !scrolled ? "" : ""
                 }`}
               >
-                Book Free Demo
+                Book  Free  Demo
               </Link>
             </div>
 
