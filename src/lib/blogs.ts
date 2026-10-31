@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { BlogPost as PrismaBlogPost } from "@prisma/client";
+import type { BlogPost as PrismaBlogPost } from "@/generated/prisma/client";
 import type { BlogPost, BlogCategory } from "@/lib/data/blogs";
 import { blogPosts as legacyBlogPosts } from "@/lib/data/seed-blogs";
 import { getAuthenticatedUser, isAdminUser, requireAdmin } from "@/lib/auth";
