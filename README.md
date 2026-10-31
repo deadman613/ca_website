@@ -54,3 +54,8 @@ hidden from regular visitors. Scheduled posts become visible at their publish
 date without a browser-side check or background job.
 
 After changing credentials or environment variables, restart the app.
+
+The production build runs `prisma generate` before `next build`, so deployments
+create the generated Prisma client even though `src/generated/prisma/` is
+git-ignored. Keep `prisma` available during the deployment build and configure
+`DIRECT_URL` in the deployment environment.
