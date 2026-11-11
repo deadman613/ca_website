@@ -12,20 +12,22 @@ const loginSchema = z.object({
 
 export async function signIn(formData: FormData) {
   const nextPath = getSafeReturnPath(String(formData.get("next") ?? ""));
+  const loginPath =
+    nextPath === "/admin/blogpanel" ? "/admin/login" : "/login";
   const parsed = loginSchema.safeParse({
     email: String(formData.get("email") ?? "").trim(),
     password: String(formData.get("password") ?? ""),
   });
 
   if (!parsed.success) {
-    redirect(`/login?error=credentials&next=${encodeURIComponent(nextPath)}`);
+    redirect(`${loginPath}?error=credentials&next=${encodeURIComponent(nextPath)}`);
   }
 
   const supabase = await createSupabaseActionClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
 
   if (error) {
-    redirect(`/login?error=credentials&next=${encodeURIComponent(nextPath)}`);
+    redirect(`${loginPath}?error=credentials&next=${encodeURIComponent(nextPath)}`);
   }
 
   redirect(nextPath);

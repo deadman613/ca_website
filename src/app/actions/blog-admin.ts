@@ -6,6 +6,7 @@ import { z } from "zod";
 import { blogCategories } from "@/lib/data/blogs";
 import { requireAdmin } from "@/lib/auth";
 import { getPrismaClient } from "@/lib/prisma";
+import { slugifyBlogTitle } from "@/lib/blog-slug";
 
 const imageUrlSchema = z
   .string()
@@ -34,7 +35,6 @@ const postSchema = z.object({
   content: z.string().trim().min(1).max(100000),
   category: z.enum(blogCategories),
   authorName: z.string().trim().min(1).max(120),
-  authorDesignation: z.string().trim().min(1).max(160),
   authorPhoto: imageUrlSchema,
   access: z.enum(["public", "login_required"]),
   status: z.enum(["draft", "scheduled", "published"]),
@@ -57,13 +57,36 @@ function returnWithError(message: string): never {
   redirect(`/admin/blogpanel?error=${message}`);
 }
 
+async function uniqueSlug(
+  candidate: string,
+  currentPostId?: string
+): Promise<string> {
+  const prisma = getPrismaClient();
+  let suffix = 1;
+  let slug = candidate;
+
+  while (true) {
+    const conflictingPost = await prisma.blogPost.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+
+    if (!conflictingPost || conflictingPost.id === currentPostId) return slug;
+
+    suffix += 1;
+    const suffixText = `-${suffix}`;
+    slug = `${candidate.slice(0, 160 - suffixText.length).replace(/-+$/g, "")}${suffixText}`;
+  }
+}
+
 export async function saveBlogPost(formData: FormData) {
   await requireAdmin();
 
+  const title = formString(formData, "title");
   const parsed = postSchema.safeParse({
     id: formString(formData, "id") || undefined,
-    slug: formString(formData, "slug"),
-    title: formString(formData, "title"),
+    slug: formString(formData, "slug") || slugifyBlogTitle(title),
+    title,
     excerpt: formString(formData, "excerpt"),
     seoTitle: formString(formData, "seoTitle"),
     seoDescription: formString(formData, "seoDescription"),
@@ -71,7 +94,6 @@ export async function saveBlogPost(formData: FormData) {
     content: formString(formData, "content"),
     category: formString(formData, "category"),
     authorName: formString(formData, "authorName"),
-    authorDesignation: formString(formData, "authorDesignation"),
     authorPhoto: formString(formData, "authorPhoto"),
     access: formString(formData, "access"),
     status: formString(formData, "status"),
@@ -85,6 +107,7 @@ export async function saveBlogPost(formData: FormData) {
   if (!parsed.success) returnWithError("invalid");
 
   const input = parsed.data;
+  input.slug = await uniqueSlug(input.slug, input.id);
   const requestedDate = input.publishAt
     ? new Date(`${input.publishAt}:00+05:30`)
     : null;
@@ -126,7 +149,7 @@ export async function saveBlogPost(formData: FormData) {
     previewContent: input.previewContent,
     category: input.category,
     authorName: input.authorName,
-    authorDesignation: input.authorDesignation,
+    authorDesignation: "",
     authorPhoto: input.authorPhoto || null,
     access: input.access,
     status: input.status,

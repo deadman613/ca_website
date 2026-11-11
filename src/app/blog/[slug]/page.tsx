@@ -24,9 +24,12 @@ const categoryColors: Record<string, string> = {
 };
 
 const markdownComponents: Components = {
-  h1: ({ children }) => <h2 className="mb-4 mt-8 font-playfair text-3xl font-bold text-navy">{children}</h2>,
+  h1: ({ children }) => <h1 className="mb-5 mt-9 font-playfair text-3xl font-bold text-navy">{children}</h1>,
   h2: ({ children }) => <h2 className="mb-4 mt-8 font-playfair text-2xl font-bold text-navy">{children}</h2>,
   h3: ({ children }) => <h3 className="mb-3 mt-6 font-playfair text-xl font-bold text-navy">{children}</h3>,
+  h4: ({ children }) => <h4 className="mb-3 mt-5 text-lg font-bold text-navy">{children}</h4>,
+  h5: ({ children }) => <h5 className="mb-2 mt-4 text-base font-semibold text-navy">{children}</h5>,
+  h6: ({ children }) => <h6 className="mb-2 mt-4 text-sm font-semibold uppercase tracking-wide text-navy">{children}</h6>,
   p: ({ children }) => <p className="my-4 leading-relaxed text-secondary">{children}</p>,
   ul: ({ children }) => <ul className="my-4 list-disc space-y-2 pl-6 text-secondary">{children}</ul>,
   ol: ({ children }) => <ol className="my-4 list-decimal space-y-2 pl-6 text-secondary">{children}</ol>,
@@ -201,7 +204,6 @@ export default async function BlogPostPage({ params }: Props) {
             <span className="flex items-center gap-2">
               <User className="text-gold" size={14} />
               <span className="font-medium text-white/80">{post.author.name}</span>
-              <span>·</span><span>{post.author.designation}</span>
             </span>
             <span className="flex items-center gap-1.5"><Calendar className="text-gold" size={14} />{formatDate(post.publishedAt)}</span>
             <span className="flex items-center gap-1.5"><Clock className="text-gold" size={14} />{post.readingTime}</span>
@@ -276,7 +278,6 @@ export default async function BlogPostPage({ params }: Props) {
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-navy">{post.author.name}</p>
-                      <p className="text-xs text-muted" style={{ color: "var(--text-muted)" }}>{post.author.designation}</p>
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { Bold, Heading2, Italic, Link, List, Quote } from "lucide-react";
+import { Bold, Italic, Link, List, Quote } from "lucide-react";
 
 interface MarkdownEditorProps {
   initialValue: string;
@@ -10,7 +10,6 @@ interface MarkdownEditorProps {
 const toolbarItems = [
   { label: "Bold", icon: Bold, before: "**", after: "**" },
   { label: "Italic", icon: Italic, before: "*", after: "*" },
-  { label: "Heading", icon: Heading2, before: "## ", after: "", line: true },
   { label: "Bullet list", icon: List, before: "- ", after: "", line: true },
   { label: "Quote", icon: Quote, before: "> ", after: "", line: true },
   { label: "Link", icon: Link, before: "[", after: "](https://)" },
@@ -20,6 +19,35 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
   const [value, setValue] = useState(initialValue);
   const editorId = useId();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  function applyHeading(level: number) {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+    const selectedEnd =
+      end > start && value[end - 1] === "\n" ? end - 1 : end;
+    const lineEnd = value.indexOf("\n", selectedEnd);
+    const blockEnd = lineEnd === -1 ? value.length : lineEnd;
+    const selectedLines = value
+      .slice(lineStart, blockEnd)
+      .split("\n")
+      .map((line) => {
+        const text = line.replace(/^ {0,3}#{1,6}[ \t]*/, "");
+        return text.trim() ? `${"#".repeat(level)} ${text}` : text;
+      })
+      .join("\n");
+    const nextValue =
+      value.slice(0, lineStart) + selectedLines + value.slice(blockEnd);
+
+    setValue(nextValue);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(lineStart, lineStart + selectedLines.length);
+    });
+  }
 
   function applyFormat(before: string, after: string, line = false) {
     const textarea = textareaRef.current;
@@ -65,6 +93,23 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
             <Icon aria-hidden="true" size={16} />
           </button>
         ))}
+        <label className="rounded-md px-2 py-1 text-sm text-navy">
+          <span className="sr-only">Apply heading level</span>
+          <select
+            aria-label="Apply heading level"
+            className="rounded-md border border-slate-200 bg-white px-2 py-1"
+            defaultValue=""
+            onChange={(event) => {
+              if (event.target.value) applyHeading(Number(event.target.value));
+              event.target.value = "";
+            }}
+          >
+            <option value="">Heading</option>
+            {[1, 2, 3, 4, 5, 6].map((level) => (
+              <option key={level} value={level}>H{level}</option>
+            ))}
+          </select>
+        </label>
         <span className="ml-auto px-2 text-xs text-muted">Markdown supported</span>
       </div>
       <label className="sr-only" htmlFor={editorId}>Full article content</label>

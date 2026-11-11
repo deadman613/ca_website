@@ -46,7 +46,7 @@ export async function requireAdmin() {
   const user = await getAuthenticatedUser();
 
   if (!user) {
-    redirect("/login?next=%2Fadmin%2Fblogpanel");
+    redirect("/admin/login?next=%2Fadmin%2Fblogpanel");
   }
 
   if (!isAdminUser(user)) {

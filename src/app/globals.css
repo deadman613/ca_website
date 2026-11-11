@@ -631,3 +631,267 @@ summary:focus-visible {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+/* ============================================================
+   ADMIN LOGIN PAGE
+   ============================================================ */
+
+.admin-login-scene {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Subtle dot-grid background */
+.admin-login-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0,60,158,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow blobs */
+.admin-login-blob {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.admin-login-blob-1 {
+  width: 500px; height: 500px;
+  top: -120px; left: -80px;
+  background: radial-gradient(circle, rgba(201,168,76,0.18), transparent 68%);
+  animation: orb-drift 14s ease-in-out infinite alternate;
+}
+.admin-login-blob-2 {
+  width: 420px; height: 420px;
+  bottom: -100px; right: -60px;
+  background: radial-gradient(circle, rgba(0,60,158,0.14), transparent 68%);
+  animation: orb-drift 18s ease-in-out infinite alternate-reverse;
+}
+
+/* Two-column wrapper */
+.admin-login-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* LEFT — dark navy branding panel */
+.admin-login-brand {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3.5rem;
+  background: linear-gradient(155deg, #002D75 0%, #003C9E 45%, #1a1a3e 100%);
+  position: relative;
+  overflow: hidden;
+}
+.admin-login-brand::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.18), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(255,255,255,0.05), transparent 45%);
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .admin-login-brand {
+    display: flex;
+    width: 44%;
+    min-width: 380px;
+  }
+}
+
+.admin-login-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 3.5rem;
+  text-decoration: none;
+}
+.admin-login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: rgba(201,168,76,0.18);
+  border: 1.5px solid rgba(201,168,76,0.4);
+  color: #E8C97A;
+  flex-shrink: 0;
+}
+.admin-login-brand-name {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.admin-login-brand-heading {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(2rem, 3vw, 2.9rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+.admin-login-brand-desc {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.7;
+  max-width: 340px;
+  margin-bottom: 2.5rem;
+}
+
+.admin-login-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.admin-login-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.78);
+  font-family: "Poppins", sans-serif;
+}
+.admin-login-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: rgba(201,168,76,0.18);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: #E8C97A;
+  flex-shrink: 0;
+}
+
+/* RIGHT — white form panel */
+.admin-login-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+.admin-login-form-inner {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-form-header {
+  margin-bottom: 2rem;
+}
+.admin-login-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a88a3d;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.28);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+.admin-login-form-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.admin-login-form-sub {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.admin-login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.84rem;
+  color: #b91c1c;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.admin-login-label {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.admin-login-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  margin-top: 0.4rem;
+  background: linear-gradient(135deg, #003C9E, #1D5CB8);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  box-shadow: 0 4px 18px rgba(0,60,158,0.28);
+  letter-spacing: 0.01em;
+}
+.admin-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,60,158,0.35);
+  background: linear-gradient(135deg, #002D75, #003C9E);
+}
+.admin-login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 12px rgba(0,60,158,0.22);
+}
+
+.admin-login-footer {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.admin-login-footer-link {
+  font-weight: 600;
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.admin-login-footer-link:hover { color: #C9A84C; }
+

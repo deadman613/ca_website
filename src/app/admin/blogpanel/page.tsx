@@ -12,9 +12,11 @@ import {
 import { deleteBlogPost, saveBlogPost } from "@/app/actions/blog-admin";
 import { signOut } from "@/app/actions/auth";
 import MarkdownEditor from "@/app/admin/blogpanel/MarkdownEditor";
+import BlogTitleSlugFields from "@/app/admin/blogpanel/BlogTitleSlugFields";
 import { blogCategories, type BlogPost } from "@/lib/data/blogs";
 import { getAdminBlogPosts } from "@/lib/blogs";
 import { getBlogAdminSetupIssues, isBlogAdminConfigured } from "@/lib/supabase/config";
+import { requireAdmin } from "@/lib/auth";
 import AnimatedNumber from "@/components/motion/AnimatedNumber";
 import TiltCard from "@/components/motion/TiltCard";
 import Reveal from "@/components/motion/Reveal";
@@ -57,15 +59,7 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           <h3 className="mt-1 text-lg font-semibold text-navy">Give your post a clear identity</h3>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <label className="text-sm font-medium text-navy md:col-span-2">
-            Post title
-            <input className="input-field mt-2" defaultValue={post?.title} maxLength={200} name="title" placeholder="A helpful title for your readers" required />
-          </label>
-          <label className="text-sm font-medium text-navy">
-            URL slug
-            <input className="input-field mt-2" defaultValue={post?.slug} name="slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="ca-exam-preparation-guide" required />
-            <span className="mt-1 block text-xs font-normal text-muted">Your article address will be /blogs/your-slug</span>
-          </label>
+          <BlogTitleSlugFields initialSlug={post?.slug} initialTitle={post?.title} />
           <label className="text-sm font-medium text-navy">
             Category
             <select className="input-field mt-2" defaultValue={post?.category ?? blogCategories[0]} name="category">
@@ -79,10 +73,6 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           <label className="text-sm font-medium text-navy">
             Author name
             <input className="input-field mt-2" defaultValue={post?.author.name ?? ""} maxLength={120} name="authorName" required />
-          </label>
-          <label className="text-sm font-medium text-navy">
-            Author role / designation
-            <input className="input-field mt-2" defaultValue={post?.author.designation ?? ""} maxLength={160} name="authorDesignation" placeholder="CA Faculty" required />
           </label>
           <label className="text-sm font-medium text-navy">
             Author photo URL (optional)
@@ -181,6 +171,7 @@ function statusLabel(status: BlogPost["status"]) {
 }
 
 export default async function BlogPanelPage({ searchParams }: BlogPanelProps) {
+  await requireAdmin();
   const query = await searchParams;
   if (!isBlogAdminConfigured()) {
     const setupIssues = getBlogAdminSetupIssues();

@@ -81,12 +81,9 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const navBg = isHome && !scrolled
-    ? "bg-transparent"
-    : "bg-white shadow-sm border-b border-gray-100";
-
-  const textColor = isHome && !scrolled ? "text-white" : "text-navy";
-  const linkHoverColor = isHome && !scrolled ? "hover:text-gold-light" : "hover:text-gold";
+  const navBg = "bg-white shadow-sm border-b border-gray-100";
+  const textColor = "text-navy";
+  const linkHoverColor = "hover:text-gold";
 
   return (
     <>

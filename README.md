@@ -41,8 +41,10 @@ reuse a database password or key that has been exposed.
    member accounts and the configured admin account through Supabase; the site
    intentionally has no public registration form.
 4. Import the existing articles with `npm run seed:blogs`.
-5. Sign in at `/login`, then manage posts at `/admin/blogpanel`. Admin status is
-   checked against the verified Supabase account email and `BLOG_ADMIN_EMAIL`.
+5. Sign in at `/admin/login`, then manage posts at `/admin/blogpanel`. Admin
+   status is checked against the verified Supabase account email and
+   `BLOG_ADMIN_EMAIL`. The blog panel redirects unauthenticated visitors to the
+   admin login page.
    New posts default to Published and appear at `/blogs`; choose Draft or
    Scheduled when a post should not be published immediately.
 
