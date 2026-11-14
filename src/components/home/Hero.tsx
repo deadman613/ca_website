@@ -20,19 +20,21 @@ export default function Hero() {
     const v = videoRef.current;
     if (v) {
       v.play().catch(() => {});
-      setVideoLoaded(true);
     }
   }, []);
 
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ height: "100vh", minHeight: "560px", maxHeight: "800px" }}
+      style={{ height: "110vh", minHeight: "660px", maxHeight: "960px" }}
     >
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           LAYER 1 — Full-bleed video background
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <div className="absolute inset-0 bg-black">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/herosection2.png')" }}
+      >
         {/* VIDEO */}
         <video
           ref={videoRef}
@@ -41,52 +43,13 @@ export default function Hero() {
           loop
           playsInline
           onLoadedData={() => setVideoLoaded(true)}
-          className="absolute inset-0 w-full h-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
           style={{ objectPosition: "center center" }}
         >
-          {/* ▶ Drop your video at /public/hero-video.mp4 */}
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
-
-        {/* Fallback shown when no video file */}
-        {!videoLoaded && (
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(135deg, #002D75 0%, #1D5CB8 40%, #003C9E 100%)",
-            }}
-          >
-            {/* Decorative grid lines */}
-            <div
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage: `
-                  repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(255,255,255,.1) 80px,rgba(255,255,255,.1) 81px),
-                  repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,.1) 80px,rgba(255,255,255,.1) 81px)
-                `,
-              }}
-            />
-            {/* Placeholder faculty card */}
-            <div className="absolute left-[12%] top-1/2 -translate-y-1/2 text-center">
-              <div
-                className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white/10 flex items-center justify-center"
-                style={{ background: "rgba(255,255,255,0.05)" }}
-              >
-                <span
-                  className="font-playfair text-white text-5xl font-bold opacity-40"
-                  style={{ lineHeight: 1 }}
-                >
-                  CA
-                </span>
-              </div>
-              <p className="text-white/30 text-sm">
-                Place video at{" "}
-                <code className="text-yellow-400/60">/public/hero-video.mp4</code>
-              </p>
-            </div>
-          </div>
-        )}
 
         {/* Mute button — bottom-left of video */}
         <button
@@ -126,7 +89,7 @@ export default function Hero() {
           /* Diagonal left edge: top-left corner pushed right ~80px,
              bottom-left corner at 0 → creates the slant */
           clipPath: "polygon(80px 0%, 100% 0%, 100% 100%, 0% 100%)",
-          background: "linear-gradient(135deg, #003C9E 0%, #1D5CB8 60%, #002D75 100%)",
+          background: "linear-gradient(135deg, #023CA9 0%, #023CA9 60%, #023CA9 100%)",
         }}
       >
         {/* Inner dot-grid texture */}

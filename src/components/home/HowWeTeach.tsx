@@ -94,7 +94,7 @@ export default function HowWeTeach() {
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 400,
                 fontSize: "0.9rem",
-                color: "#718096",
+                color: "#4B5563",
                 lineHeight: 1.65,
               }}
             >
@@ -137,7 +137,7 @@ export default function HowWeTeach() {
                         >
                           <Icon
                             size={16}
-                            style={{ color: isOpen ? "var(--color-navy)" : "#8492a6" }}
+                            style={{ color: isOpen ? "var(--color-navy)" : "#6B7280" }}
                           />
                         </div>
                         <span
@@ -167,7 +167,7 @@ export default function HowWeTeach() {
                         {isOpen ? (
                           <Minus size={13} style={{ color: "var(--color-navy)" }} />
                         ) : (
-                          <Plus size={13} style={{ color: "#8492a6" }} />
+                          <Plus size={13} style={{ color: "#6B7280" }} />
                         )}
                       </div>
                     </div>
@@ -180,7 +180,7 @@ export default function HowWeTeach() {
                           fontFamily: "Poppins, sans-serif",
                           fontWeight: 400,
                           fontSize: "0.84rem",
-                          color: "#718096",
+                          color: "#4B5563",
                           lineHeight: 1.65,
                           paddingLeft: "48px",
                         }}
@@ -364,3 +364,5 @@ export default function HowWeTeach() {
     </section>
   );
 }
+
+

@@ -39,3 +39,4 @@ export async function signOut() {
   if (error) throw error;
   redirect("/blogs");
 }
+

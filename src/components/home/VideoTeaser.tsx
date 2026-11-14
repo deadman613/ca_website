@@ -49,7 +49,7 @@ export default function VideoTeaser() {
             onClick={() => setModalOpen(true)}
           >
             {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-navy-dark via-navy to-navy-light" />
+            <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-navy" />
 
             {/* Grid pattern */}
             <div
@@ -119,7 +119,7 @@ export default function VideoTeaser() {
             className="absolute inset-0 bg-navy/80 backdrop-blur-sm"
             onClick={() => setModalOpen(false)}
           />
-          <div className="relative bg-navy-dark rounded-2xl overflow-hidden w-full max-w-3xl shadow-2xl z-10">
+          <div className="relative bg-navy rounded-2xl overflow-hidden w-full max-w-3xl shadow-2xl z-10">
             <button
               onClick={() => setModalOpen(false)}
               className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
@@ -138,3 +138,4 @@ export default function VideoTeaser() {
     </>
   );
 }
+

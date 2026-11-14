@@ -12,3 +12,4 @@ export default function FinalPage() {
   const course = courses.find((c) => c.slug === "final")!;
   return <CourseDetailTemplate course={course} />;
 }
+

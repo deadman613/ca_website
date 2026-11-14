@@ -5,8 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, BookOpen } from "lucide-react";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
-import { useStream } from "@/components/layout/StreamProvider";
 
 interface DropdownItem {
   label: string;
@@ -15,22 +13,16 @@ interface DropdownItem {
 }
 
 const courseLinks: DropdownItem[] = [
-  { label: "Foundation", href: "/courses/foundation", desc: "Build your foundation" },
-  { label: "Intermediate", href: "/courses/intermediate", desc: "Deepen your knowledge" },
-  { label: "Final", href: "/courses/final", desc: "Advanced preparation" },
-];
-
-const csCourseLinks: DropdownItem[] = [
-  { label: "CSEET", href: "/courses#cseet-foundation", desc: "Start your CS journey" },
-  { label: "Executive", href: "/courses#executive", desc: "Build professional knowledge" },
-  { label: "Final", href: "/courses#professional", desc: "Advanced preparation" },
+  { label: "CA", href: "/courses?stream=CA", desc: "Chartered Accountancy courses" },
+  { label: "CS", href: "/courses?stream=CS", desc: "Company Secretary courses" },
+  { label: "CAT", href: "/contact#demo", desc: "Enquire about CAT preparation" },
 ];
 
 const resourceLinks: DropdownItem[] = [
   { label: "Foundation Resources", href: "/resources?level=Foundation" },
   { label: "Intermediate Resources", href: "/resources?level=Intermediate" },
   { label: "Final Resources", href: "/resources?level=Final" },
-  { label: "Mock Tests & Practice Papers", href: "/resources" },
+  { label: "Test Series & Practice Papers", href: "/resources" },
 ];
 
 interface NavLink {
@@ -45,7 +37,6 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const pathname = usePathname();
-  const { stream } = useStream();
 
   const isHome = pathname === "/";
   const navLinks: NavLink[] = [
@@ -53,7 +44,7 @@ export default function Navbar() {
     {
       label: "Courses",
       href: "/courses",
-      dropdown: stream === "CA" ? courseLinks : csCourseLinks,
+      dropdown: courseLinks,
     },
     // { label: "Faculty", href: "/faculty" },
     {
@@ -160,13 +151,7 @@ export default function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
-              <StreamSwitcher />
-              <Link
-                href="/contact"
-                className={`text-sm font-medium transition-colors ${textColor} ${linkHoverColor}`}
-              >
-                Contact
-              </Link>
+              
               <Link
                 href="/contact#demo"
                 className={`btn-gold text-sm px-5 py-2.5 ${
@@ -225,12 +210,6 @@ export default function Navbar() {
             </div>
 
             <div className="py-4 px-4">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wide text-muted">
-                  Coaching stream
-                </span>
-                <StreamSwitcher />
-              </div>
               {navLinks.map((link) => (
                 <div key={link.label} className="border-b border-gray-50 last:border-0">
                   {link.dropdown ? (

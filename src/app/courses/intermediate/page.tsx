@@ -12,3 +12,4 @@ export default function IntermediatePage() {
   const course = courses.find((c) => c.slug === "intermediate")!;
   return <CourseDetailTemplate course={course} />;
 }
+

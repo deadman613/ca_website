@@ -26,7 +26,6 @@ export type BlogCategory =
 
 export interface BlogAuthor {
   name: string;
-  designation: string;
   photo?: string;
 }
 
@@ -67,17 +66,17 @@ Focus on Accounts and Maths. These two papers require practice and cannot be rus
 **Month 2-3 — Cover All Syllabus**
 Complete all four subjects. Take notes, practice problems, and read ICAI material.
 
-**Month 4 — Practice & Mock Tests**
-Focus on past year questions and mock tests. Identify weak areas.
+**Month 4 — Practice & Test Series**
+Focus on past year questions and test series. Identify weak areas.
 
 **Month 5 — Revision**
-Full revision of all papers. Solve at least 2-3 mock tests per paper.
+Full revision of all papers. Complete at least 2-3 test series papers per subject.
 
 ## Key Mistakes to Avoid
 
 1. **Skipping Practice** — Accounts and Maths require daily practice
 2. **Ignoring ICAI Material** — Always study the ICAI Study Material and Practice Manual
-3. **Not Attempting Mock Tests** — Mock tests are essential for time management
+3. **Skipping Test Series Practice** — Test series practice is essential for time management
 4. **Poor Time Management in Exam** — Practice answering within the time limit
 
 ## The Day Before the Exam
@@ -92,7 +91,6 @@ With disciplined preparation and the right strategy, CA Foundation is absolutely
     category: "CA Foundation",
     author: {
       name: "CA Anita Sharma",
-      designation: "Faculty — Foundation",
       photo: "/faculty/anita-sharma.jpg",
     },
     publishedAt: "2024-09-15",
@@ -134,7 +132,6 @@ Contact us to enroll.
     category: "Exam update",
     author: {
       name: "Delhi CA School Academic Team",
-      designation: "Academic Team",
     },
     publishedAt: "2024-08-28",
     readingTime: "4 min read",
@@ -184,7 +181,6 @@ This paper rewards students who combine strong conceptual understanding with con
     category: "Study strategy",
     author: {
       name: "CA Rajesh Mehta",
-      designation: "Senior Faculty — Taxation",
       photo: "/faculty/rajesh-mehta.jpg",
     },
     publishedAt: "2024-09-02",
@@ -242,7 +238,6 @@ We guide all our students through the articleship process. Speak to our academic
     category: "Career guidance",
     author: {
       name: "CA Suresh Kumar",
-      designation: "Faculty — Auditing & Law",
       photo: "/faculty/suresh-kumar.jpg",
     },
     publishedAt: "2024-08-10",
@@ -307,7 +302,6 @@ Join our CA Final batch for structured, faculty-guided preparation.
     category: "CA Final",
     author: {
       name: "CA Priya Nair",
-      designation: "Senior Faculty — Accounts & Reporting",
       photo: "/faculty/priya-nair.jpg",
     },
     publishedAt: "2024-07-20",
@@ -362,7 +356,6 @@ Speak to our counsellors to understand how CA fits your career aspirations.
     category: "Career guidance",
     author: {
       name: "Delhi CA School Academic Team",
-      designation: "Academic Team",
     },
     publishedAt: "2024-09-08",
     readingTime: "10 min read",

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy:       #003C9E;
-  --color-navy-dark:  #002D75;
-  --color-navy-light: #1D5CB8;
+  --color-navy:       #023CA9;
+  --color-navy:  #023CA9;
+  --color-navy: #023CA9;
   --color-charcoal:   #1A1A2E;
   --color-gold:       #C9A84C;
   --color-gold-light: #E8C97A;
@@ -21,8 +21,8 @@
 }
 
 :root {
-  --text-secondary: #4A5568;
-  --text-muted:     #8492a6;
+  --text-secondary: #2D3748;
+  --text-muted:     #64748B;
   --border:         #E2E8F0;
 }
 
@@ -155,13 +155,13 @@ p { font-weight: 400; }
   cursor: pointer;
   text-decoration: none;
   transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
-  background-image: linear-gradient(125deg, var(--color-navy), var(--color-navy-light));
+  background-image: linear-gradient(125deg, var(--color-navy), var(--color-navy));
   background-size: 160% 160%;
   background-position: 0% 50%;
 }
 .btn-primary:hover {
-  background-color: var(--color-navy-dark);
-  border-color: var(--color-navy-dark);
+  background-color: var(--color-navy);
+  border-color: var(--color-navy);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0,60,158,0.22);
   background-position: 100% 50%;
@@ -692,7 +692,7 @@ summary:focus-visible {
   flex-direction: column;
   justify-content: center;
   padding: 4rem 3.5rem;
-  background: linear-gradient(155deg, #002D75 0%, #003C9E 45%, #1a1a3e 100%);
+  background: linear-gradient(155deg, #023CA9 0%, #023CA9 45%, #1a1a3e 100%);
   position: relative;
   overflow: hidden;
 }
@@ -858,7 +858,7 @@ summary:focus-visible {
   width: 100%;
   padding: 0.9rem 1.5rem;
   margin-top: 0.4rem;
-  background: linear-gradient(135deg, #003C9E, #1D5CB8);
+  background: linear-gradient(135deg, #023CA9, #023CA9);
   color: #fff;
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
@@ -873,7 +873,7 @@ summary:focus-visible {
 .admin-login-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0,60,158,0.35);
-  background: linear-gradient(135deg, #002D75, #003C9E);
+  background: linear-gradient(135deg, #023CA9, #023CA9);
 }
 .admin-login-btn:active {
   transform: translateY(0);
@@ -894,4 +894,6 @@ summary:focus-visible {
   transition: color 0.15s;
 }
 .admin-login-footer-link:hover { color: #C9A84C; }
+
+
 

@@ -15,7 +15,7 @@ export default function CTASection() {
             Ready to Begin Your{" "}
             <span className="text-gold-light italic">CA or CS Journey?</span>
           </h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+          <p className="text-white/80 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
             Book a free demo class today. Our academic counsellors will guide
             you to the right course and batch based on your stream, stage and goals.
           </p>
@@ -31,7 +31,7 @@ export default function CTASection() {
           </div>
 
           {/* Trust micro-text */}
-          <p className="text-white/30 text-xs mt-8 tracking-wide">
+          <p className="text-white/55 text-xs mt-8 tracking-wide">
             No commitment required · Free counselling · Demo available for all
             courses
           </p>
@@ -40,3 +40,4 @@ export default function CTASection() {
     </section>
   );
 }
+

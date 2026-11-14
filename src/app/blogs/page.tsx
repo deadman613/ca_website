@@ -15,3 +15,4 @@ export default async function BlogsPage() {
   const posts = await getVisibleBlogPosts();
   return <BlogListing posts={posts} />;
 }
+

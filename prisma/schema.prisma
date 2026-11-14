@@ -17,7 +17,6 @@ model BlogPost {
   previewContent    String              @default("") @map("preview_content") @db.Text
   category          String              @db.VarChar(80)
   authorName        String              @map("author_name") @db.VarChar(120)
-  authorDesignation String              @map("author_designation") @db.VarChar(160)
   authorPhoto       String?             @map("author_photo") @db.Text
   publishedAt       DateTime            @default(now()) @map("published_at") @db.Timestamptz(6)
   publishAt         DateTime?           @map("publish_at") @db.Timestamptz(6)

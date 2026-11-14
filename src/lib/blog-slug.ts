@@ -10,3 +10,4 @@ export function slugifyBlogTitle(title: string) {
 
   return slug || "blog-post";
 }
+

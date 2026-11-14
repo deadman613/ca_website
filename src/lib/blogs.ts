@@ -34,7 +34,6 @@ function toBlogPost(row: PrismaBlogPost, content?: string): BlogPost {
     category: row.category as BlogCategory,
     author: {
       name: row.authorName,
-      designation: row.authorDesignation,
       ...(row.authorPhoto ? { photo: row.authorPhoto } : {}),
     },
     publishedAt: row.publishedAt.toISOString(),
@@ -152,3 +151,4 @@ export async function getAdminBlogPosts() {
     toBlogPost(post, post.articleContent?.content ?? "")
   );
 }
+

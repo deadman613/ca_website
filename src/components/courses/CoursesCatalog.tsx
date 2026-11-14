@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -15,12 +15,17 @@ const levelColors = {
   Final: { bg: "bg-amber-50", border: "border-amber-100", badge: "text-amber-700 bg-amber-100" },
 };
 
-export default function CoursesCatalog() {
-  const { stream } = useStream();
+export default function CoursesCatalog({ initialStream }: { initialStream?: "CA" | "CS" }) {
+  const { stream, setStream } = useStream();
   const [activeLevel, setActiveLevel] = useState("all");
   const [mode, setMode] = useState("all");
   const [category, setCategory] = useState("all");
   const [subject, setSubject] = useState("all");
+
+  useEffect(() => {
+    if (initialStream) setStream(initialStream);
+  }, [initialStream, setStream]);
+
   const levels =
     stream === "CA"
       ? ["Foundation", "Intermediate", "Final"]

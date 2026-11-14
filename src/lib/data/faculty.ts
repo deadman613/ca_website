@@ -98,3 +98,4 @@ export const faculty: Faculty[] = [
     photo: "/faculty/anita-sharma.jpg",
   },
 ];
+

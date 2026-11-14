@@ -8,3 +8,4 @@ export const siteContact = {
   instagram: "delhicaschool",
   instagramUrl: "https://www.instagram.com/delhicaschool/",
 };
+

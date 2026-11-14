@@ -20,3 +20,4 @@ export function isPrismaDatabaseConfigured() {
 export function isPrismaMigrationDatabaseConfigured() {
   return isPostgresConnectionConfigured(process.env.DIRECT_URL);
 }
+

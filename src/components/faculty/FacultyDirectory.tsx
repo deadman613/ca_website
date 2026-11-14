@@ -118,7 +118,7 @@ export default function FacultyDirectory() {
                 }`}
               >
                 {/* Photo Panel */}
-                <div className="bg-gradient-to-br from-navy to-navy-light relative overflow-hidden min-h-64 lg:min-h-0">
+                <div className="bg-gradient-to-br from-navy to-navy relative overflow-hidden min-h-64 lg:min-h-0">
                   <div className="absolute inset-0 opacity-5">
                     <div
                       className="w-full h-full"
@@ -215,3 +215,4 @@ export default function FacultyDirectory() {
     </>
   );
 }
+

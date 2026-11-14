@@ -37,3 +37,4 @@ export const blogCategories: BlogCategory[] = [
   "Exam update",
   "Study strategy",
 ];
+

@@ -308,3 +308,4 @@ export default function CourseDetailTemplate({ course }: CourseDetailPageProps) 
     </>
   );
 }
+

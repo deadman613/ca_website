@@ -10,7 +10,7 @@ import { useStream } from "@/components/layout/StreamProvider";
 const typeIcons: Record<string, typeof BookOpen> = {
   Notes: BookOpen,
   Video: FileText,
-  "Mock test": FileText,
+  "Test series": FileText,
   "Practice paper": FileText,
 };
 
@@ -50,8 +50,8 @@ export default function ResourcesPage() {
             </h1>
             <p className="text-white/60 text-lg leading-relaxed">
               {stream === "CA"
-                ? "Browse free CA notes, videos, mock tests and practice papers by category."
-                : "Browse free CS notes, videos, mock tests and practice papers by category."}
+                ? "Browse free CA notes, videos, test series and practice papers by category."
+                : "Browse free CS notes, videos, test series and practice papers by category."}
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function ResourcesPage() {
                   className="group bg-white border border-gray-100 rounded-xl overflow-hidden card-hover"
                 >
                   {/* Thumbnail */}
-                  <div className="h-40 bg-gradient-to-br from-navy to-navy-light flex items-center justify-center relative">
+                  <div className="h-40 bg-gradient-to-br from-navy to-navy flex items-center justify-center relative">
                     <Icon size={40} className="text-white/20" />
                     <div className="absolute top-3 left-3">
                       <span
@@ -129,9 +129,9 @@ export default function ResourcesPage() {
                         href={resource.downloadUrl || "#"}
                         className="flex items-center gap-1.5 text-navy text-sm font-semibold hover:text-gold transition-colors"
                       >
-                        {resource.type === "Mock test" ||
+                        {resource.type === "Test series" ||
                         resource.type === "Practice paper"
-                          ? "View Paper"
+                          ? resource.type === "Test series" ? "View Test Series" : "View Paper"
                           : "Download"}
                         <Download size={13} />
                       </a>

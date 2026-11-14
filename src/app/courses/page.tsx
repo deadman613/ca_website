@@ -7,6 +7,13 @@ export const metadata: Metadata = {
     "Explore CA Foundation, Intermediate, and Final course options with Delhi CA School.",
 };
 
-export default function CoursesPage() {
-  return <CoursesCatalog />;
+export default async function CoursesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ stream?: string | string[] }>;
+}) {
+  const { stream } = await searchParams;
+  const initialStream = stream === "CS" || stream === "CA" ? stream : undefined;
+
+  return <CoursesCatalog initialStream={initialStream} />;
 }

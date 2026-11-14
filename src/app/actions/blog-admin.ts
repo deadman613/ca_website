@@ -149,7 +149,6 @@ export async function saveBlogPost(formData: FormData) {
     previewContent: input.previewContent,
     category: input.category,
     authorName: input.authorName,
-    authorDesignation: "",
     authorPhoto: input.authorPhoto || null,
     access: input.access,
     status: input.status,
@@ -212,3 +211,4 @@ export async function deleteBlogPost(formData: FormData) {
   revalidatePath(`/blog/${post.slug}`);
   redirect("/admin/blogpanel?deleted=1");
 }
+

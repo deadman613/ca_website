@@ -105,7 +105,7 @@ export const courses: Course[] = [
     ],
     features: [
       "Comprehensive printed study material",
-      "Weekly mock tests",
+      "Weekly test series",
       "Dedicated doubt-solving sessions",
       "All-India test series access",
       "Revision batch before exam",
@@ -117,7 +117,7 @@ export const courses: Course[] = [
       includes: [
         "All lectures",
         "Study material (printed)",
-        "Mock tests",
+        "Test series",
         "Doubt sessions",
         "Revision support",
       ],
@@ -217,7 +217,7 @@ export const courses: Course[] = [
       "Group-wise structured preparation",
       "Subject-expert faculty for each paper",
       "Articleship guidance and support",
-      "Bi-weekly mock tests",
+      "Bi-weekly test series",
       "Past year question analysis",
       "Revision crash course before exam",
     ],
@@ -227,7 +227,7 @@ export const courses: Course[] = [
       includes: [
         "All lectures",
         "Study material",
-        "Mock test series",
+        "Test series",
         "Doubt sessions",
         "Revision support",
         "Articleship guidance",

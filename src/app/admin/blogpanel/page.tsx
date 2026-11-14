@@ -368,3 +368,4 @@ export default async function BlogPanelPage({ searchParams }: BlogPanelProps) {
     </div>
   );
 }
+

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 export type Stream = "CA" | "CS";
 
@@ -14,9 +14,9 @@ const StreamContext = createContext<StreamContextValue | null>(null);
 export function StreamProvider({ children }: { children: React.ReactNode }) {
   const [stream, setStream] = useState<Stream>("CA");
 
-  const chooseStream = (nextStream: Stream) => {
+  const chooseStream = useCallback((nextStream: Stream) => {
     setStream(nextStream);
-  };
+  }, []);
 
   return (
     <StreamContext.Provider value={{ stream, setStream: chooseStream }}>

@@ -94,7 +94,7 @@ export default function FacultyHighlights() {
                     marginBottom: "1rem",
                     position: "relative",
                     flexShrink: 0,
-                    background: "linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%)",
+                    background: "linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy) 100%)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -198,3 +198,4 @@ export default function FacultyHighlights() {
     </section>
   );
 }
+

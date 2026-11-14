@@ -12,3 +12,4 @@ export default function FoundationPage() {
   const course = courses.find((c) => c.slug === "foundation")!;
   return <CourseDetailTemplate course={course} />;
 }
+

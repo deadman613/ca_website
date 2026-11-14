@@ -11,3 +11,4 @@ export default function robots(): MetadataRoute.Robots {
     ...(siteUrl ? { sitemap: `${new URL(siteUrl).origin}/sitemap.xml` } : {}),
   };
 }
+

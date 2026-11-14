@@ -27,7 +27,7 @@ const footerLinks = {
     links: [
       { label: "Free Notes", href: "/resources?type=Notes" },
       { label: "Video Lectures", href: "/resources?type=Video" },
-      { label: "Mock Tests & Papers", href: "/resources" },
+      { label: "Test Series & Papers", href: "/resources" },
       { label: "All Resources", href: "/resources" },
     ],
   },
@@ -52,7 +52,7 @@ export default function Footer() {
               />
             </Link>
 
-            <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs">
+            <p className="text-white/80 text-sm leading-relaxed mb-8 max-w-xs">
               {siteName} supports CA aspirants with course information,
               study resources, and preparation guidance from Foundation to Final.
             </p>
@@ -60,14 +60,14 @@ export default function Footer() {
             <div className="space-y-3">
               <a
                 href={siteContact.phoneHref}
-                className="flex items-center gap-3 text-white/70 hover:text-gold transition-colors text-sm"
+                className="flex items-center gap-3 text-white/90 hover:text-gold transition-colors text-sm"
               >
                 <Phone size={15} className="text-gold" />
                 {siteContact.phone}
               </a>
               <a
                 href={`mailto:${siteContact.email}`}
-                className="flex items-center gap-3 text-white/70 hover:text-gold transition-colors text-sm"
+                className="flex items-center gap-3 text-white/90 hover:text-gold transition-colors text-sm"
               >
                 <Mail size={15} className="text-gold" />
                 {siteContact.email}
@@ -76,7 +76,7 @@ export default function Footer() {
                 href={siteContact.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 text-white/70 hover:text-gold transition-colors text-sm"
+                className="flex items-center gap-3 text-white/90 hover:text-gold transition-colors text-sm"
               >
                 <Camera size={15} className="text-gold" />
                 @{siteContact.instagram}
@@ -95,7 +95,7 @@ export default function Footer() {
                   <li key={`${link.href}-${link.label}`}>
                     <Link
                       href={link.href}
-                      className="text-white/55 hover:text-gold text-sm transition-colors leading-relaxed"
+                      className="text-white/80 hover:text-gold text-sm transition-colors leading-relaxed"
                     >
                       {link.label}
                     </Link>
@@ -111,19 +111,19 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container-wide py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/40 text-sm text-center sm:text-left">
+            <p className="text-white/60 text-sm text-center sm:text-left">
               © {new Date().getFullYear()} {siteName}. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link
                 href="/privacy"
-                className="text-white/40 hover:text-gold text-sm transition-colors"
+                className="text-white/60 hover:text-gold text-sm transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-white/40 hover:text-gold text-sm transition-colors"
+                className="text-white/60 hover:text-gold text-sm transition-colors"
               >
                 Terms & Conditions
               </Link>

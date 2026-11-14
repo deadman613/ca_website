@@ -22,3 +22,4 @@ export function getPrismaClient() {
   });
   return globalForPrisma.prisma;
 }
+
