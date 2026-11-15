@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import VisitLoader from "@/components/layout/VisitLoader";
 import { StreamProvider } from "@/components/layout/StreamProvider";
 import { siteName, siteUrl } from "@/lib/site";
 
@@ -74,6 +75,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body className="min-h-screen flex flex-col antialiased">
+        <VisitLoader />
         <StreamProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
@@ -83,4 +85,3 @@ export default function RootLayout({
     </html>
   );
 }
-
