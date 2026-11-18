@@ -1,14 +1,22 @@
 "use server";
 
+import { createClient } from "@supabase/supabase-js";
 import { getAuthenticatedUser, isAdminUser } from "@/lib/auth";
-import { createSupabaseActionClient } from "@/lib/supabase/server";
 
 const BUCKET = "blogimage";
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
 
+// Service role client — bypasses RLS, safe on server only
+function getAdminStorageClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) throw new Error("Missing Supabase service role config.");
+  return createClient(url, serviceKey, { auth: { persistSession: false } });
+}
+
 export async function uploadBlogImage(formData: FormData): Promise<{ url: string } | { error: string }> {
-  // Check auth without calling redirect() — avoids React error #441 in client catch blocks
+  // Verify admin session via cookie-based client (safe auth check)
   const user = await getAuthenticatedUser();
   if (!user || !isAdminUser(user)) {
     return { error: "Session expired. Please log in again." };
@@ -23,7 +31,8 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
   const name = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
   const arrayBuffer = await file.arrayBuffer();
 
-  const supabase = await createSupabaseActionClient();
+  // Use service role client to bypass RLS for upload
+  const supabase = getAdminStorageClient();
 
   const { error } = await supabase.storage
     .from(BUCKET)
@@ -31,7 +40,7 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
 
   if (error) {
     console.error("[upload-image] Supabase storage error:", error);
-    return { error: `Supabase storage error: ${error.message} (bucket: ${BUCKET})` };
+    return { error: `Upload error: ${error.message}` };
   }
 
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
