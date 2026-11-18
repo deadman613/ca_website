@@ -3,6 +3,8 @@
 import { useId, useRef, useState } from "react";
 import { Bold, Italic, Link, List, Quote, Image as ImageIcon, Loader2 } from "lucide-react";
 import { uploadBlogImage } from "@/app/actions/upload-image";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import TurndownService from "turndown";
 
 interface MarkdownEditorProps {
@@ -21,6 +23,7 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
   const [value, setValue] = useState(initialValue);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const [previewMode, setPreviewMode] = useState(false);
   const editorId = useId();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -139,6 +142,7 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
       } else {
         const altText = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
         insertAtCursor(`![${altText}](${result.url})`);
+        setPreviewMode(true);
       }
     } catch (err) {
       // Re-throw Next.js redirect/notFound errors — never swallow them
@@ -270,6 +274,24 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
         <span className="ml-auto px-2 text-xs text-muted">
           Markdown · drag or paste images
         </span>
+        <div className="flex rounded-lg border border-slate-200 bg-white p-0.5">
+          <button
+            aria-pressed={!previewMode}
+            className={`rounded-md px-3 py-1 text-xs font-medium ${previewMode ? "text-secondary" : "bg-navy text-white"}`}
+            onClick={() => setPreviewMode(false)}
+            type="button"
+          >
+            Write
+          </button>
+          <button
+            aria-pressed={previewMode}
+            className={`rounded-md px-3 py-1 text-xs font-medium ${previewMode ? "bg-navy text-white" : "text-secondary"}`}
+            onClick={() => setPreviewMode(true)}
+            type="button"
+          >
+            Preview
+          </button>
+        </div>
       </div>
 
       {uploadError && (
@@ -281,19 +303,47 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
       <label className="sr-only" htmlFor={editorId}>
         Full article content
       </label>
-      <textarea
-        className="min-h-96 w-full resize-y border-0 p-4 text-sm leading-7 text-navy outline-none focus:ring-0"
-        id={editorId}
-        maxLength={100000}
-        name="content-textarea"
-        onChange={(event) => setValue(event.target.value)}
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-        onPaste={handlePaste}
-        placeholder="Write your blog post… Use the toolbar, drag & drop images, or paste images directly."
-        ref={textareaRef}
-        value={value}
-      />
+      {previewMode ? (
+        <div className="blog-article min-h-96 space-y-5 p-4">
+          {value.trim() ? (
+            <ReactMarkdown
+              components={{
+                img: ({ src, alt }) => {
+                  if (!src) return null;
+                  return (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt={alt ?? ""}
+                      className="my-6 block h-auto max-w-full rounded-xl"
+                      loading="lazy"
+                      src={src}
+                    />
+                  );
+                },
+              }}
+              remarkPlugins={[remarkGfm]}
+            >
+              {value}
+            </ReactMarkdown>
+          ) : (
+            <p className="text-sm text-muted">Your article preview will appear here.</p>
+          )}
+        </div>
+      ) : (
+        <textarea
+          className="min-h-96 w-full resize-y border-0 p-4 text-sm leading-7 text-navy outline-none focus:ring-0"
+          id={editorId}
+          maxLength={100000}
+          name="content-textarea"
+          onChange={(event) => setValue(event.target.value)}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+          onPaste={handlePaste}
+          placeholder="Write your blog post… Use the toolbar, drag & drop images, or paste images directly."
+          ref={textareaRef}
+          value={value}
+        />
+      )}
       {/* Hidden input carries the value for the form action */}
       <input name="content" type="hidden" value={value} />
     </div>
