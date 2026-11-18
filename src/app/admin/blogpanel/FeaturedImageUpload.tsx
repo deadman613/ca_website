@@ -29,8 +29,8 @@ export default function FeaturedImageUpload({ initialUrl }: FeaturedImageUploadP
         setUrl(result.url);
         setPreview(result.url);
       }
-    } catch {
-      setError("Upload failed. Check your Supabase storage bucket.");
+    } catch (err) {
+      setError("Upload failed: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

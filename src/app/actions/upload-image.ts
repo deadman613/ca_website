@@ -25,7 +25,10 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
     .from(BUCKET)
     .upload(name, arrayBuffer, { contentType: file.type, upsert: false });
 
-  if (error) return { error: `Supabase: ${error.message}` };
+  if (error) {
+    console.error("[upload-image] Supabase storage error:", error);
+    return { error: `Supabase storage error: ${error.message} (bucket: ${BUCKET})` };
+  }
 
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
   return { url: data.publicUrl };

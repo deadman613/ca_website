@@ -140,8 +140,8 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
         const altText = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
         insertAtCursor(`![${altText}](${result.url})`);
       }
-    } catch {
-      setUploadError("Upload failed. Check your Supabase storage bucket.");
+    } catch (err) {
+      setUploadError("Upload failed: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
