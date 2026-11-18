@@ -3,7 +3,7 @@
 import { getAuthenticatedUser, isAdminUser } from "@/lib/auth";
 import { createSupabaseActionClient } from "@/lib/supabase/server";
 
-const BUCKET = "blog-images";
+const BUCKET = "blogimage";
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
 
