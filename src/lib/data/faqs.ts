@@ -10,81 +10,70 @@ export const faqs: FAQ[] = [
     id: "which-course",
     question: "Which CA course should I join?",
     answer:
-      "It depends on your current academic stage. If you have passed Class XII, you should start with CA Foundation. If you are a graduate or postgraduate in Commerce/Law/Management, you may be eligible for Direct Entry into CA Intermediate. Our academic counsellors will guide you to the right course after a free counselling session.",
-    "It depends on your current academic stage. If you have passed Class XII, start with CA Foundation. Commerce graduates with 55%+ or any graduate with 60%+ marks can apply for Direct Entry into CA Intermediate. Our counsellors will guide you to the right course after a free session.",
+      "It depends on your current academic stage. If you have passed Class XII, start with CA Foundation. Commerce graduates with 55%+ or any graduate with 60%+ marks can apply for Direct Entry into CA Intermediate. Our counsellors will guide you to the right course after a free session.",
     category: "General",
   },
   {
     id: "foundation-eligibility",
     question: "What is the eligibility for CA Foundation?",
     answer:
-      "To enroll in CA Foundation, you must have passed Class XII (10+2) from any recognized board. You can even register after Class X and appear in the Foundation exam after completing a minimum 4-month study period post Class XII. The CA Foundation has 4 papers and is conducted twice a year by ICAI.",
-    "You must have passed Class XII (10+2) from any recognised board. You can register after Class X and appear in the Foundation exam after a minimum 4-month study period post Class XII. The Foundation has 4 papers and is conducted twice a year by ICAI.",
+      "You must have passed Class XII (10+2) from any recognised board. You can register after Class X and appear in the Foundation exam after a minimum 4-month study period post Class XII. The Foundation has 4 papers and is conducted twice a year by ICAI.",
     category: "Foundation",
   },
   {
     id: "study-material",
     question: "Do you provide study material?",
     answer:
-      "Yes. All our course fees include comprehensive printed study material curated by our faculty. The material is structured chapter-by-chapter and covers theory, practice questions, and past exam papers. Students also receive access to our digital resource library with notes, lecture recordings and test papers.",
-    "Yes. All our course fees include comprehensive printed study material curated by our faculty, structured chapter-by-chapter and covering theory, practice questions, and past exam papers. Students also get access to a digital resource library with notes and lecture recordings.",
+      "Yes. All our course fees include comprehensive printed study material curated by our faculty, structured chapter-by-chapter and covering theory, practice questions, and past exam papers. Students also get access to a digital resource library with notes and lecture recordings.",
     category: "General",
   },
   {
     id: "mock-tests",
     question: "Are mock tests included in the course fee?",
     answer:
-      "Yes. Weekly mock tests, monthly full-length exams, and a dedicated test series before the exam are all included in the fee. We believe consistent testing is one of the most critical components of CA preparation, so all tests are planned into the curriculum from day one.",
-    "Yes. Weekly mock tests, monthly full-length exams, and a dedicated test series before the exam are all included in the fee. Consistent testing is built into the curriculum from day one.",
+      "Yes. Weekly mock tests, monthly full-length exams, and a dedicated test series before the exam are all included in the fee. Consistent testing is built into the curriculum from day one.",
     category: "General",
   },
   {
     id: "doubt-sessions",
     question: "Do you provide doubt sessions?",
     answer:
-      "Yes. We offer structured doubt sessions twice a week for every batch. Students can also connect with faculty directly via our WhatsApp group for quick queries. For complex doubts, one-to-one sessions can be scheduled with the subject faculty.",
-    "Yes. We offer structured doubt sessions twice a week for every batch. Students can also reach faculty via our WhatsApp group for quick queries. One-to-one sessions can be scheduled with the subject faculty for complex doubts.",
+      "Yes. We offer structured doubt sessions twice a week for every batch. Students can also reach faculty via our WhatsApp group for quick queries. One-to-one sessions can be scheduled with the subject faculty for complex doubts.",
     category: "General",
   },
   {
     id: "batch-timings",
     question: "What are the batch timings?",
     answer:
-      "We offer morning batches (6:00 AM – 9:00 AM / 7:00 AM – 9:00 AM) and evening batches (5:00 PM – 8:00 PM) for all courses. Weekend batches are also available for working students and articleship students. Specific timings vary by course and batch — please contact us for the current schedule.",
-    "Morning batches run from 6:00 AM – 9:00 AM or 7:00 AM – 9:00 AM, and evening batches from 5:00 PM – 8:00 PM. Weekend batches are also available for working students. Contact us for the current schedule.",
+      "Morning batches run from 6:00 AM – 9:00 AM or 7:00 AM – 9:00 AM, and evening batches from 5:00 PM – 8:00 PM. Weekend batches are also available for working students. Contact us for the current schedule.",
     category: "General",
   },
   {
     id: "demo-class",
-    question: "Do you provide demo classes?",
     question: "Do you offer demo classes?",
     answer:
-      "Absolutely. We encourage all prospective students to attend a free demo class before enrolling. The demo gives you a clear sense of our teaching methodology, faculty interaction, and classroom environment. You can book a free demo class through our website or by calling us directly.",
-    "Absolutely. We encourage all prospective students to attend a free demo class before enrolling. It gives you a clear sense of our teaching methodology, faculty interaction, and classroom environment. Book online or call us directly.",
+      "Absolutely. We encourage all prospective students to attend a free demo class before enrolling. It gives you a clear sense of our teaching methodology, faculty interaction, and classroom environment. Book online or call us directly.",
     category: "General",
   },
   {
     id: "online-offline",
     question: "Are classes available online or only offline?",
     answer:
-      "We primarily run offline classroom batches for the best learning experience. However, missed lectures can be accessed via recorded video sessions. We also provide a digital study portal for notes, tests, and resources accessible from any device.",
-    "We primarily run offline classroom batches. Missed lectures can be accessed via recorded video sessions. We also provide a digital study portal for notes, tests, and resources accessible from any device.",
+      "We primarily run offline classroom batches. Missed lectures can be accessed via recorded video sessions. We also provide a digital study portal for notes, tests, and resources accessible from any device.",
     category: "General",
   },
   {
     id: "direct-entry",
     question: "What is Direct Entry into CA Intermediate?",
     answer:
-      "Commerce graduates with 55% marks, or graduates from any stream with 60% marks, can directly register for CA Intermediate without clearing CA Foundation. This is known as Direct Entry. Our counsellors can help you verify your eligibility and guide you through the ICAI registration process.",
-    "Commerce graduates with 55% marks, or graduates from any stream with 60% marks, can directly register for CA Intermediate without clearing CA Foundation. Our counsellors can verify your eligibility and guide you through the ICAI registration process.",
+      "Commerce graduates with 55% marks, or graduates from any stream with 60% marks, can directly register for CA Intermediate without clearing CA Foundation. Our counsellors can verify your eligibility and guide you through the ICAI registration process.",
     category: "Intermediate",
   },
   {
     id: "articleship",
     question: "Do you guide students on articleship?",
     answer:
-      "Yes. Our faculty team provides guidance on finding the right articleship firm, managing study alongside training, and maximizing the learning during the articleship period. We also have connections with leading CA firms who prefer hiring from our institute.",
-    "Yes. Our faculty provides guidance on finding the right articleship firm, managing study alongside training, and maximising the articleship period. We also have connections with leading CA firms who prefer hiring from our institute.",
+      "Yes. Our faculty provides guidance on finding the right articleship firm, managing study alongside training, and maximising the articleship period. We also have connections with leading CA firms who prefer hiring from our institute.",
     category: "Intermediate",
   },
   {
@@ -213,4 +202,3 @@ export const testimonials: Testimonial[] = [
     photo: "/testimonials/meera.jpg",
   },
 ];
-

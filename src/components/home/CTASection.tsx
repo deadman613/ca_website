@@ -15,31 +15,27 @@ export default function CTASection() {
             Ready to Begin Your{" "}
             <span className="text-gold-light italic">CA or CS Journey?</span>
           </h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-            <p className="text-white/80 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-              Book a free demo class today. Our academic counsellors will guide
-              you to the right course and batch based on your stream, stage and goals.
-            </p>
+          <p className="text-white/80 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+            Book a free demo class today. Our academic counsellors will guide
+            you to the right course and batch based on your stream, stage and goals.
+          </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/contact#demo" className="btn-gold text-sm">
-                Book Free Demo Class
-                <ArrowRight size={15} className="ml-2" />
-              </Link>
-              <Link href="/contact" className="btn-outline-white text-sm">
-                Contact Delhi CA School
-              </Link>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link href="/contact#demo" className="btn-gold text-sm">
+              Book Free Demo Class
+              <ArrowRight size={15} className="ml-2" />
+            </Link>
+            <Link href="/contact" className="btn-outline-white text-sm">
+              Contact Delhi CA School
+            </Link>
+          </div>
 
-            {/* Trust micro-text */}
-            <p className="text-white/30 text-xs mt-8 tracking-wide">
-              <p className="text-white/55 text-xs mt-8 tracking-wide">
-                No commitment required · Free counselling · Demo available for all
-                courses
-              </p>
-            </div>
+          {/* Trust micro-text */}
+          <p className="text-white/55 text-xs mt-8 tracking-wide">
+            No commitment required · Free counselling · Demo available for all courses
+          </p>
         </div>
+      </div>
     </section>
   );
 }
-

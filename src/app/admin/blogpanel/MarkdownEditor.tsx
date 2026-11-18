@@ -3,6 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Bold, Italic, Link, List, Quote, Image as ImageIcon, Loader2 } from "lucide-react";
 import { uploadBlogImage } from "@/app/actions/upload-image";
+import TurndownService from "turndown";
 
 interface MarkdownEditorProps {
   initialValue: string;
@@ -156,7 +157,7 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
   }
 
   function handlePaste(event: React.ClipboardEvent<HTMLTextAreaElement>) {
-    // Handle image paste from clipboard
+    // 1. Image paste from clipboard
     const items = Array.from(event.clipboardData.items);
     const imageItem = items.find((item) => item.type.startsWith("image/"));
     if (imageItem) {
@@ -165,8 +166,32 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
       if (file) void handleImageUpload(file);
       return;
     }
-    // Plain text paste: let browser handle it, then sync state
-    // We use onInput instead to capture pasted text — see onInput handler below
+
+    // 2. Rich HTML paste (from Word, Google Docs, websites, etc.)
+    const html = event.clipboardData.getData("text/html");
+    if (html) {
+      event.preventDefault();
+      const td = new TurndownService({
+        headingStyle: "atx",          // # H1, ## H2 …
+        bulletListMarker: "-",
+        codeBlockStyle: "fenced",
+      });
+      // Keep images as markdown
+      td.addRule("images", {
+        filter: "img",
+        replacement: (_content, node) => {
+          const img = node as HTMLImageElement;
+          const alt = img.alt || "";
+          const src = img.src || "";
+          return src ? `\n\n![${alt}](${src})\n\n` : "";
+        },
+      });
+      const markdown = td.turndown(html).trim();
+      insertAtCursor(markdown);
+      return;
+    }
+
+    // 3. Plain text — let browser handle normally (onChange will sync)
   }
 
   return (
