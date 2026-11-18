@@ -15,6 +15,35 @@ function getAdminStorageClient() {
   return createClient(url, serviceKey, { auth: { persistSession: false } });
 }
 
+async function ensurePublicBucket(supabase: ReturnType<typeof getAdminStorageClient>) {
+  const storage = supabase.storage;
+  const { data: bucket, error: bucketError } = await storage.getBucket(BUCKET);
+
+  if (bucketError && bucketError.statusCode !== "404") {
+    return bucketError;
+  }
+
+  if (bucketError) {
+    const { error: createError } = await storage.createBucket(BUCKET, {
+      public: true,
+      fileSizeLimit: MAX_BYTES,
+      allowedMimeTypes: ALLOWED_TYPES,
+    });
+
+    if (!createError) return null;
+    if (createError.statusCode !== "409") return createError;
+  } else if (bucket.public) {
+    return null;
+  }
+
+  const { error: updateError } = await storage.updateBucket(BUCKET, {
+    public: true,
+    fileSizeLimit: MAX_BYTES,
+    allowedMimeTypes: ALLOWED_TYPES,
+  });
+  return updateError;
+}
+
 export async function uploadBlogImage(formData: FormData): Promise<{ url: string } | { error: string }> {
   // Verify admin session via cookie-based client (safe auth check)
   const user = await getAuthenticatedUser();
@@ -33,6 +62,11 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
 
   // Use service role client to bypass RLS for upload
   const supabase = getAdminStorageClient();
+  const bucketError = await ensurePublicBucket(supabase);
+  if (bucketError) {
+    console.error("[upload-image] Supabase bucket configuration error:", bucketError);
+    return { error: `Storage setup error: ${bucketError.message}` };
+  }
 
   const { error } = await supabase.storage
     .from(BUCKET)
@@ -46,4 +80,3 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
   return { url: data.publicUrl };
 }
-

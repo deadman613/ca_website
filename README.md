@@ -25,7 +25,8 @@ the site does not publish a sitemap URL.
 The blog backend uses Prisma with PostgreSQL (the current project can use its
 Supabase Postgres database). Supabase Auth remains the existing sign-in system.
 Copy `env.example` to `.env.local` and set the Supabase project URL and anon
-key, a **rotated** pooled PostgreSQL connection string as `DATABASE_URL`, a
+key, the server-only `SUPABASE_SERVICE_ROLE_KEY`, a **rotated** pooled
+PostgreSQL connection string as `DATABASE_URL`, a
 rotated direct or session-pooled PostgreSQL connection string as `DIRECT_URL`,
 the canonical site URL, and `BLOG_ADMIN_EMAIL`. For Supabase, use its pooler
 connection strings from the dashboard; the transaction-pooler URL is for
@@ -46,7 +47,9 @@ reuse a database password or key that has been exposed.
    `BLOG_ADMIN_EMAIL`. The blog panel redirects unauthenticated visitors to the
    admin login page.
    New posts default to Published and appear at `/blogs`; choose Draft or
-   Scheduled when a post should not be published immediately.
+   Scheduled when a post should not be published immediately. The first image
+   upload creates the `blogimage` Storage bucket if needed and configures it
+   for public image delivery. Image files are limited to 5 MB.
 
 The Prisma database connection is used only by server-side code. Blog metadata
 and full article bodies are stored separately. Public visitors can read
