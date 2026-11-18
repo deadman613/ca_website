@@ -27,7 +27,7 @@ const footerLinks = {
     links: [
       { label: "Free Notes", href: "/resources?type=Notes" },
       { label: "Video Lectures", href: "/resources?type=Video" },
-      { label: "Test Series & Papers", href: "/resources" },
+      { label: "Mock Tests & Papers", href: "/resources" },
       { label: "All Resources", href: "/resources" },
     ],
   },
@@ -105,25 +105,9 @@ export default function Footer() {
             </div>
           ))}
         </div>
-
-        <section aria-label="Our location" className="mt-12">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-white">
-            Find us
-          </h3>
-          <div className="overflow-hidden rounded-xl border border-white/15">
-            <iframe
-              allowFullScreen
-              className="block h-72 w-full border-0 sm:h-80 lg:h-96"
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56098.63265478796!2d77.16114699182975!3d28.504696867398685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce3115a04b78f%3A0x59a878b36689c0ae!2sDelhi%20Law%20School!5e0!3m2!1sen!2sin!4v1794562618094!5m2!1sen!2sin"
-              title="Map showing Delhi Law School"
-            />
-          </div>
-        </section>
       </div>
 
-      {/* Gold divider */}
+      {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="container-wide py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">

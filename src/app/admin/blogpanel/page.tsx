@@ -12,6 +12,7 @@ import {
 import { deleteBlogPost, saveBlogPost } from "@/app/actions/blog-admin";
 import { signOut } from "@/app/actions/auth";
 import MarkdownEditor from "@/app/admin/blogpanel/MarkdownEditor";
+import FeaturedImageUpload from "@/app/admin/blogpanel/FeaturedImageUpload";
 import BlogTitleSlugFields from "@/app/admin/blogpanel/BlogTitleSlugFields";
 import { blogCategories, type BlogPost } from "@/lib/data/blogs";
 import { getAdminBlogPosts } from "@/lib/blogs";
@@ -90,27 +91,36 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           <p className="section-label">02 · Search &amp; appearance</p>
           <h3 className="mt-1 text-lg font-semibold text-navy">Help readers find your article</h3>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
           <label className="text-sm font-medium text-navy">
-            SEO title (optional)
-            <input className="input-field mt-2" defaultValue={post?.seoTitle ?? ""} maxLength={200} name="seoTitle" placeholder="Uses the post title when blank" />
+            SEO title
+            <input className="input-field mt-2" defaultValue={post?.seoTitle ?? ""} maxLength={200} name="seoTitle" placeholder="Uses the post title when blank (≤ 60 chars ideal)" />
           </label>
           <label className="text-sm font-medium text-navy">
-            Featured image URL (optional)
-            <input className="input-field mt-2" defaultValue={post?.featuredImage ?? ""} name="featuredImage" placeholder="https://…" type="url" />
+            Canonical URL (optional)
+            <input className="input-field mt-2" defaultValue={post?.slug ? `https://delhicaschool.com/blogs/${post.slug}` : ""} name="canonicalUrl" placeholder="https://delhicaschool.com/blogs/…" type="url" />
           </label>
           <label className="text-sm font-medium text-navy md:col-span-2">
-            Meta description (optional)
-            <textarea className="input-field mt-2 min-h-20" defaultValue={post?.seoDescription ?? ""} maxLength={300} name="seoDescription" placeholder="Uses the short description when blank" />
+            Meta description
+            <textarea className="input-field mt-2 min-h-20" defaultValue={post?.seoDescription ?? ""} maxLength={300} name="seoDescription" placeholder="Uses the short description when blank (≤ 160 chars ideal for Google)" />
+            <span className="mt-1 block text-xs text-muted">Shown in Google search results. Aim for 120–160 characters.</span>
+          </label>
+          <label className="text-sm font-medium text-navy md:col-span-2">
+            Tags / keywords
+            <input className="input-field mt-2" defaultValue={post?.tags.join(", ")} maxLength={1000} name="tags" placeholder="e.g. ca foundation, exam tips, study guide" />
+            <span className="mt-1 block text-xs text-muted">Comma-separated. Used for related posts and Schema.org keywords.</span>
           </label>
           <label className="text-sm font-medium text-navy">
             Featured label (optional)
             <input className="input-field mt-2" defaultValue={post?.featuredLabel ?? ""} maxLength={80} name="featuredLabel" placeholder="Members Only" />
           </label>
-          <label className="text-sm font-medium text-navy">
-            Tags / keywords
-            <input className="input-field mt-2" defaultValue={post?.tags.join(", ")} maxLength={1000} name="tags" placeholder="exam preparation, study tips" />
-          </label>
+          <div className="text-sm font-medium text-navy md:col-span-2">
+            Featured image
+            <span className="ml-2 text-xs font-normal text-muted">(used as og:image for social sharing)</span>
+            <div className="mt-2">
+              <FeaturedImageUpload initialUrl={post?.featuredImage ?? ""} />
+            </div>
+          </div>
         </div>
       </section>
 
