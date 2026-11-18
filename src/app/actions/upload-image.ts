@@ -1,6 +1,6 @@
 "use server";
 
-import { requireAdmin } from "@/lib/auth";
+import { getAuthenticatedUser, isAdminUser } from "@/lib/auth";
 import { createSupabaseActionClient } from "@/lib/supabase/server";
 
 const BUCKET = "blog-images";
@@ -8,7 +8,11 @@ const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
 
 export async function uploadBlogImage(formData: FormData): Promise<{ url: string } | { error: string }> {
-  await requireAdmin();
+  // Check auth without calling redirect() — avoids React error #441 in client catch blocks
+  const user = await getAuthenticatedUser();
+  if (!user || !isAdminUser(user)) {
+    return { error: "Session expired. Please log in again." };
+  }
 
   const file = formData.get("file");
   if (!(file instanceof File)) return { error: "No file provided." };

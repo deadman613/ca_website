@@ -30,7 +30,9 @@ export default function FeaturedImageUpload({ initialUrl }: FeaturedImageUploadP
         setPreview(result.url);
       }
     } catch (err) {
-      setError("Upload failed: " + (err instanceof Error ? err.message : String(err)));
+      // Re-throw Next.js redirect/notFound errors — never swallow them
+      if (err && typeof err === "object" && "digest" in err) throw err;
+      setError("Upload failed: " + (err instanceof Error ? err.message : "Unknown error"));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

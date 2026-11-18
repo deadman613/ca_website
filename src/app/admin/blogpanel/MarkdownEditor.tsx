@@ -141,7 +141,9 @@ export default function MarkdownEditor({ initialValue }: MarkdownEditorProps) {
         insertAtCursor(`![${altText}](${result.url})`);
       }
     } catch (err) {
-      setUploadError("Upload failed: " + (err instanceof Error ? err.message : String(err)));
+      // Re-throw Next.js redirect/notFound errors — never swallow them
+      if (err && typeof err === "object" && "digest" in err) throw err;
+      setUploadError("Upload failed: " + (err instanceof Error ? err.message : "Unknown error"));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
