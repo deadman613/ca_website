@@ -83,6 +83,9 @@ function createMarkdownComponents(markdown: string): Components {
   h5: ({ children }) => <h5 id={nextHeadingId(children)} className="mb-2 mt-4 text-base font-semibold text-navy">{children}</h5>,
   h6: ({ children }) => <h6 id={nextHeadingId(children)} className="mb-2 mt-4 text-sm font-semibold uppercase tracking-wide text-navy">{children}</h6>,
   p: ({ children }) => <p className="my-5 text-[1.0625rem] leading-8 text-secondary">{children}</p>,
+  // Markdown image links can come from arbitrary external hosts.
+  // eslint-disable-next-line @next/next/no-img-element
+  img: ({ src, alt }) => <img alt={alt ?? ""} className="my-8 block h-auto max-w-full rounded-xl" loading="lazy" src={src} />,
   ul: ({ children }) => <ul className="my-5 list-disc space-y-3 pl-6 text-[1.0625rem] leading-8 text-secondary marker:text-gold">{children}</ul>,
   ol: ({ children }) => <ol className="my-5 list-decimal space-y-3 pl-6 text-[1.0625rem] leading-8 text-secondary marker:font-semibold marker:text-gold">{children}</ol>,
   li: ({ children }) => <li>{children}</li>,

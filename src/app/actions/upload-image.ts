@@ -77,6 +77,14 @@ export async function uploadBlogImage(formData: FormData): Promise<{ url: string
     return { error: `Upload error: ${error.message}` };
   }
 
+  const { data: uploaded, error: verifyError } = await supabase.storage
+    .from(BUCKET)
+    .exists(name);
+  if (verifyError || !uploaded) {
+    console.error("[upload-image] Uploaded image could not be verified:", verifyError);
+    return { error: "The image upload could not be verified. Please try again." };
+  }
+
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
   return { url: data.publicUrl };
 }
