@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteName}`,
   },
   description:
-    "Delhi CA School supports CA aspirants in Delhi with structured preparation for CA Foundation, Intermediate, and Final.",
+    "500+ CAs made. Join Delhi CA School for CA Foundation, Inter, Final and CS coaching with live lectures, test series and a free demo class.",
   keywords: [
     "CA coaching in Delhi",
     "CA classes in Delhi",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName,
     title: `${siteName} | CA Coaching in Delhi`,
     description:
-      "Explore structured CA preparation for Foundation, Intermediate, and Final with Delhi CA School.",
+      "500+ CAs made. Join Delhi CA School for CA Foundation, Inter, Final and CS coaching with live lectures, test series and a free demo.",
   },
   twitter: {
     card: "summary",

@@ -25,7 +25,7 @@ export default function FacultyHighlights() {
             letterSpacing: "-0.01em",
           }}
         >
-          Our Core Team
+          Our Core Team: Qualified CA and CS Faculty
         </h2>
         <p
           className="mb-10"
@@ -36,7 +36,8 @@ export default function FacultyHighlights() {
             color: "#718096",
           }}
         >
-          Learn from qualified CAs with decades of teaching excellence.
+          Learn from qualified Chartered Accountants and company secretaries
+          with years of classroom experience.
         </p>
 
         {/* Faculty Grid */}
@@ -198,4 +199,3 @@ export default function FacultyHighlights() {
     </section>
   );
 }
-

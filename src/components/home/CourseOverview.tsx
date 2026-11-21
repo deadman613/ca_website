@@ -14,7 +14,7 @@ const courses = [
     number: "01",
     title: "CA Foundation",
     description:
-      "Build strong fundamentals and develop the academic foundation required for the CA journey. Four structured papers covering accounting, law, mathematics and economics.",
+      "Our CA Foundation coaching builds the base for your CA journey. Four papers (Accounts, Business Laws, Mathematics and Economics) are taught from scratch, so students from any stream can follow.",
     subjects: ["Accounts", "Business Laws", "Mathematics", "Economics"],
     duration: "4–5 Months",
     eligibility: "After Class XII",
@@ -27,7 +27,7 @@ const courses = [
     number: "02",
     title: "CA Intermediate",
     description:
-      "Develop deeper subject knowledge with structured preparation and consistent practice. Group-wise preparation for six specialized papers.",
+      "Our CA Inter coaching is group-wise and covers six papers, including Advanced Accounting, Corporate Laws, Taxation and Auditing. Weekly practice keeps you on schedule.",
     subjects: ["Advanced Accounts", "Corporate Laws", "Taxation", "Auditing"],
     duration: "12–18 Months",
     eligibility: "After Foundation / Direct Entry",
@@ -40,7 +40,7 @@ const courses = [
     number: "03",
     title: "CA Final",
     description:
-      "Advanced preparation focused on exam readiness, strategic revision and peak performance. Eight papers covering the most advanced CA concepts.",
+      "Our CA Final coaching focuses on exam readiness, answer writing and revision. Eight papers, including Financial Reporting, SFM, Advanced Audit and Direct Tax, with CA revision classes before every attempt.",
     subjects: ["Financial Reporting", "SFM", "Advanced Audit", "Direct Tax"],
     duration: "18–24 Months",
     eligibility: "After Intermediate + Articleship",
@@ -60,8 +60,8 @@ export default function CourseOverview() {
       <div className="container-wide">
         <SectionHeading
           label="Our Programs"
-          title={`Choose Your ${stream} Journey`}
-          subtitle={`Structured programs designed for every stage of your ${stream} preparation.`}
+          title={`Choose Your ${stream === "CA" ? "CA" : "CS"} Journey`}
+          subtitle="Structured programs for every stage of CA and CS preparation. Pick your stream, then your level."
           align="center"
           className="mb-14"
         />
@@ -159,13 +159,28 @@ export default function CourseOverview() {
           ))}
         </div>
         ) : (
-          <p className="mx-auto max-w-2xl rounded-xl border border-gray-100 bg-white p-6 text-center text-sm text-secondary">
-            CS course details are being prepared. Select a stage above to view
-            course information or request a free demo.
-          </p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              ["CSEET", "CSEET coaching for the entrance test to the CS course. Short, focused classes with practice papers."],
+              ["CS Executive", "CS Executive coaching with concept-based classes, notes and regular tests, available in class and as CS online coaching."],
+              ["CS Professional", "CS Professional coaching for advanced subjects, with case-law discussion and revision."],
+            ].map(([title, description]) => (
+              <article key={title} className="rounded-xl border border-gray-100 bg-white p-7">
+                <h3 className="font-playfair text-2xl font-bold text-navy">{title}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-secondary">{description}</p>
+                <Link href="/contact#demo" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-gold">
+                  View Details <ArrowRight size={14} />
+                </Link>
+              </article>
+            ))}
+          </div>
         )}
 
         {stream === "CA" && <div className="text-center mt-12">
+          <p className="mb-5 text-sm text-secondary">
+            Looking for the best coaching for CA in Delhi, or CS coaching in Delhi?
+            Whichever stream you choose, start with a free demo.
+          </p>
           <Link href="/courses" className="btn-secondary">
             View All Courses
           </Link>
@@ -174,4 +189,3 @@ export default function CourseOverview() {
     </section>
   );
 }
-

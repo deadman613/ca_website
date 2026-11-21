@@ -5,10 +5,10 @@ import { ArrowRight, Star } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
 const bullets = [
-  "CA Foundation to Final",
-  "Structured course guidance",
-  "Exam preparation resources",
-  "For CA aspirants in Delhi",
+  "Taught by qualified CA and CS faculty",
+  "Online and classroom batches",
+  "Free counselling and a free demo before you enrol",
+  "CA Foundation to Final and CSEET to CS Professional",
 ];
 
 export default function Hero() {
@@ -134,12 +134,21 @@ export default function Hero() {
               color: "#ffffff",
             }}
           >
-            CA Coaching in Delhi
+            CA Coaching in Delhi:
             <br />
             <span style={{ color: "#E8C97A", fontWeight: 700 }}>
-              Your Journey, Structured.
+              Foundation to Final, Online and Offline
             </span>
           </h1>
+
+          <p className="mb-3 text-sm leading-relaxed text-white/85">
+            CA Foundation to Final | CS CSEET to Professional
+          </p>
+          <p className="mb-6 text-xs leading-relaxed text-white/70">
+            Delhi CA School is run by qualified Chartered Accountants and company secretaries.
+            Study through live online or Delhi classroom batches, follow a fixed syllabus plan,
+            and begin with a free demo.
+          </p>
 
           {/* Bullet points — 2 columns */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-3.5 mb-8">
@@ -196,6 +205,12 @@ export default function Hero() {
           >
             Book a free demo
           </Link>
+          <p className="mt-5 text-xs font-semibold tracking-wide text-white/75">
+            500+ CAs made since [year] | Rated [/5] on Google by [] students | ICAI-qualified faculty
+          </p>
+          <p className="mt-2 text-[10px] leading-relaxed text-white/55">
+            Path designed to finish before 21, subject to clearing each attempt on schedule.
+          </p>
         </div>
       </div>
 

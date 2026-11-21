@@ -164,7 +164,6 @@ export const testimonials: Testimonial[] = [
     id: "t1",
     name: "Arjun Patel",
     qualification: "CA Intermediate Cleared",
-    rank: "AIR 12",
     batch: "2024 Batch",
     review:
       "Delhi CA School helped me approach CA preparation with more structure. The teaching approach and practice made me more confident before the exam.",

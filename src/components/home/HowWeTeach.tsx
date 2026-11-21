@@ -10,28 +10,28 @@ const features = [
     icon: Video,
     title: "Video library with industry best faculty",
     description:
-      "Unlimited access to high-quality recorded lectures by our expert faculty — watch, rewind and revise anytime, from any device.",
+      "Unlimited access to CA recorded lectures by our faculty. Watch, rewind and revise anytime from any device. Lectures are updated after ICAI amendments, so you never study outdated rules.",
   },
   {
     id: "f2",
     icon: Clock,
     title: "100% time-bound syllabus completion",
     description:
-      "Every batch follows a strict schedule designed to complete the entire ICAI syllabus well before the examination — leaving ample time for revision.",
+      "Every batch follows a published schedule. The syllabus is finished with time left for revision.",
   },
   {
     id: "f3",
     icon: Headphones,
     title: "Learning pedagogy designed to stick",
     description:
-      "Our teach-practice-revise cycle ensures concepts are not just understood but retained through structured repetition and application.",
+      "Short concept blocks, practice after every topic and a recap before each new chapter.",
   },
   {
     id: "f4",
     icon: BookOpen,
     title: "Focus on conceptual clarity",
     description:
-      "We never rush through fundamentals. Deep conceptual understanding is built first — so students can apply knowledge to any question pattern.",
+      "We teach the reason behind each rule, so you can answer unseen questions in the exam.",
   },
 ];
 
@@ -364,5 +364,4 @@ export default function HowWeTeach() {
     </section>
   );
 }
-
 

@@ -11,16 +11,19 @@ import PodcastSection from "@/components/home/PodcastSection";
 import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
 import DemoBookingSection from "@/components/home/DemoBookingSection";
+import USPSection from "@/components/home/USPSection";
+import ResultsSection from "@/components/home/ResultsSection";
+import PreparationProcess from "@/components/home/PreparationProcess";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "CA Coaching in Delhi | Delhi CA School",
+  title: "CA Coaching in Delhi | CA & CS Online Classes | Delhi CA School",
   description:
-    "Prepare for CA Foundation, Intermediate, and Final with Delhi CA School. Explore CA courses, faculty, study resources, and exam preparation guidance in Delhi.",
+    "500+ CAs made. Join Delhi CA School for CA Foundation, Inter, Final and CS coaching with live lectures, test series and a free demo class.",
   openGraph: {
-    title: "CA Coaching in Delhi | Delhi CA School",
+    title: "CA Coaching in Delhi | CA & CS Online Classes | Delhi CA School",
     description:
-      "Structured preparation guidance for CA Foundation, Intermediate, and Final in Delhi.",
+      "500+ CAs made. Join Delhi CA School for CA Foundation, Inter, Final and CS coaching with live lectures, test series and a free demo class.",
   },
 };
 
@@ -29,11 +32,14 @@ export default function HomePage() {
     <>
       <Hero />
       <Reveal><CourseOverview /></Reveal>
+      <Reveal><USPSection /></Reveal>
       <Reveal><HowWeTeach /></Reveal>
       <Reveal><ResourcesTeaser /></Reveal>
       <Reveal><FacultyHighlights /></Reveal>
+      <Reveal><ResultsSection /></Reveal>
       {/* 1 — Student reviews with video testimonials */}
       <Reveal><StudentReviewsWithVideos /></Reveal>
+      <Reveal><PreparationProcess /></Reveal>
       {/* 2 — Recent blog posts with author */}
       <RecentBlogSection />
       {/* 3 — Competitor comparison */}
@@ -46,4 +52,3 @@ export default function HomePage() {
     </>
   );
 }
-

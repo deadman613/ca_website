@@ -26,7 +26,7 @@ const videoTestimonials = [
   {
     id: "v3",
     name: "Priya Nanda",
-    result: "CA Final — AIR 42",
+    result: "CA Final — Final cleared",
     thumbnail: "/testimonials/priya.jpg",
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     quote: "Structured study plans made the difference.",
@@ -60,8 +60,8 @@ export default function StudentReviewsWithVideos() {
         <div className="mb-12">
           <SectionHeading
             label="Success Stories"
-            title="Students Who Made It"
-            subtitle="Real results from real students — in their own words."
+            title="What Our Students Say"
+            subtitle="Hear from CA and CS students about how they prepared, from Foundation classes to Final."
             align="center"
           />
         </div>
@@ -99,7 +99,7 @@ export default function StudentReviewsWithVideos() {
                 <div className="p-4">
                   <p className="text-sm font-semibold text-white">{v.name}</p>
                   <p className="mt-0.5 text-xs text-gold-light">{v.result}</p>
-                  <p className="mt-2 text-xs italic text-white/60">"{v.quote}"</p>
+                  <p className="mt-2 text-xs italic text-white/60">&ldquo;{v.quote}&rdquo;</p>
                 </div>
               </a>
             ))}
@@ -168,7 +168,7 @@ export default function StudentReviewsWithVideos() {
                 </div>
                 <Quote aria-hidden="true" className="mb-2 text-gold/60" size={22} />
                 <p className="min-h-28 text-sm leading-6 text-secondary">
-                  "{testimonial.review}"
+                  &ldquo;{testimonial.review}&rdquo;
                 </p>
                 <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                   <span
@@ -199,6 +199,3 @@ export default function StudentReviewsWithVideos() {
     </section>
   );
 }
-
-
-

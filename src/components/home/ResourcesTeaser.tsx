@@ -20,42 +20,42 @@ const reasons: {
     icon: GraduationCap,
     title: "Rank-Holder Faculty",
     description:
-      "Learn from experienced faculty who understand the CA and CS exam journey and what it takes to succeed.",
+      "Learn from faculty who have cleared these exams and teach them every day. Our faculty have helped 500+ students become CAs.",
     tone: "bg-navy/5 text-navy",
   },
   {
     icon: ClipboardCheck,
     title: "Exam-Pattern Tests",
     description:
-      "Practise with timed mock papers designed around exam patterns, with detailed solutions to learn from every attempt.",
+      "Our CA test series and CA online test series give you timed papers based on the latest ICAI pattern, with detailed solutions. Papers are reviewed by faculty before release.",
     tone: "bg-gold/15 text-gold-muted",
   },
   {
     icon: NotebookPen,
     title: "Personal Evaluation",
     description:
-      "Get your answers reviewed by faculty, with clear feedback to help you improve beyond self-scored MCQs.",
+      "Faculty check your answers and give written feedback. This improves your answer presentation, which MCQ scoring alone cannot do.",
     tone: "bg-amber-50 text-amber-700",
   },
   {
     icon: BookOpenCheck,
     title: "Concise Study Notes",
     description:
-      "Revise with focused notes, flowcharts, and exam callouts made to support quick, confident revision.",
+      "Notes, flowcharts and exam callouts for fast revision. Notes are revised after every ICAI update.",
     tone: "bg-emerald-50 text-emerald-700",
   },
   {
     icon: Video,
     title: "Recorded Lectures",
     description:
-      "Study at your own pace. Pause, replay, and revisit recorded lessons whenever it suits your schedule.",
+      "Pause, replay and revisit lessons at your own pace. Useful for working students and those preparing from other cities.",
     tone: "bg-rose-50 text-rose-700",
   },
   {
     icon: MessageCircleQuestion,
     title: "Doubt Resolution",
     description:
-      "Ask questions and get helpful explanations from faculty, so you can keep moving forward with clarity.",
+      "Ask questions during live lectures or in dedicated doubt sessions, and get clear explanations from faculty.",
     tone: "bg-sky-50 text-sky-700",
   },
 ];
@@ -70,8 +70,9 @@ export default function ResourcesTeaser() {
             Everything You Need to Crack CA &amp; CS
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-secondary sm:text-base">
-            Expert teaching, focused practice, and the support you need at every
-            stage of your preparation.
+            Many students compare options before choosing the best CA coaching
+            for themselves. Here is what you get at Delhi CA School, a CA coaching
+            institute and company secretary institute under one roof.
           </p>
         </div>
 
@@ -96,4 +97,3 @@ export default function ResourcesTeaser() {
     </section>
   );
 }
-
