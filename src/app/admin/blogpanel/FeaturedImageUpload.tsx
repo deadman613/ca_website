@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { UploadCloud, X, Loader2 } from "lucide-react";
 import { uploadBlogImage } from "@/app/actions/upload-image";
@@ -15,6 +15,11 @@ export default function FeaturedImageUpload({ initialUrl }: FeaturedImageUploadP
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    hiddenInputRef.current?.form?.dispatchEvent(new Event("input", { bubbles: true }));
+  }, [url]);
 
   async function handleFile(file: File) {
     setError("");
@@ -64,7 +69,7 @@ export default function FeaturedImageUpload({ initialUrl }: FeaturedImageUploadP
   return (
     <div className="space-y-3">
       {/* Hidden input that the form action reads */}
-      <input name="featuredImage" type="hidden" value={url} />
+      <input name="featuredImage" ref={hiddenInputRef} type="hidden" value={url} />
 
       {/* Upload zone */}
       <div
@@ -142,4 +147,3 @@ export default function FeaturedImageUpload({ initialUrl }: FeaturedImageUploadP
     </div>
   );
 }
-

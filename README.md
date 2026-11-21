@@ -38,6 +38,9 @@ reuse a database password or key that has been exposed.
    `npm run db:generate`.
 2. Apply the schema migration to the configured PostgreSQL database with
    `npm run db:migrate`.
+   The blog schema-markup migration adds canonical URL and JSON-LD columns to
+   `blog_posts` without changing existing article content; existing posts use
+   automatically generated BlogPosting data until customized in the editor.
 3. Disable public sign-ups in Supabase Authentication settings. Provision
    member accounts and the configured admin account through Supabase; the site
    intentionally has no public registration form.

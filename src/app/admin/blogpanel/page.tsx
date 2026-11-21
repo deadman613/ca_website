@@ -12,12 +12,14 @@ import {
 import { deleteBlogPost, saveBlogPost } from "@/app/actions/blog-admin";
 import { signOut } from "@/app/actions/auth";
 import MarkdownEditor from "@/app/admin/blogpanel/MarkdownEditor";
+import SchemaMarkupEditor from "@/app/admin/blogpanel/SchemaMarkupEditor";
 import FeaturedImageUpload from "@/app/admin/blogpanel/FeaturedImageUpload";
 import BlogTitleSlugFields from "@/app/admin/blogpanel/BlogTitleSlugFields";
 import { blogCategories, type BlogPost } from "@/lib/data/blogs";
 import { getAdminBlogPosts } from "@/lib/blogs";
 import { getBlogAdminSetupIssues, isBlogAdminConfigured } from "@/lib/supabase/config";
 import { requireAdmin } from "@/lib/auth";
+import { getBlogCanonicalUrl } from "@/lib/blog-schema";
 import AnimatedNumber from "@/components/motion/AnimatedNumber";
 import TiltCard from "@/components/motion/TiltCard";
 import Reveal from "@/components/motion/Reveal";
@@ -50,6 +52,7 @@ function localDateTime(value: string | null) {
 }
 
 function BlogEditor({ post }: { post?: BlogPost }) {
+  const now = new Date().toISOString();
   return (
     <form action={saveBlogPost} className="space-y-6">
       {post && <input name="id" type="hidden" value={post.id} />}
@@ -98,7 +101,7 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           </label>
           <label className="text-sm font-medium text-navy">
             Canonical URL (optional)
-            <input className="input-field mt-2" defaultValue={post?.slug ? `https://delhicaschool.com/blogs/${post.slug}` : ""} name="canonicalUrl" placeholder="https://delhicaschool.com/blogs/…" type="url" />
+            <input className="input-field mt-2" defaultValue={post?.canonicalUrl ?? (post?.slug ? getBlogCanonicalUrl(post.slug) : "")} name="canonicalUrl" placeholder="https://…" type="url" />
           </label>
           <label className="text-sm font-medium text-navy md:col-span-2">
             Meta description
@@ -124,9 +127,25 @@ function BlogEditor({ post }: { post?: BlogPost }) {
         </div>
       </section>
 
+      <SchemaMarkupEditor
+        initialAuthor={post?.author.name}
+        initialAuthorImage={post?.author.photo}
+        initialCanonicalUrl={post?.canonicalUrl}
+        initialCategory={post?.category ?? blogCategories[0]}
+        initialDateModified={post?.updatedAt ?? now}
+        initialDatePublished={post?.publishedAt ?? now}
+        initialDescription={post?.seoDescription ?? post?.excerpt}
+        initialFeaturedImage={post?.featuredImage}
+        initialKeywords={post?.tags}
+        initialSchemaJson={post?.schemaJson}
+        initialSchemaMode={post?.schemaMode}
+        initialSlug={post?.slug}
+        initialTitle={post?.title}
+      />
+
       <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
         <div className="mb-5">
-          <p className="section-label">03 · Access &amp; publishing</p>
+          <p className="section-label">04 · Access &amp; publishing</p>
           <h3 className="mt-1 text-lg font-semibold text-navy">Choose who can read this post</h3>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
@@ -158,7 +177,7 @@ function BlogEditor({ post }: { post?: BlogPost }) {
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
         <div className="mb-5">
-          <p className="section-label">04 · Article content</p>
+          <p className="section-label">05 · Article content</p>
           <h3 className="mt-1 text-lg font-semibold text-navy">Write the full article</h3>
         </div>
         <MarkdownEditor initialValue={post?.content ?? ""} />
@@ -267,7 +286,9 @@ export default async function BlogPanelPage({ searchParams }: BlogPanelProps) {
             <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
               {query.error === "schedule"
                 ? "Choose a future date for a scheduled post and a current or past date for a published post."
-                : "The post could not be saved. Check the fields and slug, then try again."}
+                : query.error === "schema"
+                  ? "The BlogPosting schema is invalid. Check its JSON syntax and required properties."
+                  : "The post could not be saved. Check the fields and slug, then try again."}
             </p>
           )}
 
@@ -378,4 +399,3 @@ export default async function BlogPanelPage({ searchParams }: BlogPanelProps) {
     </div>
   );
 }
-

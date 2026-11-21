@@ -7,6 +7,11 @@ import { blogCategories } from "@/lib/data/blogs";
 import { requireAdmin } from "@/lib/auth";
 import { getPrismaClient } from "@/lib/prisma";
 import { slugifyBlogTitle } from "@/lib/blog-slug";
+import {
+  createBlogPostingSchema,
+  getBlogCanonicalUrl,
+  isValidBlogSchemaPayload,
+} from "@/lib/blog-schema";
 
 const imageUrlSchema = z
   .string()
@@ -31,6 +36,14 @@ const postSchema = z.object({
   excerpt: z.string().trim().min(1).max(1000),
   seoTitle: z.string().trim().max(200),
   seoDescription: z.string().trim().max(300),
+  canonicalUrl: z
+    .string()
+    .trim()
+    .max(2048)
+    .refine((value) => value === "" || /^https?:\/\/[^\s"'<>]+$/i.test(value)),
+  schemaData: z.string().max(20000),
+  schemaMode: z.enum(["auto", "manual"]),
+  schemaMultiplicity: z.enum(["single", "multiple"]),
   previewContent: z.string().trim().max(8000),
   content: z.string().trim().min(1).max(100000),
   category: z.enum(blogCategories),
@@ -90,6 +103,10 @@ export async function saveBlogPost(formData: FormData) {
     excerpt: formString(formData, "excerpt"),
     seoTitle: formString(formData, "seoTitle"),
     seoDescription: formString(formData, "seoDescription"),
+    canonicalUrl: formString(formData, "canonicalUrl"),
+    schemaData: formString(formData, "schemaData"),
+    schemaMode: formString(formData, "schemaMode"),
+    schemaMultiplicity: formString(formData, "schemaMultiplicity"),
     previewContent: formString(formData, "previewContent"),
     content: formString(formData, "content"),
     category: formString(formData, "category"),
@@ -131,6 +148,50 @@ export async function saveBlogPost(formData: FormData) {
     input.status === "draft"
       ? null
       : (requestedDate ?? new Date()).toISOString();
+  const canonicalUrl = input.canonicalUrl || getBlogCanonicalUrl(input.slug);
+  const publishedAt = publishAt ? new Date(publishAt) : new Date();
+  const updatedAt = new Date();
+  let schemaJson: string;
+
+  if (input.schemaMode === "manual") {
+    let manualSchema: unknown;
+    try {
+      manualSchema = JSON.parse(input.schemaData);
+    } catch {
+      returnWithError("schema");
+    }
+    if (
+      !isValidBlogSchemaPayload(
+        manualSchema,
+        input.schemaMultiplicity === "multiple"
+      )
+    ) {
+      returnWithError("schema");
+    }
+    schemaJson = JSON.stringify(manualSchema);
+  } else {
+    const generatedSchema = createBlogPostingSchema({
+        title: input.title,
+        description: input.seoDescription || input.excerpt,
+        authorName: input.authorName,
+        authorImage: input.authorPhoto,
+        datePublished: publishedAt.toISOString(),
+        dateModified: updatedAt.toISOString(),
+        featuredImage: input.featuredImage,
+        canonicalUrl,
+        category: input.category,
+        keywords: input.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      });
+    schemaJson = JSON.stringify(
+      input.schemaMultiplicity === "multiple"
+        ? [generatedSchema]
+        : generatedSchema
+    );
+  }
+
   const prisma = getPrismaClient();
   const existing = input.id
     ? await prisma.blogPost.findUnique({
@@ -146,13 +207,16 @@ export async function saveBlogPost(formData: FormData) {
     excerpt: input.excerpt,
     seoTitle: input.seoTitle || null,
     seoDescription: input.seoDescription || null,
+    canonicalUrl,
+    schemaJson,
+    schemaMode: input.schemaMode,
     previewContent: input.previewContent,
     category: input.category,
     authorName: input.authorName,
     authorPhoto: input.authorPhoto || null,
     access: input.access,
     status: input.status,
-    publishedAt: publishAt ? new Date(publishAt) : new Date(),
+    publishedAt,
     publishAt: publishAt ? new Date(publishAt) : null,
     readingTime: input.readingTime,
     featuredImage: input.featuredImage || null,
@@ -211,4 +275,3 @@ export async function deleteBlogPost(formData: FormData) {
   revalidatePath(`/blog/${post.slug}`);
   redirect("/admin/blogpanel?deleted=1");
 }
-

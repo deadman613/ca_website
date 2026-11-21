@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, BookOpen, Clock, LockKeyhole, Tag, User } from "lucide-react";
-import { isValidElement, type ReactNode } from "react";
+import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Tag, User } from "lucide-react";
+import { isValidElement, type CSSProperties, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getBlogPostForViewer, getVisibleBlogPosts } from "@/lib/blogs";
 import { blogCategories } from "@/lib/data/blogs";
+import {
+  createBlogPostingSchema,
+  getBlogCanonicalUrl,
+  parseBlogPostingSchemas,
+} from "@/lib/blog-schema";
+import { isStandaloneAsteriskArtifact } from "@/lib/blog-markdown";
 import { siteUrl } from "@/lib/site";
 
 interface Props {
@@ -42,22 +48,54 @@ function headingId(text: string) {
     .replace(/\s+/g, "-");
 }
 
+function validTextAlignment(
+  alignment: string | undefined
+): CSSProperties["textAlign"] {
+  return alignment === "left" ||
+    alignment === "center" ||
+    alignment === "right" ||
+    alignment === "justify"
+    ? alignment
+    : undefined;
+}
+
+function headingText(markdownHeading: string) {
+  return markdownHeading
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/<[^>]+>/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(
+      /(^|[^\p{L}\p{N}])(\*\*|__)(?=\S)(.+?\S)\2(?=$|[^\p{L}\p{N}])/gu,
+      "$1$3"
+    )
+    .replace(
+      /(^|[^\p{L}\p{N}])([*_])(?=\S)(.+?\S)\2(?=$|[^\p{L}\p{N}])/gu,
+      "$1$3"
+    )
+    .replace(/~~(?=\S)(.+?\S)~~/g, "$1")
+    .trim();
+}
+
+function tableOfContentsText(text: string) {
+  return text.replace(/^\d+\\?[.)]\s+/, "").trim();
+}
+
 function getMarkdownHeadings(markdown: string) {
   const counts = new Map<string, number>();
   return markdown.split(/\r?\n/).flatMap((line) => {
     const match = line.match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (!match) return [];
 
-    const text = match[2]
-      .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-      .replace(/<[^>]+>/g, "")
-      .replace(/[`*_~]/g, "")
-      .trim();
-    const baseId = headingId(text);
+    const heading = headingText(match[2]);
+    const baseId = headingId(heading);
     const count = counts.get(baseId) ?? 0;
     counts.set(baseId, count + 1);
-    return [{ id: count ? `${baseId}-${count}` : baseId, text, level: match[1].length }];
+    return [{
+      id: count ? `${baseId}-${count}` : baseId,
+      text: tableOfContentsText(heading),
+      level: match[1].length,
+    }];
   });
 }
 
@@ -82,7 +120,9 @@ function createMarkdownComponents(markdown: string): Components {
   h4: ({ children }) => <h4 id={nextHeadingId(children)} className="mb-3 mt-6 font-bold text-navy text-lg">{children}</h4>,
   h5: ({ children }) => <h5 id={nextHeadingId(children)} className="mb-2 mt-4 text-base font-semibold text-navy">{children}</h5>,
   h6: ({ children }) => <h6 id={nextHeadingId(children)} className="mb-2 mt-4 text-sm font-semibold uppercase tracking-wide text-navy">{children}</h6>,
-  p: ({ children }) => <p className="my-5 text-[1.0625rem] leading-8 text-secondary">{children}</p>,
+  p: ({ children }) => isStandaloneAsteriskArtifact(children)
+    ? null
+    : <p className="my-5 text-[1.0625rem] leading-8 text-secondary">{children}</p>,
   // Markdown image links can come from arbitrary external hosts.
   // eslint-disable-next-line @next/next/no-img-element
   img: ({ src, alt }) => <img alt={alt ?? ""} className="my-8 block h-auto max-w-full rounded-xl" loading="lazy" src={src} />,
@@ -91,10 +131,11 @@ function createMarkdownComponents(markdown: string): Components {
   li: ({ children }) => <li>{children}</li>,
   a: ({ children, href }) => <a className="font-medium text-navy underline decoration-gold/60 underline-offset-4 hover:text-gold-muted" href={href}>{children}</a>,
   strong: ({ children }) => <strong className="font-semibold text-navy">{children}</strong>,
+  em: ({ children }) => <em className="italic">{children}</em>,
   blockquote: ({ children }) => <blockquote className="my-8 rounded-r-xl border-l-4 border-gold bg-off-white px-6 py-2 text-secondary [&_p]:text-lg [&_p]:italic">{children}</blockquote>,
-  table: ({ children }) => <div className="my-8 overflow-x-auto rounded-xl border border-gray-200"><table className="w-full border-collapse text-left text-sm">{children}</table></div>,
-  th: ({ children }) => <th className="border-b border-gray-200 bg-off-white px-4 py-3 font-semibold text-navy">{children}</th>,
-  td: ({ children }) => <td className="border-b border-gray-100 px-4 py-3 text-secondary">{children}</td>,
+  table: ({ children }) => <div className="my-8 overflow-x-auto rounded-xl border border-gray-200"><table className="w-full min-w-[36rem] border-collapse text-left text-sm">{children}</table></div>,
+  th: ({ children, align }) => <th className="border-b border-gray-200 bg-off-white px-4 py-3 font-semibold text-navy" scope="col" style={{ textAlign: validTextAlignment(align) }}>{children}</th>,
+  td: ({ children, align }) => <td className="border-b border-gray-100 px-4 py-3 text-secondary" style={{ textAlign: validTextAlignment(align) }}>{children}</td>,
   };
 }
 
@@ -116,7 +157,7 @@ function isPublished(post: Awaited<ReturnType<typeof getBlogPostForViewer>>) {
   );
 }
 
-function jsonLd(value: Record<string, unknown>) {
+function jsonLd(value: unknown) {
   return {
     __html: JSON.stringify(value).replace(/</g, "\\u003c"),
   };
@@ -128,7 +169,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Post Not Found", robots: { index: false, follow: false } };
 
   const publicPost = post.access === "public" && isPublished(post);
-  const canonical = `/blogs/${post.slug}`;
+  const canonical = post.canonicalUrl || getBlogCanonicalUrl(post.slug);
   const seoTitle = post.seoTitle || post.title;
   const seoDescription = post.seoDescription || post.excerpt;
   return {
@@ -178,20 +219,23 @@ export default async function BlogPostPage({ params }: Props) {
     : [{ id: "article-content", text: "Article overview", level: 2 }];
   const markdownComponents = createMarkdownComponents(articleMarkdown);
   const loginUrl = `/login?next=${encodeURIComponent(`/blogs/${post.slug}`)}`;
-  const blogPosting = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    articleBody: post.content,
-    datePublished: post.publishedAt,
-    author: { "@type": "Person", name: post.author.name },
-    publisher: { "@type": "Organization", name: "Delhi CA School" },
-    mainEntityOfPage: siteUrl
-      ? new URL(`/blogs/${post.slug}`, siteUrl).toString()
-      : `/blogs/${post.slug}`,
-    ...(post.featuredImage ? { image: [post.featuredImage] } : {}),
-  };
+  const blogSchemas =
+    post.schemaJson
+      ? parseBlogPostingSchemas(post.schemaJson)
+      : [
+          createBlogPostingSchema({
+          title: post.title,
+          description: post.seoDescription || post.excerpt,
+          authorName: post.author.name,
+          authorImage: post.author.photo ?? "",
+          datePublished: post.publishedAt,
+          dateModified: post.updatedAt || post.publishedAt,
+          featuredImage: post.featuredImage ?? "",
+          canonicalUrl: post.canonicalUrl || getBlogCanonicalUrl(post.slug),
+          category: post.category,
+          keywords: post.tags,
+          }),
+        ];
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -214,7 +258,7 @@ export default async function BlogPostPage({ params }: Props) {
         name: post.title,
         item: siteUrl
           ? new URL(`/blogs/${post.slug}`, siteUrl).toString()
-          : `/blogs/${post.slug}`,
+          : getBlogCanonicalUrl(post.slug),
       },
     ],
   };
@@ -223,10 +267,13 @@ export default async function BlogPostPage({ params }: Props) {
     <>
       {isPublic && post.content && (
         <>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={jsonLd(blogPosting)}
-          />
+          {blogSchemas.map((schema, index) => (
+            <script
+              key={`blog-schema-${index}`}
+              type="application/ld+json"
+              dangerouslySetInnerHTML={jsonLd(schema)}
+            />
+          ))}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={jsonLd(breadcrumb)}
@@ -271,7 +318,6 @@ export default async function BlogPostPage({ params }: Props) {
                   <span className="inline-flex items-center gap-1.5 font-medium text-navy">
                     <User size={13} className="text-gold-muted" /> {post.author.name}
                   </span>
-                  <span className="inline-flex items-center gap-1.5"><Clock size={13} className="text-gold-muted" />{post.readingTime}</span>
                 </div>
                 {post.featuredImage ? (
                   <div
@@ -303,11 +349,14 @@ export default async function BlogPostPage({ params }: Props) {
                     <span aria-hidden="true" className="text-base text-[#2873d8]">+</span>
                   </summary>
                   <nav aria-label="Table of contents" className="border-t border-[#dce8f8] px-4 py-3">
-                    <ol className="space-y-2">
-                      {tocItems.map((heading) => (
+                    <ol className="list-none space-y-2">
+                      {tocItems.map((heading, index) => (
                         <li className={heading.level === 3 ? "pl-4" : ""} key={heading.id}>
-                          <a className="text-xs leading-5 text-secondary transition-colors hover:text-[#2873d8]" href={`#${heading.id}`}>
-                            {heading.text}
+                          <a className="grid grid-cols-[2rem_minmax(0,1fr)] items-start gap-x-1 text-xs leading-5 text-secondary transition-colors hover:text-[#2873d8]" href={`#${heading.id}`}>
+                            <span className="text-right font-medium tabular-nums text-navy">
+                              {index + 1}.
+                            </span>
+                            <span className="min-w-0">{heading.text}</span>
                           </a>
                         </li>
                       ))}
@@ -343,14 +392,14 @@ export default async function BlogPostPage({ params }: Props) {
                         {articleMarkdown}
                       </ReactMarkdown>
                     </div>
-                    {post.tags.length > 0 && (
+                    {/* {post.tags.length > 0 && (
                       <div className="mt-8 border-t border-gray-100 pt-6">
                         <div className="flex flex-wrap items-center gap-2.5">
                           <Tag className="text-muted" size={14} />
                           {post.tags.map((tag) => <span className="tag-navy text-xs" key={tag}>{tag}</span>)}
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </>
                 )}
               </div>
@@ -426,7 +475,6 @@ export default async function BlogPostPage({ params }: Props) {
                 {related.map((item) => (
                   <Link className="group rounded-xl border border-gray-100 p-4 transition-colors hover:border-[#9fc2f2] hover:bg-[#f7faff]" href={`/blogs/${item.slug}`} key={item.id}>
                     <h3 className="mb-2 line-clamp-2 font-playfair font-bold leading-snug text-navy group-hover:text-[#2873d8]">{item.title}</h3>
-                    <p className="text-xs text-muted">{item.readingTime}</p>
                   </Link>
                 ))}
               </div>

@@ -12,11 +12,15 @@ export interface BlogPost {
   excerpt: string;
   seoTitle?: string;
   seoDescription?: string;
+  canonicalUrl?: string;
+  schemaJson?: string;
+  schemaMode?: "auto" | "manual";
   previewContent: string;
   content?: string;
   category: BlogCategory;
   author: BlogAuthor;
   publishedAt: string;
+  updatedAt?: string;
   publishAt: string | null;
   status: BlogPublicationStatus;
   access: BlogAccess;
@@ -37,4 +41,3 @@ export const blogCategories: BlogCategory[] = [
   "Exam update",
   "Study strategy",
 ];
-

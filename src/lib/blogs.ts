@@ -29,6 +29,9 @@ function toBlogPost(row: PrismaBlogPost, content?: string): BlogPost {
     excerpt: row.excerpt,
     ...(row.seoTitle ? { seoTitle: row.seoTitle } : {}),
     ...(row.seoDescription ? { seoDescription: row.seoDescription } : {}),
+    ...(row.canonicalUrl ? { canonicalUrl: row.canonicalUrl } : {}),
+    ...(row.schemaJson ? { schemaJson: row.schemaJson } : {}),
+    schemaMode: row.schemaMode === "manual" ? "manual" : "auto",
     previewContent: row.previewContent,
     ...(content === undefined ? {} : { content }),
     category: row.category as BlogCategory,
@@ -37,6 +40,7 @@ function toBlogPost(row: PrismaBlogPost, content?: string): BlogPost {
       ...(row.authorPhoto ? { photo: row.authorPhoto } : {}),
     },
     publishedAt: row.publishedAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
     publishAt: row.publishAt?.toISOString() ?? null,
     status: scheduledNowPublished
       ? "published"
@@ -151,4 +155,3 @@ export async function getAdminBlogPosts() {
     toBlogPost(post, post.articleContent?.content ?? "")
   );
 }
-

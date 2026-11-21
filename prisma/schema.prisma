@@ -14,6 +14,9 @@ model BlogPost {
   excerpt           String              @db.Text
   seoTitle          String?             @map("seo_title") @db.VarChar(200)
   seoDescription    String?             @map("seo_description") @db.VarChar(300)
+  canonicalUrl      String?             @map("canonical_url") @db.Text
+  schemaJson        String?             @map("schema_json") @db.Text
+  schemaMode        String              @default("auto") @map("schema_mode") @db.VarChar(8)
   previewContent    String              @default("") @map("preview_content") @db.Text
   category          String              @db.VarChar(80)
   authorName        String              @map("author_name") @db.VarChar(120)

@@ -92,7 +92,6 @@ export default async function RecentBlogSection() {
                     <Calendar size={12} className="text-gold" />
                     {formatDate(post.publishedAt)}
                   </span>
-                  <span className="ml-auto font-medium text-navy/50">{post.readingTime}</span>
                 </div>
               </div>
             </Link>
@@ -102,5 +101,4 @@ export default async function RecentBlogSection() {
     </section>
   );
 }
-
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, Sparkles, User } from "lucide-react";
+import { ArrowRight, Calendar, Sparkles, User } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/lib/data/blogs";
 import { blogCategories } from "@/lib/data/blogs";
 import StreamSwitcher from "@/components/layout/StreamSwitcher";
@@ -144,7 +144,6 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
                     <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted">
                       <span className="flex items-center gap-1.5"><User size={13} />{featured.author.name}</span>
                       <span className="flex items-center gap-1.5"><Calendar size={13} />{formatDate(featured.publishedAt)}</span>
-                      <span className="flex items-center gap-1.5"><Clock size={13} />{featured.readingTime}</span>
                     </div>
                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
                       {featured.access === "login_required" ? "Preview article" : "Read article"}
@@ -202,7 +201,7 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
                       <span className="mb-3 text-xs font-semibold text-amber-800">Login required</span>
                     )}
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4 text-xs text-muted">
-                      <span>{formatDate(post.publishedAt)} · {post.readingTime}</span>
+                      <span>{formatDate(post.publishedAt)}</span>
                       <ArrowRight aria-hidden="true" className="shrink-0 text-navy transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gold" size={15} />
                     </div>
                   </div>
