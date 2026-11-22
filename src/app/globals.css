@@ -382,6 +382,406 @@ summary:focus-visible {
   box-shadow: 0 5px 16px rgba(201,168,76,0.2);
 }
 
+.faculty-profile-card {
+  transform: translateY(0);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms ease,
+    border-color 280ms ease;
+}
+
+.faculty-profile-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201,168,76,0.5);
+  box-shadow: 0 18px 38px rgba(2,60,169,0.12);
+}
+
+.faculty-portrait-stage {
+  position: relative;
+  display: flex;
+  height: 210px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 1000px;
+}
+
+.faculty-portrait-blue {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,255,255,0.96), transparent 40%),
+    linear-gradient(145deg, #eaf2ff, #dce8f8);
+}
+
+.faculty-portrait-gold {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,255,255,0.96), transparent 40%),
+    linear-gradient(145deg, #fbf3df, #efe5ce);
+}
+
+.faculty-portrait-halo {
+  position: absolute;
+  top: 1.25rem;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(2,60,169,0.12);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.faculty-portrait-frame {
+  position: relative;
+  z-index: 1;
+  width: 132px;
+  height: 168px;
+  transform-style: preserve-3d;
+}
+
+.faculty-portrait-image,
+.faculty-portrait-placeholder {
+  overflow: hidden;
+  border: 4px solid rgba(255,255,255,0.92);
+  border-radius: 48% 48% 20% 20%;
+  box-shadow: 0 18px 28px rgba(2,60,169,0.18);
+  transform: perspective(900px) rotateY(-7deg) rotateX(2deg);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms ease;
+}
+
+.faculty-portrait-image {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.faculty-portrait-placeholder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(232,201,122,0.42), transparent 38%),
+    linear-gradient(145deg, #174aab, #023CA9 65%, #012b7a);
+  color: #E8C97A;
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  text-shadow: 0 3px 14px rgba(0,0,0,0.18);
+}
+
+.faculty-portrait-gold .faculty-portrait-placeholder {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.32), transparent 38%),
+    linear-gradient(145deg, #b99548, #8c6b25 65%, #634c1d);
+  color: white;
+}
+
+.faculty-profile-card:hover .faculty-portrait-image,
+.faculty-profile-card:hover .faculty-portrait-placeholder {
+  box-shadow: 0 24px 36px rgba(2,60,169,0.24);
+  transform: perspective(900px) rotateY(0deg) rotateX(0deg) scale(1.045);
+}
+
+.faculty-photo-caption {
+  position: absolute;
+  z-index: 2;
+  top: 0.9rem;
+  left: 0.9rem;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.72);
+  padding: 0.25rem 0.65rem;
+  color: var(--color-navy);
+  font-size: 0.65rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.faculty-carousel {
+  scrollbar-color: rgba(2,60,169,0.28) transparent;
+  scrollbar-width: thin;
+  perspective: 1400px;
+}
+
+.faculty-carousel-item {
+  width: min(84vw, 330px);
+}
+
+.faculty-flip-card {
+  display: block;
+  height: 440px;
+  padding: 0;
+  border: 0;
+  border-radius: 1.25rem;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1200px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.faculty-flip-card:focus-visible {
+  border-radius: 1.25rem;
+}
+
+.faculty-flip-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.faculty-flip-card.is-flipped .faculty-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.faculty-flip-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid rgba(2,60,169,0.12);
+  border-radius: inherit;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(2,60,169,0.1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.faculty-flip-front {
+  justify-content: flex-end;
+  isolation: isolate;
+}
+
+.faculty-card-portrait,
+.faculty-card-image-placeholder,
+.faculty-card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.faculty-card-portrait {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.95), transparent 35%),
+    linear-gradient(145deg, #eaf2ff, #dce8f8);
+}
+
+.faculty-card-portrait.faculty-portrait-gold {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.92), transparent 35%),
+    linear-gradient(145deg, #fbf3df, #efe5ce);
+}
+
+.faculty-card-image {
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 600ms ease;
+}
+
+.faculty-flip-card:hover .faculty-card-image {
+  transform: scale(1.045);
+}
+
+.faculty-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 22%, rgba(232,201,122,0.48), transparent 35%),
+    linear-gradient(145deg, #dce8f8, #b8cbea 52%, #8da7d3);
+  color: #fff;
+}
+
+.faculty-portrait-gold .faculty-card-image-placeholder {
+  background:
+    radial-gradient(ellipse at 50% 22%, rgba(255,255,255,0.55), transparent 35%),
+    linear-gradient(145deg, #f4e8c7, #d5bd85 52%, #aa8d4e);
+}
+
+.faculty-card-image-placeholder span {
+  display: flex;
+  width: 9.5rem;
+  height: 12rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 48% 48% 20% 20%;
+  background: linear-gradient(145deg, #174aab, #023CA9 65%, #012b7a);
+  box-shadow: 0 24px 46px rgba(2,60,169,0.28);
+  color: #E8C97A;
+  font-size: 3rem;
+  font-weight: 700;
+  transform: perspective(900px) rotateY(-7deg);
+}
+
+.faculty-sample-photo-label {
+  position: absolute;
+  z-index: 3;
+  top: 1rem;
+  left: 1rem;
+  border: 1px solid rgba(255,255,255,0.65);
+  border-radius: 9999px;
+  background: rgba(2,38,103,0.72);
+  padding: 0.3rem 0.65rem;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(8px);
+}
+
+.faculty-portrait-gold .faculty-card-image-placeholder span {
+  background: linear-gradient(145deg, #b99548, #8c6b25 65%, #634c1d);
+  color: white;
+}
+
+.faculty-front-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(2,60,169,0.02) 28%,
+    rgba(2,32,89,0.2) 53%,
+    rgba(1,24,70,0.92) 100%
+  );
+}
+
+.faculty-front-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem;
+  color: white;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.2);
+}
+
+.faculty-front-role,
+.faculty-front-hint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.faculty-front-role {
+  color: #E8C97A;
+}
+
+.faculty-front-name {
+  margin-top: 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.faculty-front-hint {
+  margin-top: 0.85rem;
+  border-top: 1px solid rgba(255,255,255,0.35);
+  padding-top: 0.75rem;
+  color: rgba(255,255,255,0.76);
+  font-size: 0.62rem;
+}
+
+.faculty-flip-back {
+  padding: 1.4rem;
+  background:
+    radial-gradient(circle at 100% 0, rgba(201,168,76,0.14), transparent 32%),
+    #fff;
+  color: var(--color-navy);
+  transform: rotateY(180deg);
+}
+
+.faculty-back-heading {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e8edf5;
+  padding-bottom: 0.85rem;
+}
+
+.faculty-back-eyebrow,
+.faculty-back-label {
+  color: #a88a3d;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.faculty-back-name {
+  margin-top: 0.35rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.faculty-back-role {
+  margin-top: 0.25rem;
+  color: #64748b;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.faculty-back-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.9rem;
+  overflow-y: auto;
+  padding: 0.9rem 0;
+}
+
+.faculty-back-bio {
+  color: #4a5568;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.faculty-back-credential {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: #a88a3d;
+}
+
+.faculty-back-credential > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: #64748b;
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.faculty-back-credential strong {
+  color: var(--color-navy);
+  font-size: 0.72rem;
+}
+
+.faculty-back-topics {
+  color: #4a5568;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.faculty-back-flip-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-top: 1px solid #e8edf5;
+  padding-top: 0.75rem;
+  color: #64748b;
+  font-size: 0.67rem;
+}
+
 .motion-card-shell > .premium-card > * {
   position: relative;
   z-index: 1;
@@ -514,6 +914,16 @@ summary:focus-visible {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .faculty-profile-card,
+  .faculty-portrait-image,
+  .faculty-portrait-placeholder {
+    transform: none !important;
+  }
+
+  .faculty-flip-inner {
     transition-duration: 0.01ms !important;
   }
 }
@@ -894,6 +1304,3 @@ summary:focus-visible {
   transition: color 0.15s;
 }
 .admin-login-footer-link:hover { color: #C9A84C; }
-
-
-

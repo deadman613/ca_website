@@ -39,15 +39,15 @@ export default function HomePage() {
       <Reveal><ResultsSection /></Reveal>
       {/* 1 — Student reviews with video testimonials */}
       <Reveal><StudentReviewsWithVideos /></Reveal>
-      <Reveal><PreparationProcess /></Reveal>
+      {/* <Reveal><PreparationProcess /></Reveal> */}
       {/* 2 — Recent blog posts with author */}
       <RecentBlogSection />
       {/* 3 — Competitor comparison */}
-      <Reveal><CompetitorSection /></Reveal>
+      {/* <Reveal><CompetitorSection /></Reveal> */}
       {/* 4 — Podcast with CA founder */}
-      <Reveal><PodcastSection /></Reveal>
+      {/* <Reveal><PodcastSection /></Reveal> */}
       <Reveal><FAQSection /></Reveal>
-      <Reveal><DemoBookingSection /></Reveal>
+      {/* <Reveal><DemoBookingSection /></Reveal> */}
       <Reveal><CTASection /></Reveal>
     </>
   );

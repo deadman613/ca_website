@@ -30,7 +30,7 @@ export const faculty: Faculty[] = [
       "Ex-faculty at two leading CA institutes in Delhi",
       "15+ years of industry and teaching experience",
     ],
-    photo: "/faculty/rajesh-mehta.jpg",
+    photo: "/faculty/sample/ca-rajesh-mehta.svg",
   },
   {
     id: "ca-priya-nair",
@@ -53,7 +53,7 @@ export const faculty: Faculty[] = [
       "10 years Big 4 accounting experience",
       "Expert reviewer for ICAI study material",
     ],
-    photo: "/faculty/priya-nair.jpg",
+    photo: "/faculty/sample/ca-priya-nair.svg",
   },
   {
     id: "ca-suresh-kumar",
@@ -72,7 +72,7 @@ export const faculty: Faculty[] = [
       "Co-authored a guide on Corporate Law",
       "10+ years of practice and teaching",
     ],
-    photo: "/faculty/suresh-kumar.jpg",
+    photo: "/faculty/sample/ca-suresh-kumar.svg",
   },
   {
     id: "ca-anita-sharma",
@@ -95,7 +95,6 @@ export const faculty: Faculty[] = [
       "Specialized certification in Financial Derivatives",
       "8+ years of structured CA teaching",
     ],
-    photo: "/faculty/anita-sharma.jpg",
+    photo: "/faculty/sample/ca-anita-sharma.svg",
   },
 ];
-

@@ -260,18 +260,26 @@ export async function deleteBlogPost(formData: FormData) {
   if (!id || id.length > 100) returnWithError("invalid");
 
   const prisma = getPrismaClient();
-  const post = await prisma.blogPost.findUnique({
-    where: { id },
-    select: { slug: true },
-  });
-  if (!post) returnWithError("not-found");
+  const deletedPost = await prisma.$transaction(async (transaction) => {
+    const post = await transaction.blogPost.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
+    if (!post) return null;
 
-  await prisma.blogPost.delete({ where: { id } });
+    await transaction.blogArticleContent.deleteMany({
+      where: { postId: id },
+    });
+    await transaction.blogPost.delete({ where: { id } });
+
+    return post;
+  });
+  if (!deletedPost) returnWithError("not-found");
 
   revalidatePath("/blog");
   revalidatePath("/blogs");
   revalidatePath("/sitemap.xml");
-  revalidatePath(`/blogs/${post.slug}`);
-  revalidatePath(`/blog/${post.slug}`);
+  revalidatePath(`/blogs/${deletedPost.slug}`);
+  revalidatePath(`/blog/${deletedPost.slug}`);
   redirect("/admin/blogpanel?deleted=1");
 }
