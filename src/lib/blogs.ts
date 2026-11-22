@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import type { BlogPost as PrismaBlogPost } from "@/generated/prisma/client";
 import type { BlogPost, BlogCategory } from "@/lib/data/blogs";
 import { blogPosts as legacyBlogPosts } from "@/lib/data/seed-blogs";
@@ -63,7 +64,7 @@ function getLegacyPublicPosts(): BlogPost[] {
   }));
 }
 
-export async function getVisibleBlogPosts() {
+export const getVisibleBlogPosts = cache(async function getVisibleBlogPosts() {
   if (!isPrismaDatabaseConfigured()) return getLegacyPublicPosts();
 
   const posts = await getPrismaClient().blogPost.findMany({
@@ -72,7 +73,7 @@ export async function getVisibleBlogPosts() {
   });
 
   return posts.map((post) => toBlogPost(post));
-}
+});
 
 export async function getIndexableBlogPosts() {
   if (!isPrismaDatabaseConfigured()) {
@@ -96,7 +97,9 @@ export async function getIndexableBlogPosts() {
   }));
 }
 
-export async function getBlogPostForViewer(slug: string) {
+export const getBlogPostForViewer = cache(async function getBlogPostForViewer(
+  slug: string
+) {
   if (!isPrismaDatabaseConfigured()) {
     const legacyPost = legacyBlogPosts.find((post) => post.slug === slug);
     return legacyPost
@@ -111,7 +114,12 @@ export async function getBlogPostForViewer(slug: string) {
   }
 
   const prisma = getPrismaClient();
-  const user = await getAuthenticatedUser();
+  const [user, publicPost] = await Promise.all([
+    getAuthenticatedUser(),
+    prisma.blogPost.findFirst({
+      where: { slug, ...visibleBlogWhere(new Date()) },
+    }),
+  ]);
 
   if (isAdminUser(user)) {
     const post = await prisma.blogPost.findUnique({
@@ -124,24 +132,21 @@ export async function getBlogPostForViewer(slug: string) {
       : null;
   }
 
-  const post = await prisma.blogPost.findFirst({
-    where: { slug, ...visibleBlogWhere(new Date()) },
-  });
-  if (!post) return null;
+  if (!publicPost) return null;
 
-  const preview = toBlogPost(post);
+  const preview = toBlogPost(publicPost);
   if (preview.access === "login_required" && !user) return preview;
 
   const article = await prisma.blogArticleContent.findUnique({
-    where: { postId: post.id },
+    where: { postId: publicPost.id },
     select: { content: true },
   });
   if (!article) {
     throw new Error(`Published blog article content is missing for "${slug}".`);
   }
 
-  return toBlogPost(post, article.content);
-}
+  return toBlogPost(publicPost, article.content);
+});
 
 export async function getAdminBlogPosts() {
   await requireAdmin();

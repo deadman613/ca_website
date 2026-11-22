@@ -202,12 +202,14 @@ export const dynamic = "force-dynamic";
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getBlogPostForViewer(slug);
+  const [post, visiblePosts] = await Promise.all([
+    getBlogPostForViewer(slug),
+    getVisibleBlogPosts(),
+  ]);
   if (!post) notFound();
 
   const isLocked = post.access === "login_required" && !post.content;
   const isPublic = post.access === "public" && isPublished(post);
-  const visiblePosts = await getVisibleBlogPosts();
   const related = visiblePosts
     .filter((item) => item.id !== post.id && item.category === post.category)
     .slice(0, 3);
