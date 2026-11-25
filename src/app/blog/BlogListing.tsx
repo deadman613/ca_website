@@ -33,7 +33,7 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
   const { stream } = useStream();
   const [activeCategory, setActiveCategory] = useState<"all" | BlogCategory>("all");
 
-  // Stream-filtered posts for the featured card and category buttons
+  // Stream-filtered posts (used only for the featured card pick)
   const streamPosts =
     stream === "CA"
       ? posts.filter((post) =>
@@ -43,15 +43,14 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
           ["CSEET", "CS Executive", "CS Professional", "Career guidance", "Exam update", "Study strategy"].includes(post.category)
         );
 
-  // "All articles" shows ALL posts across both streams; specific category still filters
-  const allPosts = activeCategory === "all" ? posts : posts.filter((p) => p.category === activeCategory);
+  // Featured = first stream post, only shown when there are 2+ total posts (so grid is never empty)
+  const featured = posts.length > 1 ? streamPosts[0] : undefined;
 
-  const featured = streamPosts[0];
-  // Grid: all matching posts; exclude the featured card when on "all" to avoid duplication
+  // Grid: "All" → ALL posts (minus featured if shown); specific category → filter all posts
   const listedPosts =
     activeCategory === "all"
-      ? posts.filter((p) => p.id !== featured?.id)
-      : allPosts;
+      ? posts.filter((p) => !featured || p.id !== featured.id)
+      : posts.filter((p) => p.category === activeCategory);
 
   return (
     <main>
