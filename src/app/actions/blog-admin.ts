@@ -41,9 +41,9 @@ const postSchema = z.object({
     .trim()
     .max(2048)
     .refine((value) => value === "" || /^https?:\/\/[^\s"'<>]+$/i.test(value)),
-  schemaData: z.string().max(20000),
-  schemaMode: z.enum(["auto", "manual"]),
-  schemaMultiplicity: z.enum(["single", "multiple"]),
+  schemaData: z.string().max(20000).default(""),
+  schemaMode: z.enum(["auto", "manual"]).default("auto"),
+  schemaMultiplicity: z.enum(["single", "multiple"]).default("single"),
   previewContent: z.string().trim().max(8000),
   content: z.string().trim().max(100000).default(""),
   category: z.enum(blogCategories),
@@ -152,29 +152,36 @@ export async function saveBlogPost(formData: FormData) {
   const canonicalUrl = input.canonicalUrl || getBlogCanonicalUrl(input.slug);
   const publishedAt = publishAt ? new Date(publishAt) : new Date();
   const updatedAt = new Date();
-  let schemaJson: string;
+  let schemaJson: string = "";
 
   if (input.schemaMode === "manual") {
-    let manualSchema: unknown;
-    try {
-      manualSchema = JSON.parse(input.schemaData);
-    } catch {
-      returnWithError("schema");
+    // Only validate manual schema when the user has actually entered something
+    if (input.schemaData.trim()) {
+      let manualSchema: unknown;
+      try {
+        manualSchema = JSON.parse(input.schemaData);
+      } catch {
+        returnWithError("schema");
+      }
+      if (
+        !isValidBlogSchemaPayload(
+          manualSchema,
+          input.schemaMultiplicity === "multiple"
+        )
+      ) {
+        returnWithError("schema");
+      }
+      schemaJson = JSON.stringify(manualSchema);
     }
-    if (
-      !isValidBlogSchemaPayload(
-        manualSchema,
-        input.schemaMultiplicity === "multiple"
-      )
-    ) {
-      returnWithError("schema");
-    }
-    schemaJson = JSON.stringify(manualSchema);
   } else {
-    const generatedSchema = createBlogPostingSchema({
+    // Auto-generate schema; silently skip if not enough data
+    try {
+      const description =
+        input.seoDescription || input.excerpt || input.title;
+      const generatedSchema = createBlogPostingSchema({
         title: input.title,
-        description: input.seoDescription || input.excerpt,
-        authorName: input.authorName,
+        description,
+        authorName: input.authorName || "Delhi CA School",
         authorImage: input.authorPhoto,
         datePublished: publishedAt.toISOString(),
         dateModified: updatedAt.toISOString(),
@@ -186,11 +193,14 @@ export async function saveBlogPost(formData: FormData) {
           .map((tag) => tag.trim())
           .filter(Boolean),
       });
-    schemaJson = JSON.stringify(
-      input.schemaMultiplicity === "multiple"
-        ? [generatedSchema]
-        : generatedSchema
-    );
+      schemaJson = JSON.stringify(
+        input.schemaMultiplicity === "multiple"
+          ? [generatedSchema]
+          : generatedSchema
+      );
+    } catch {
+      schemaJson = ""; // Skip schema silently if generation fails
+    }
   }
 
   const prisma = getPrismaClient();
@@ -209,7 +219,7 @@ export async function saveBlogPost(formData: FormData) {
     seoTitle: input.seoTitle || null,
     seoDescription: input.seoDescription || null,
     canonicalUrl,
-    schemaJson,
+    schemaJson: schemaJson || null,
     schemaMode: input.schemaMode,
     previewContent: input.previewContent,
     category: input.category,
