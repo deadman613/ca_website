@@ -33,7 +33,7 @@ const postSchema = z.object({
     .max(160)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   title: z.string().trim().min(1).max(200),
-  excerpt: z.string().trim().min(1).max(1000),
+  excerpt: z.string().trim().max(1000).default(""),
   seoTitle: z.string().trim().max(200),
   seoDescription: z.string().trim().max(300),
   canonicalUrl: z
@@ -45,19 +45,20 @@ const postSchema = z.object({
   schemaMode: z.enum(["auto", "manual"]),
   schemaMultiplicity: z.enum(["single", "multiple"]),
   previewContent: z.string().trim().max(8000),
-  content: z.string().trim().min(1).max(100000),
+  content: z.string().trim().max(100000).default(""),
   category: z.enum(blogCategories),
-  authorName: z.string().trim().min(1).max(120),
+  authorName: z.string().trim().max(120).default("Delhi CA School"),
   authorPhoto: imageUrlSchema,
   access: z.enum(["public", "login_required"]),
   status: z.enum(["draft", "scheduled", "published"]),
   publishAt: z.string(),
-  readingTime: z.string().trim().min(1).max(40),
+  readingTime: z.string().trim().max(40).default("5 min read"),
   featuredImage: imageUrlSchema,
   featuredLabel: z.string().trim().max(80),
   tags: z.string().max(1000),
 }).refine(
-  (post) => post.access !== "login_required" || post.previewContent.length > 0,
+  // Only enforce preview content if explicitly login_required AND has content
+  (post) => post.access !== "login_required" || post.content.length === 0 || post.previewContent.length > 0,
   { message: "Add preview content to login-required posts.", path: ["previewContent"] }
 );
 

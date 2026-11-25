@@ -9,15 +9,15 @@ import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 
 const categoryColors: Record<string, string> = {
-  "CA Foundation": "text-emerald-700 bg-emerald-50 border-emerald-200",
-  "CA Inter": "text-orange-700 bg-orange-50 border-orange-200",
-  "CA Final": "text-amber-700 bg-amber-50 border-amber-200",
-  CSEET: "text-blue-700 bg-blue-50 border-blue-200",
-  "CS Executive": "text-purple-700 bg-purple-50 border-purple-200",
-  "CS Professional": "text-pink-700 bg-pink-50 border-pink-200",
-  "Career guidance": "text-gray-700 bg-gray-50 border-gray-200",
-  "Exam update": "text-red-700 bg-red-50 border-red-200",
-  "Study strategy": "text-blue-700 bg-blue-50 border-blue-200",
+  "CA Foundation": "border-emerald-400/40 bg-emerald-900/30 text-emerald-300",
+  "CA Inter": "border-orange-400/40 bg-orange-900/30 text-orange-300",
+  "CA Final": "border-amber-400/40 bg-amber-900/30 text-amber-300",
+  CSEET: "border-blue-400/40 bg-blue-900/30 text-blue-300",
+  "CS Executive": "border-purple-400/40 bg-purple-900/30 text-purple-300",
+  "CS Professional": "border-pink-400/40 bg-pink-900/30 text-pink-300",
+  "Career guidance": "border-white/20 bg-white/10 text-white/70",
+  "Exam update": "border-red-400/40 bg-red-900/30 text-red-300",
+  "Study strategy": "border-sky-400/40 bg-sky-900/30 text-sky-300",
 };
 
 function formatDate(dateStr: string) {
@@ -185,24 +185,46 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {listedPosts.map((post) => (
                 <Link
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-lg"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-[#1a1a1a] text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   href={`/blogs/${post.slug}`}
                   key={post.id}
                 >
-                  <FeaturedImage post={post} />
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <h3 className="mb-3 font-playfair text-lg font-bold leading-snug text-navy transition-colors group-hover:text-gold-muted">
-                      {post.title}
-                    </h3>
-                    <p className="mb-6 line-clamp-3 flex-1 text-sm leading-6 text-secondary">
+                  {/* Image */}
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-[#2a2a2a]">
+                    {post.featuredImage ? (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+                        style={{ backgroundImage: `url("${post.featuredImage}")` }}
+                      />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <svg className="h-14 w-14 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                      </span>
+                    )}
+                  </div>
+                  {/* Body */}
+                  <div className="flex flex-1 flex-col p-5">
+                    <p className="mb-2 text-xs text-white/50">
+                      {post.author.name} · {post.readingTime}
+                    </p>
+                    <div className="mb-1 flex items-start justify-between gap-2">
+                      <h3 className="font-playfair text-base font-bold leading-snug text-white transition-colors group-hover:text-gold-light">
+                        {post.title}
+                      </h3>
+                      <ArrowRight aria-hidden="true" className="mt-0.5 shrink-0 text-white/40 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gold" size={16} />
+                    </div>
+                    <p className="mb-4 line-clamp-2 flex-1 text-sm leading-6 text-white/60">
                       {post.excerpt}
                     </p>
                     {post.access === "login_required" && (
-                      <span className="mb-3 text-xs font-semibold text-amber-800">Login required</span>
+                      <span className="mb-3 text-xs font-semibold text-amber-400">Login required</span>
                     )}
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4 text-xs text-muted">
-                      <span>{formatDate(post.publishedAt)}</span>
-                      <ArrowRight aria-hidden="true" className="shrink-0 text-navy transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gold" size={15} />
+                    <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-xs">
+                      <span className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${categoryColors[post.category] ?? "border-white/20 bg-white/10 text-white"}`}>
+                        {post.category}
+                      </span>
+                      <span className="text-white/40">{formatDate(post.publishedAt)}</span>
                     </div>
                   </div>
                 </Link>

@@ -72,11 +72,11 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           </label>
           <label className="text-sm font-medium text-navy md:col-span-2">
             Short description
-            <textarea className="input-field mt-2 min-h-24" defaultValue={post?.excerpt} maxLength={1000} name="excerpt" placeholder="A short introduction shown on the blog listing." required />
+            <textarea className="input-field mt-2 min-h-24" defaultValue={post?.excerpt} maxLength={1000} name="excerpt" placeholder="A short introduction shown on the blog listing." />
           </label>
           <label className="text-sm font-medium text-navy">
             Author name
-            <input className="input-field mt-2" defaultValue={post?.author.name ?? ""} maxLength={120} name="authorName" required />
+            <input className="input-field mt-2" defaultValue={post?.author.name ?? "Delhi CA School"} maxLength={120} name="authorName" placeholder="Delhi CA School" />
           </label>
           <label className="text-sm font-medium text-navy">
             Author photo URL (optional)
@@ -84,7 +84,7 @@ function BlogEditor({ post }: { post?: BlogPost }) {
           </label>
           <label className="text-sm font-medium text-navy">
             Reading time
-            <input className="input-field mt-2" defaultValue={post?.readingTime ?? "5 min read"} maxLength={40} name="readingTime" required />
+            <input className="input-field mt-2" defaultValue={post?.readingTime ?? "5 min read"} maxLength={40} name="readingTime" placeholder="5 min read" />
           </label>
         </div>
       </section>
