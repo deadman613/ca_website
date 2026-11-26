@@ -8,7 +8,6 @@ import remarkGfm from "remark-gfm";
 import { getBlogPostForViewer, getVisibleBlogPosts } from "@/lib/blogs";
 import { blogCategories } from "@/lib/data/blogs";
 import {
-  createBlogPostingSchema,
   getBlogCanonicalUrl,
   parseBlogPostingSchemas,
 } from "@/lib/blog-schema";
@@ -222,22 +221,9 @@ export default async function BlogPostPage({ params }: Props) {
   const markdownComponents = createMarkdownComponents(articleMarkdown);
   const loginUrl = `/login?next=${encodeURIComponent(`/blogs/${post.slug}`)}`;
   const blogSchemas =
-    post.schemaJson
+    post.schemaMode === "manual" && post.schemaJson
       ? parseBlogPostingSchemas(post.schemaJson)
-      : [
-          createBlogPostingSchema({
-          title: post.title,
-          description: post.seoDescription || post.excerpt,
-          authorName: post.author.name,
-          authorImage: post.author.photo ?? "",
-          datePublished: post.publishedAt,
-          dateModified: post.updatedAt || post.publishedAt,
-          featuredImage: post.featuredImage ?? "",
-          canonicalUrl: post.canonicalUrl || getBlogCanonicalUrl(post.slug),
-          category: post.category,
-          keywords: post.tags,
-          }),
-        ];
+      : [];
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

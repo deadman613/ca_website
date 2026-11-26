@@ -89,12 +89,18 @@ function isHttpUrl(value: unknown): value is string {
   }
 }
 
+function isValidMainEntityOfPage(value: unknown) {
+  if (isHttpUrl(value)) return true;
+  return isRecord(value) && isHttpUrl(value["@id"]);
+}
+
 export function isValidBlogPostingSchema(
   value: unknown
 ): value is BlogPostingJsonLd {
   if (!isRecord(value)) return false;
   const publisher = value.publisher;
   const logo = isRecord(publisher) ? publisher.logo : undefined;
+  const mainEntityOfPage = value.mainEntityOfPage;
 
   return (
     value["@context"] === schemaOrgContext &&
@@ -115,11 +121,14 @@ export function isValidBlogPostingSchema(
     !Number.isNaN(Date.parse(value.datePublished)) &&
     typeof value.dateModified === "string" &&
     !Number.isNaN(Date.parse(value.dateModified)) &&
-    isHttpUrl(value.mainEntityOfPage) &&
-    isHttpUrl(value.url) &&
-    typeof value.articleSection === "string" &&
-    value.articleSection.trim().length > 0 &&
-    (typeof value.keywords === "string" ||
+    (mainEntityOfPage === undefined ||
+      isValidMainEntityOfPage(mainEntityOfPage)) &&
+    (value.url === undefined || isHttpUrl(value.url)) &&
+    (value.articleSection === undefined ||
+      (typeof value.articleSection === "string" &&
+        value.articleSection.trim().length > 0)) &&
+    (value.keywords === undefined ||
+      typeof value.keywords === "string" ||
       (Array.isArray(value.keywords) &&
         value.keywords.every((keyword) => typeof keyword === "string"))) &&
     (value.image === undefined ||
@@ -128,6 +137,22 @@ export function isValidBlogPostingSchema(
         value.image.length > 0 &&
         value.image.every(isHttpUrl)))
   );
+}
+
+export function parseBlogSchemaInput(input: string): unknown {
+  const scriptPattern =
+    /<script\b(?=[^>]*\btype\s*=\s*(?:"application\/ld\+json"|'application\/ld\+json'|application\/ld\+json))[^>]*>([\s\S]*?)<\/script\s*>/gi;
+  const scripts = [...input.matchAll(scriptPattern)];
+
+  if (scripts.length === 0) return JSON.parse(input);
+
+  const remainingInput = input.replace(scriptPattern, "").trim();
+  if (remainingInput) {
+    throw new Error("Only JSON-LD script blocks are allowed.");
+  }
+
+  const schemas = scripts.map((script) => JSON.parse(script[1]));
+  return schemas.length === 1 ? schemas[0] : schemas;
 }
 
 export function isValidJsonLdSchema(value: unknown): value is JsonLdSchema {
@@ -169,7 +194,7 @@ export function isValidBlogSchemaPayload(
 export function parseBlogPostingSchemas(json: string): JsonLdSchema[] {
   let value: unknown;
   try {
-    value = JSON.parse(json);
+    value = parseBlogSchemaInput(json);
   } catch {
     throw new Error("Stored structured data is not valid JSON.");
   }

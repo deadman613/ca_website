@@ -1,38 +1,13 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import {
-  createBlogPostingSchema,
-  getBlogCanonicalUrl,
   isValidBlogSchemaPayload,
+  parseBlogSchemaInput,
 } from "@/lib/blog-schema";
 
 interface SchemaMarkupEditorProps {
   initialSchemaJson?: string;
-  initialSchemaMode?: "auto" | "manual";
-  initialTitle?: string;
-  initialDescription?: string;
-  initialAuthor?: string;
-  initialAuthorImage?: string;
-  initialSlug?: string;
-  initialCanonicalUrl?: string;
-  initialCategory: string;
-  initialKeywords?: string[];
-  initialFeaturedImage?: string;
-  initialDatePublished: string;
-  initialDateModified: string;
-}
-
-function readFormValue(form: HTMLFormElement, name: string) {
-  const field = form.elements.namedItem(name);
-  if (
-    field instanceof HTMLInputElement ||
-    field instanceof HTMLTextAreaElement ||
-    field instanceof HTMLSelectElement
-  ) {
-    return field.value;
-  }
-  return "";
 }
 
 function formatJson(value: unknown) {
@@ -50,123 +25,21 @@ function isSchemaArray(json?: string) {
 
 export default function SchemaMarkupEditor({
   initialSchemaJson,
-  initialSchemaMode = "auto",
-  initialTitle = "",
-  initialDescription = "",
-  initialAuthor = "",
-  initialAuthorImage = "",
-  initialSlug = "",
-  initialCanonicalUrl = "",
-  initialCategory,
-  initialKeywords = [],
-  initialFeaturedImage = "",
-  initialDatePublished,
-  initialDateModified,
 }: SchemaMarkupEditorProps) {
   const schemaId = useId();
   const initialMultiplicity = isSchemaArray(initialSchemaJson)
     ? "multiple"
     : "single";
-  const initialValues = {
-    title: initialTitle,
-    description: initialDescription,
-    authorName: initialAuthor,
-    authorImage: initialAuthorImage,
-    datePublished: initialDatePublished,
-    dateModified: initialDateModified,
-    featuredImage: initialFeaturedImage,
-    canonicalUrl: initialCanonicalUrl || getBlogCanonicalUrl(initialSlug),
-    category: initialCategory,
-    keywords: initialKeywords,
-  };
-  const initialGenerated = formatJson(createBlogPostingSchema(initialValues));
-  const [mode, setMode] = useState(initialSchemaMode);
   const [multiplicity, setMultiplicity] = useState(initialMultiplicity);
-  const [schemaJson, setSchemaJson] = useState(
-    initialSchemaMode === "manual" && initialSchemaJson
-      ? initialSchemaJson
-      : initialMultiplicity === "multiple"
-        ? formatJson([createBlogPostingSchema(initialValues)])
-        : initialGenerated
-  );
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const modeRef = useRef(mode);
+  const [schemaJson, setSchemaJson] = useState(initialSchemaJson ?? "");
   const multiplicityRef = useRef(multiplicity);
-
-  useEffect(() => {
-    const form = textareaRef.current?.form;
-    if (!form) return;
-
-    const updateGeneratedSchema = (event: Event) => {
-      if (
-        event.target instanceof HTMLTextAreaElement &&
-        event.target.name === "schemaData"
-      ) {
-        return;
-      }
-      if (modeRef.current === "manual") return;
-
-      const publishAt = readFormValue(form, "publishAt");
-      const slug = readFormValue(form, "slug") || initialSlug;
-      const parsedPublishAt = publishAt
-        ? new Date(`${publishAt}:00+05:30`)
-        : new Date(initialDatePublished);
-      const values = {
-        title: readFormValue(form, "title"),
-        description:
-          readFormValue(form, "seoDescription") ||
-          readFormValue(form, "excerpt"),
-        authorName: readFormValue(form, "authorName"),
-        authorImage: readFormValue(form, "authorPhoto"),
-        datePublished: Number.isNaN(parsedPublishAt.getTime())
-          ? initialDatePublished
-          : parsedPublishAt.toISOString(),
-        dateModified: initialDateModified,
-        featuredImage: readFormValue(form, "featuredImage"),
-        canonicalUrl:
-          readFormValue(form, "canonicalUrl") || getBlogCanonicalUrl(slug),
-        category: readFormValue(form, "category"),
-        keywords: readFormValue(form, "tags")
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean),
-      };
-
-      const generatedSchema = createBlogPostingSchema(values);
-      setSchemaJson(
-        formatJson(
-          multiplicityRef.current === "multiple"
-            ? [generatedSchema]
-            : generatedSchema
-        )
-      );
-    };
-
-    form.addEventListener("input", updateGeneratedSchema);
-    form.addEventListener("change", updateGeneratedSchema);
-    return () => {
-      form.removeEventListener("input", updateGeneratedSchema);
-      form.removeEventListener("change", updateGeneratedSchema);
-    };
-  }, [initialDateModified, initialDatePublished, initialSlug]);
-
-  function useAutomaticSchema() {
-    modeRef.current = "auto";
-    setMode("auto");
-    const form = textareaRef.current?.form;
-    if (form) form.dispatchEvent(new Event("input", { bubbles: true }));
-  }
 
   function changeMultiplicity(nextMultiplicity: "single" | "multiple") {
     if (nextMultiplicity === multiplicityRef.current) return;
     multiplicityRef.current = nextMultiplicity;
     setMultiplicity(nextMultiplicity);
 
-    if (modeRef.current === "auto") {
-      const form = textareaRef.current?.form;
-      if (form) form.dispatchEvent(new Event("input", { bubbles: true }));
-      return;
-    }
+    if (!schemaJson.trim()) return;
 
     try {
       const value: unknown = JSON.parse(schemaJson);
@@ -192,8 +65,6 @@ export default function SchemaMarkupEditor({
       return;
     }
 
-    modeRef.current = "manual";
-    setMode("manual");
     if (multiplicityRef.current !== "multiple") {
       multiplicityRef.current = "multiple";
       setMultiplicity("multiple");
@@ -210,8 +81,6 @@ export default function SchemaMarkupEditor({
     try {
       const value: unknown = JSON.parse(schemaJson);
       if (!Array.isArray(value) || value.length <= 1) return;
-      modeRef.current = "manual";
-      setMode("manual");
       setSchemaJson(formatJson(value.slice(0, -1)));
     } catch {
       return;
@@ -220,17 +89,34 @@ export default function SchemaMarkupEditor({
 
   let parsedSchema: unknown;
   try {
-    parsedSchema = JSON.parse(schemaJson);
+    parsedSchema = parseBlogSchemaInput(schemaJson);
   } catch {
     parsedSchema = null;
   }
-  const isValid = isValidBlogSchemaPayload(
-    parsedSchema,
-    multiplicity === "multiple"
-  );
-  const validationMessage = isValid
-    ? `Valid ${multiplicity === "multiple" ? "multiple" : "single"} JSON-LD schema${multiplicity === "multiple" ? "s" : ""} (one BlogPosting included)`
-    : "Use valid JSON-LD with exactly one valid BlogPosting. Multiple mode requires a JSON array.";
+  const isEmpty = !schemaJson.trim();
+  const isValid =
+    isEmpty ||
+    isValidBlogSchemaPayload(parsedSchema, Array.isArray(parsedSchema));
+  const hasMultipleSchemas = Array.isArray(parsedSchema);
+  const validationMessage = isEmpty
+    ? "Optional. Add JSON-LD manually when needed."
+    : isValid
+      ? `Valid ${hasMultipleSchemas ? "multiple" : "single"} JSON-LD schema${hasMultipleSchemas ? "s" : ""} (one BlogPosting included)`
+      : "Use valid JSON-LD with exactly one valid BlogPosting. Enter multiple schemas as a JSON array or separate JSON-LD script blocks.";
+
+  function updateSchemaJson(value: string) {
+    setSchemaJson(value);
+    try {
+      const parsedValue = parseBlogSchemaInput(value);
+      const nextMultiplicity = Array.isArray(parsedValue)
+        ? "multiple"
+        : "single";
+      multiplicityRef.current = nextMultiplicity;
+      setMultiplicity(nextMultiplicity);
+    } catch {
+      return;
+    }
+  }
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
@@ -240,16 +126,10 @@ export default function SchemaMarkupEditor({
           BlogPosting structured data
         </h3>
         <p className="mt-1 text-sm font-normal text-secondary">
-          BlogPosting is generated from this post. Choose one schema or a
-          multiple-schema array, then edit the JSON-LD as needed.
+          Add valid JSON-LD manually, either as JSON or script blocks. Leave
+          this blank to publish without BlogPosting structured data.
         </p>
       </div>
-      <input name="schemaMode" type="hidden" value={mode} />
-      <input
-        name="schemaMultiplicity"
-        type="hidden"
-        value={multiplicity}
-      />
       <div className="mb-5 flex flex-wrap items-center gap-3">
         <label className="text-sm font-medium text-navy" htmlFor={`${schemaId}-count`}>
           Schema count
@@ -294,12 +174,7 @@ export default function SchemaMarkupEditor({
             className="input-field mt-2 min-h-80 resize-y font-mono text-xs leading-5"
             id={`${schemaId}-json`}
             name="schemaData"
-            onChange={(event) => {
-              modeRef.current = "manual";
-              setMode("manual");
-              setSchemaJson(event.target.value);
-            }}
-            ref={textareaRef}
+            onChange={(event) => updateSchemaJson(event.target.value)}
             spellCheck={false}
             value={schemaJson}
           />
@@ -311,15 +186,6 @@ export default function SchemaMarkupEditor({
             >
               {validationMessage}
             </p>
-            {mode === "manual" && (
-              <button
-                className="text-xs font-semibold text-navy underline underline-offset-4"
-                onClick={useAutomaticSchema}
-                type="button"
-              >
-                Restore automatic schema
-              </button>
-            )}
           </div>
         </div>
         <div>

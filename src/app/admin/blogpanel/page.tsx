@@ -52,7 +52,6 @@ function localDateTime(value: string | null) {
 }
 
 function BlogEditor({ post }: { post?: BlogPost }) {
-  const now = new Date().toISOString();
   return (
     <form action={saveBlogPost} className="space-y-6">
       {post && <input name="id" type="hidden" value={post.id} />}
@@ -128,19 +127,7 @@ function BlogEditor({ post }: { post?: BlogPost }) {
       </section>
 
       <SchemaMarkupEditor
-        initialAuthor={post?.author.name}
-        initialAuthorImage={post?.author.photo}
-        initialCanonicalUrl={post?.canonicalUrl}
-        initialCategory={post?.category ?? blogCategories[0]}
-        initialDateModified={post?.updatedAt ?? now}
-        initialDatePublished={post?.publishedAt ?? now}
-        initialDescription={post?.seoDescription ?? post?.excerpt}
-        initialFeaturedImage={post?.featuredImage}
-        initialKeywords={post?.tags}
         initialSchemaJson={post?.schemaJson}
-        initialSchemaMode={post?.schemaMode}
-        initialSlug={post?.slug}
-        initialTitle={post?.title}
       />
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
