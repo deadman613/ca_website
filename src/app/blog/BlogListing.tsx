@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/lib/data/blogs";
 import { blogCategories } from "@/lib/data/blogs";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 
 const categoryColors: Record<string, string> = {
@@ -32,6 +31,7 @@ function formatDate(dateStr: string) {
 export default function BlogListing({ posts }: { posts: BlogPost[] }) {
   const { stream } = useStream();
   const [activeCategory, setActiveCategory] = useState<"all" | BlogCategory>("all");
+  const [showAllPosts, setShowAllPosts] = useState(false);
 
   // Stream-filtered posts (used only for the featured card pick)
   const streamPosts =
@@ -43,14 +43,14 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
           ["CSEET", "CS Executive", "CS Professional", "Career guidance", "Exam update", "Study strategy"].includes(post.category)
         );
 
-  // Featured = first stream post, only shown when there are 2+ total posts (so grid is never empty)
-  const featured = posts.length > 1 ? streamPosts[0] : undefined;
+  const featuredPosts = streamPosts.slice(0, 3);
 
-  // Grid: "All" → ALL posts (minus featured if shown); specific category → filter all posts
+  // Keep the all-articles view complete, including the featured post.
   const listedPosts =
     activeCategory === "all"
-      ? posts.filter((p) => !featured || p.id !== featured.id)
+      ? posts
       : posts.filter((p) => p.category === activeCategory);
+  const visiblePosts = showAllPosts ? listedPosts : listedPosts.slice(0, 3);
 
   return (
     <main>
@@ -63,9 +63,6 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
               <Sparkles aria-hidden="true" size={15} />
               The Delhi CA School journal
             </p>
-            <div className="mb-6">
-              <StreamSwitcher className="border-gray-200 bg-white" />
-            </div>
             <h1 className="mb-6 font-playfair text-4xl font-bold leading-[1.12] tracking-tight text-navy sm:text-5xl lg:text-6xl">
               Clarity for every step of your{" "}
               <span className="text-gold-muted">CA journey.</span>
@@ -88,65 +85,64 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
 
       <section className="section-padding bg-white">
         <div className="container-wide">
-          {activeCategory === "all" && featured && (
+          {activeCategory === "all" && featuredPosts.length > 0 && (
             <div className="mb-16">
               <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-8 bg-gold" />
                 <p className="section-label">Editor&apos;s pick</p>
               </div>
-              {/* Featured card — white + blue touch */}
-              <Link
-                className="group flex flex-col overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-200"
-                href={`/blogs/${featured.slug}`}
-              >
-                {/* Image on top — taller than small cards */}
-                <div className="relative aspect-[16/7] overflow-hidden rounded-t-2xl bg-gradient-to-br from-blue-50 to-slate-100 sm:aspect-[16/6]">
-                  {featured.featuredImage ? (
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                      style={{ backgroundImage: `url("${featured.featuredImage}")` }}
-                    />
-                  ) : (
-                    <>
-                      <span aria-hidden="true" className="absolute -right-10 -top-20 h-72 w-72 rounded-full border border-navy/10" />
-                      <span aria-hidden="true" className="absolute -right-1 -top-11 h-52 w-52 rounded-full border border-gold/30" />
-                      <span className="absolute inset-0 flex items-center justify-center select-none font-playfair text-9xl font-bold text-navy/10">CA</span>
-                    </>
-                  )}
-                  {featured.access === "login_required" && (
-                    <div className="absolute left-4 top-4 z-10">
-                      <span className="rounded-full border border-navy/20 bg-white/90 px-3 py-1 text-xs font-semibold text-navy">
-                        {featured.featuredLabel || "Members Only"}
-                      </span>
+              <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {featuredPosts.map((featuredPost) => (
+                  <Link
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
+                    href={`/blogs/${featuredPost.slug}`}
+                    key={featuredPost.id}
+                  >
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl bg-gradient-to-br from-blue-50 to-slate-100">
+                      {featuredPost.featuredImage ? (
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+                          style={{ backgroundImage: `url("${featuredPost.featuredImage}")` }}
+                        />
+                      ) : (
+                        <>
+                          <span aria-hidden="true" className="absolute -right-10 -top-20 h-72 w-72 rounded-full border border-navy/10" />
+                          <span aria-hidden="true" className="absolute -right-1 -top-11 h-52 w-52 rounded-full border border-gold/30" />
+                          <span className="absolute inset-0 flex items-center justify-center select-none font-playfair text-8xl font-bold text-navy/10">CA</span>
+                        </>
+                      )}
+                      {featuredPost.access === "login_required" && (
+                        <div className="absolute left-4 top-4 z-10">
+                          <span className="rounded-full border border-navy/20 bg-white/90 px-3 py-1 text-xs font-semibold text-navy">
+                            {featuredPost.featuredLabel || "Members Only"}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                {/* Body */}
-                <div className="flex flex-1 flex-col p-6 sm:p-8">
-                  <p className="mb-3 text-sm text-slate-400">
-                    {featured.author.name} · {featured.readingTime}
-                  </p>
-                  <div className="mb-2 flex items-start justify-between gap-3">
-                    <h2 className="font-playfair text-2xl font-bold leading-snug text-navy transition-colors group-hover:text-gold-muted sm:text-3xl">
-                      {featured.title}
-                    </h2>
-                    <ArrowRight aria-hidden="true" className="mt-1 shrink-0 text-navy/30 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gold-muted" size={22} />
-                  </div>
-                  <p className="mb-5 text-sm leading-7 text-secondary sm:text-base">
-                    {featured.excerpt}
-                  </p>
-                  {featured.access === "login_required" && (
-                    <span className="mb-4 text-xs font-semibold text-amber-600">Login required</span>
-                  )}
-                  <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-blue-50 pt-4 text-sm">
-                    <span className={`rounded-full border px-3 py-0.5 text-xs font-semibold ${categoryColors[featured.category] ?? "border-navy/20 bg-navy/5 text-navy"}`}>
-                      {featured.category}
-                    </span>
-                    <span className="text-xs text-slate-400">{formatDate(featured.publishedAt)}</span>
-                  </div>
-                </div>
-              </Link>
+                    <div className="flex flex-1 flex-col p-5">
+                      <p className="mb-2 text-xs text-slate-400">
+                        {featuredPost.author.name} · {featuredPost.readingTime}
+                      </p>
+                      <div className="mb-1 flex items-start justify-between gap-2">
+                        <h2 className="font-playfair text-lg font-bold leading-snug text-navy transition-colors group-hover:text-gold-muted">
+                          {featuredPost.title}
+                        </h2>
+                        <ArrowRight aria-hidden="true" className="mt-0.5 shrink-0 text-navy/30 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gold-muted" size={18} />
+                      </div>
+                      <p className="mb-4 line-clamp-2 flex-1 text-sm leading-6 text-secondary">
+                        {featuredPost.excerpt}
+                      </p>
+                      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-blue-50 pt-3 text-xs">
+                        <span className={`rounded-full border px-2.5 py-0.5 font-semibold ${categoryColors[featuredPost.category] ?? "border-navy/20 bg-navy/5 text-navy"}`}>
+                          {featuredPost.category}
+                        </span>
+                        <span className="text-slate-400">{formatDate(featuredPost.publishedAt)}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 
@@ -158,7 +154,10 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
             <button
               aria-pressed={activeCategory === "all"}
               className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${activeCategory === "all" ? "border-navy bg-navy text-white" : "border-gray-200 bg-white text-navy hover:border-navy"}`}
-              onClick={() => setActiveCategory("all")}
+              onClick={() => {
+                setActiveCategory("all");
+                setShowAllPosts(false);
+              }}
               type="button"
             >
               All articles
@@ -168,7 +167,10 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
                 aria-pressed={activeCategory === category}
                 className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${activeCategory === category ? "border-navy bg-navy text-white" : "border-gray-200 bg-white text-navy hover:border-navy"}`}
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setShowAllPosts(false);
+                }}
                 type="button"
               >
                 {category}
@@ -178,7 +180,7 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
 
           {listedPosts.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {listedPosts.map((post) => (
+              {visiblePosts.map((post) => (
                 <Link
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
                   href={`/blogs/${post.slug}`}
@@ -231,6 +233,17 @@ export default function BlogListing({ posts }: { posts: BlogPost[] }) {
               <p className="mt-2 text-sm text-secondary">
                 There are no articles in this category just yet.
               </p>
+            </div>
+          )}
+          {listedPosts.length > 3 && (
+            <div className="mt-8 text-center">
+              <button
+                className="rounded-full border border-navy px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-navy hover:text-white"
+                onClick={() => setShowAllPosts((show) => !show)}
+                type="button"
+              >
+                {showAllPosts ? "Show fewer articles" : `Show all ${listedPosts.length} articles`}
+              </button>
             </div>
           )}
         </div>

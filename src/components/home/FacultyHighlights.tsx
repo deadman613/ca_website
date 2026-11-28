@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -288,11 +287,6 @@ export default function FacultyHighlights() {
           before publishing.]
         </p>
 
-        <div className="mt-8 flex justify-center">
-          <Link href="/faculty" className="btn-secondary inline-flex items-center gap-2">
-            Meet All Faculty <ArrowRight aria-hidden="true" size={16} />
-          </Link>
-        </div>
       </div>
     </section>
   );

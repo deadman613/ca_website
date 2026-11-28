@@ -46,7 +46,6 @@ export default function Navbar() {
       href: "/courses",
       dropdown: courseLinks,
     },
-    // { label: "Faculty", href: "/faculty" },
     {
       label: "Free Resources",
       href: "/resources",

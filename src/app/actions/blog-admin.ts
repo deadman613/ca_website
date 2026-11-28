@@ -184,7 +184,7 @@ export async function saveBlogPost(formData: FormData) {
     seoDescription: input.seoDescription || null,
     canonicalUrl,
     schemaJson: schemaJson || null,
-    schemaMode: "manual",
+    schemaMode: schemaJson ? "manual" : "auto",
     previewContent: input.previewContent,
     category: input.category,
     authorName: input.authorName,

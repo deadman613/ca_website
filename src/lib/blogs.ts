@@ -68,6 +68,7 @@ export const getVisibleBlogPosts = cache(async function getVisibleBlogPosts() {
   if (!isPrismaDatabaseConfigured()) return getLegacyPublicPosts();
 
   const posts = await getPrismaClient().blogPost.findMany({
+    where: visibleBlogWhere(new Date()),
     orderBy: { publishedAt: "desc" },
   });
 

@@ -8,7 +8,6 @@ const footerLinks = {
     title: "School",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Our Faculty", href: "/faculty" },
       { label: "Contact Us", href: "/contact" },
       { label: "Blog", href: "/blogs" },
     ],

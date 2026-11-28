@@ -127,7 +127,8 @@ export default function SchemaMarkupEditor({
         </h3>
         <p className="mt-1 text-sm font-normal text-secondary">
           Add valid JSON-LD manually, either as JSON or script blocks. Leave
-          this blank to publish without BlogPosting structured data.
+          this blank to generate BlogPosting structured data automatically
+          from the article details.
         </p>
       </div>
       <div className="mb-5 flex flex-wrap items-center gap-3">

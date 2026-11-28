@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 
 const courses = [
@@ -67,7 +66,6 @@ export default function CourseOverview() {
         />
 
         <div className="mb-8 flex flex-col items-center gap-5">
-          <StreamSwitcher />
           <p className="text-sm font-semibold text-navy">
             Where are you right now?
           </p>

@@ -36,7 +36,7 @@ export default function HomePage() {
       <Reveal><HowWeTeach /></Reveal>
       <Reveal><ResourcesTeaser /></Reveal>
       <Reveal><FacultyHighlights /></Reveal>
-      <Reveal><ResultsSection /></Reveal>
+      {/* <Reveal><ResultsSection /></Reveal> */}
       {/* 1 — Student reviews with video testimonials */}
       <Reveal><StudentReviewsWithVideos /></Reveal>
       {/* <Reveal><PreparationProcess /></Reveal> */}

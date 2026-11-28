@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Download, BookOpen, FileText, Filter } from "lucide-react";
 import { resources, resourceCategories } from "@/lib/data/resources";
 import CTASection from "@/components/home/CTASection";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 
 const typeIcons: Record<string, typeof BookOpen> = {
@@ -40,9 +39,6 @@ export default function ResourcesPage() {
         <div className="container-wide">
           <div className="max-w-2xl">
             <span className="section-label mb-4 block">Knowledge Library</span>
-            <div className="mb-5">
-              <StreamSwitcher />
-            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Free Resources
               <br />

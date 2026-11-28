@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, Tag, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, LockKeyhole, User } from "lucide-react";
 import { isValidElement, type CSSProperties, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getBlogPostForViewer, getVisibleBlogPosts } from "@/lib/blogs";
 import { blogCategories } from "@/lib/data/blogs";
 import {
+  createBlogPostingSchema,
   getBlogCanonicalUrl,
   parseBlogPostingSchemas,
 } from "@/lib/blog-schema";
@@ -113,12 +114,12 @@ function createMarkdownComponents(markdown: string): Components {
   };
 
   return {
-  h1: ({ children }) => <h1 id={nextHeadingId(children)} className="mb-5 mt-12 font-playfair text-3xl font-bold leading-tight text-navy sm:text-4xl">{children}</h1>,
-  h2: ({ children }) => <h2 id={nextHeadingId(children)} className="mb-4 mt-12 scroll-mt-24 font-playfair text-2xl font-bold leading-tight text-navy sm:text-3xl">{children}</h2>,
-  h3: ({ children }) => <h3 id={nextHeadingId(children)} className="mb-3 mt-8 scroll-mt-24 font-playfair text-xl font-bold leading-snug text-navy sm:text-2xl">{children}</h3>,
-  h4: ({ children }) => <h4 id={nextHeadingId(children)} className="mb-3 mt-6 font-bold text-navy text-lg">{children}</h4>,
-  h5: ({ children }) => <h5 id={nextHeadingId(children)} className="mb-2 mt-4 text-base font-semibold text-navy">{children}</h5>,
-  h6: ({ children }) => <h6 id={nextHeadingId(children)} className="mb-2 mt-4 text-sm font-semibold uppercase tracking-wide text-navy">{children}</h6>,
+  h1: ({ children }) => <h1 id={nextHeadingId(children)} className="mb-5 mt-12 font-playfair text-2xl font-bold leading-tight text-navy sm:text-3xl">{children}</h1>,
+  h2: ({ children }) => <h2 id={nextHeadingId(children)} className="mb-4 mt-12 scroll-mt-24 font-playfair text-xl font-bold leading-tight text-navy sm:text-2xl">{children}</h2>,
+  h3: ({ children }) => <h3 id={nextHeadingId(children)} className="mb-3 mt-8 scroll-mt-24 font-playfair text-lg font-bold leading-snug text-navy sm:text-xl">{children}</h3>,
+  h4: ({ children }) => <h4 id={nextHeadingId(children)} className="mb-3 mt-6 font-bold text-navy text-base">{children}</h4>,
+  h5: ({ children }) => <h5 id={nextHeadingId(children)} className="mb-2 mt-4 text-sm font-semibold text-navy">{children}</h5>,
+  h6: ({ children }) => <h6 id={nextHeadingId(children)} className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wide text-navy">{children}</h6>,
   p: ({ children }) => isStandaloneAsteriskArtifact(children)
     ? null
     : <p className="my-5 text-[1.0625rem] leading-8 text-secondary">{children}</p>,
@@ -223,7 +224,20 @@ export default async function BlogPostPage({ params }: Props) {
   const blogSchemas =
     post.schemaMode === "manual" && post.schemaJson
       ? parseBlogPostingSchemas(post.schemaJson)
-      : [];
+      : [
+          createBlogPostingSchema({
+            title: post.title,
+            description: post.seoDescription || post.excerpt,
+            authorName: post.author.name,
+            authorImage: post.author.photo ?? "",
+            datePublished: post.publishedAt,
+            dateModified: post.updatedAt ?? post.publishedAt,
+            featuredImage: post.featuredImage ?? "",
+            canonicalUrl: post.canonicalUrl || getBlogCanonicalUrl(post.slug),
+            category: post.category,
+            keywords: post.tags,
+          }),
+        ];
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -299,7 +313,7 @@ export default async function BlogPostPage({ params }: Props) {
                     </span>
                   )}
                 </div>
-                <h1 className="mb-5 max-w-4xl font-playfair text-2xl font-bold leading-tight tracking-tight text-navy sm:text-3xl lg:text-4xl">
+                <h1 className="mb-5 max-w-4xl font-playfair text-xl font-bold leading-tight tracking-tight text-navy sm:text-2xl lg:text-3xl">
                   {post.title}
                 </h1>
                 <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
@@ -443,16 +457,6 @@ export default async function BlogPostPage({ params }: Props) {
                 <p className="mt-3 border-t border-[#eaf1fb] pt-3 text-[10px] text-muted">Explore articles by your study stage.</p>
               </section>
 
-              {post.tags.length > 0 && (
-                <section className="rounded-2xl border border-[#d6e4fa] bg-white p-4 shadow-[0_6px_20px_rgba(27,75,142,0.06)] sm:p-5">
-                  <h2 className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#2873d8]">Tags</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span className="rounded-full border border-[#d7e5f8] px-2.5 py-1 text-[10px] text-secondary" key={tag}>{tag}</span>
-                    ))}
-                  </div>
-                </section>
-              )}
             </aside>
           </div>
 

@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Camera, CheckCircle2, Mail, Phone } from "lucide-react";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 import { siteContact } from "@/lib/site";
 
@@ -61,9 +60,6 @@ export default function ContactPage() {
         <div className="container-wide">
           <div className="max-w-2xl">
             <span className="section-label mb-4 block">Get in Touch</span>
-            <div className="mb-5">
-              <StreamSwitcher />
-            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Let&apos;s Start Your
               <br />
@@ -260,4 +256,3 @@ export default function ContactPage() {
     </>
   );
 }
-

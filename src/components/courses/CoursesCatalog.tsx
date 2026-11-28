@@ -6,7 +6,6 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { courses } from "@/lib/data/courses";
 import CTASection from "@/components/home/CTASection";
-import StreamSwitcher from "@/components/layout/StreamSwitcher";
 import { useStream } from "@/components/layout/StreamProvider";
 
 const levelColors = {
@@ -54,9 +53,6 @@ export default function CoursesCatalog({ initialStream }: { initialStream?: "CA"
         <div className="container-wide">
           <div className="max-w-3xl">
             <span className="section-label mb-4 block">All Programs</span>
-            <div className="mb-5">
-              <StreamSwitcher />
-            </div>
             <h1 className="font-playfair text-white text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Your {stream} Journey
               <br />
